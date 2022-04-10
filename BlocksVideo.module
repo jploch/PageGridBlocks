@@ -1,0 +1,90 @@
+<?php namespace ProcessWire;
+
+class BlocksVideo extends WireData implements Module {
+
+  public static function getModuleInfo() {
+    return [
+      'title' => 'Video Block',
+      'summary' => 'Installs Template and Fields for a PageGrid Block',
+      'author' => 'Jan Ploch',
+      'icon' => 'file-video-o',
+      'autoload' => 'template=admin',
+      'requires' => array('PageGridBlocks'),
+      'version' => 1
+    ];
+  }
+
+  public function getBlockName() {
+    return array(
+      'name' => 'pg_video',
+      'label' => 'Video',
+    );
+  }
+
+  //function to create block
+  public function createBlock() {
+
+    $fs = wire('fields');
+    $t = wire('templates');
+    $blockName = $this->getBlockName()['name'];
+    $blockLabel = $this->getBlockName()['label'];
+    $blockIcon = $this->getModuleInfo()['icon'];
+    $folderName = $this->className();
+
+    $this->modules->get('PageGridBlocks')->createTemplate($blockName, $blockLabel, $blockIcon, $folderName);
+
+    if (!$fs->get($blockName)) {
+      $f = new Field;
+      $f->type = $this->modules->get("FieldtypeFile");
+      $f->name = $blockName;
+      $f->label = $blockLabel;
+      $f->extensions = 'mp4';
+      $f->maxFiles = 1;
+      $f->outputFormat = 0;
+      $f->tags = 'PageGrid';
+      $f->save();
+      $t->get($blockName)->fieldgroup->add($f);
+      $t->get($blockName)->fieldgroup->save();
+    }
+
+    if (!$fs->get($blockName . '_poster')) {
+      $f = new Field;
+      $f->type = $this->modules->get("FieldtypeImage");
+      $f->name = $blockName . '_poster';
+      $f->label = 'Preview Image';
+      $f->extensions = 'gif jpg jpeg png';
+      $f->maxFiles = 1;
+      $f->tags = 'PageGrid';
+      $f->save();
+      $t->get($blockName)->fieldgroup->add($f);
+      $t->get($blockName)->fieldgroup->save();
+    }
+
+    if (!$fs->get($blockName . '_options')) {
+      $f = new Field;
+      $f->type = $this->modules->get("FieldtypeText");
+      $f->name = $blockName . '_options';
+      $f->label = 'Options';
+      $f->notes = 'example: autoplay muted loop';
+      $f->tags = 'PageGrid';
+      $f->save();
+      $t->get($blockName)->fieldgroup->add($f);
+      $t->get($blockName)->fieldgroup->save();
+    }
+    
+  }
+
+  public function ___upgrade($fromVersion, $toVersion) {
+    $this->createBlock();
+  }
+
+  public function ___install() {
+    $this->createBlock();
+  }
+
+  public function ___uninstall() {
+    $blockName = $this->getBlockName()['name'];
+    $this->modules->get('PageGridBlocks')->removeBlock($blockName);
+  }
+  
+}

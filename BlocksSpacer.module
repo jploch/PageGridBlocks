@@ -1,0 +1,53 @@
+<?php namespace ProcessWire;
+
+class BlocksSpacer extends WireData implements Module {
+
+  public static function getModuleInfo() {
+    return [
+      'title' => 'Spacer Block',
+      'summary' => 'Installs Template and Fields for a PageGrid Block',
+      'author' => 'Jan Ploch',
+      'icon' => 'arrows-h',
+      'autoload' => 'template=admin',
+      'requires' => array('PageGridBlocks'),
+      'version' => 1
+    ];
+  }
+
+  public function getBlockName() {
+    return array(
+      'name' => 'pg_spacer',
+      'label' => 'Spacer',
+    );
+  }
+
+  //function to create block
+  public function createBlock() {
+
+    $fs = wire('fields');
+    $t = wire('templates');
+    $blockName = $this->getBlockName()['name'];
+    $blockLabel = $this->getBlockName()['label'];
+    $blockIcon = $this->getModuleInfo()['icon'];
+    $folderName = $this->className();
+
+    bd($folderName);
+
+    $this->modules->get('PageGridBlocks')->createTemplate($blockName, $blockLabel, $blockIcon, $folderName);
+    
+  }
+
+  public function ___upgrade($fromVersion, $toVersion) {
+    $this->createBlock();
+  }
+
+  public function ___install() {
+    $this->createBlock();
+  }
+
+  public function ___uninstall() {
+    $blockName = $this->getBlockName()['name'];
+    $this->modules->get('PageGridBlocks')->removeBlock($blockName);
+  }
+  
+}

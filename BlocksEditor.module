@@ -1,0 +1,63 @@
+<?php namespace ProcessWire;
+
+class BlocksEditor extends WireData implements Module {
+
+  public static function getModuleInfo() {
+    return [
+      'title' => 'Editor Block',
+      'summary' => 'Installs Template and Fields for a PageGrid Block',
+      'author' => 'Jan Ploch',
+      'icon' => 'font',
+      'autoload' => 'template=admin',
+      'requires' => array('PageGridBlocks'),
+      'version' => 1
+    ];
+  }
+
+  public function getBlockName() {
+    return array(
+      'name' => 'pg_editor',
+      'label' => 'Editor',
+    );
+  }
+
+  //function to create block
+  public function createBlock() {
+
+    $fs = wire('fields');
+    $t = wire('templates');
+    $blockName = $this->getBlockName()['name'];
+    $blockLabel = $this->getBlockName()['label'];
+    $blockIcon = $this->getModuleInfo()['icon'];
+    $folderName = $this->className();
+
+    $this->modules->get('PageGridBlocks')->createTemplate($blockName, $blockLabel, $blockIcon, $folderName);
+
+    if (!$fs->get($blockName)) {
+      $f = new Field;
+      $f->type = $this->modules->get("FieldtypeTextarea");
+      $f->inputfieldClass = 'InputfieldCKEditor';
+      $f->name = $blockName;
+      $f->label = $blockLabel;
+      $f->tags = 'PageGrid';
+      $f->save();
+      $t->get($blockName)->fieldgroup->add($f);
+      $t->get($blockName)->fieldgroup->save();
+    }
+    
+  }
+
+  public function ___upgrade($fromVersion, $toVersion) {
+    $this->createBlock();
+  }
+
+  public function ___install() {
+    $this->createBlock();
+  }
+
+  public function ___uninstall() {
+    $blockName = $this->getBlockName()['name'];
+    $this->modules->get('PageGridBlocks')->removeBlock($blockName);
+  }
+  
+}

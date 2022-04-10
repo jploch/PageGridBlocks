@@ -1,0 +1,121 @@
+<?php
+
+namespace ProcessWire;
+
+class PageGridBlocks extends WireData implements Module {
+
+  public static function getModuleInfo() {
+    return [
+      'title' => 'PageGridBlocks',
+      'summary' => 'Install and uninstall PageGrid Blocks',
+      'author' => 'Jan Ploch',
+      // 'icon' => 'help',
+      "href" => "https://github.com/jploch/PageGridBlocks",
+      'autoload' => 'template=admin',
+      'version' => 12
+    ];
+  }
+
+
+  //helper to create template
+  public function createTemplate($tName, $tLabel, $tIcon, $folderName) {
+    $this->message("Create Template " . $tName);
+    $this->log->save("PageGridBlock", "Create Template " . $tName);
+
+    $fs = wire('fields');
+    $t = wire('templates');
+
+    if (!$t->get($tName)) {
+
+      $f = $fs->get($tName);
+      $titleF = $fs->get('title');
+
+      // fieldgroup for template
+      $fg = new Fieldgroup();
+      $fg->name = $tName;
+      $fg->add($titleF);
+      $fg->save();
+
+      $t = new Template();
+      $t->name = $tName;
+      $t->label = $tLabel;
+      $t->fieldgroup = $fg;
+      $t->icon = $tIcon;
+      $t->save();
+    }
+
+    // Copy block files
+    $copyFrom = $this->config->paths->PageGridBlocks . $folderName;
+    $copyTo =  $this->config->paths->templates . "blocks/";
+    $this->files->copy($copyFrom, $copyTo);
+  }
+
+  ///helper remove template/filed
+  public function removeBlock($blockName) {
+
+    $t = $this->templates->get($blockName);
+    $fg = $this->fieldgroups->get($blockName);
+
+    if ($t && $t->getNumPages() > 0) {
+      throw new WireException("Can't uninstall because template or fields been used by some pages.");
+    } else {
+      $this->message("Remove Block " . $blockName);
+      
+      if ($t) {
+        foreach ($t->fields as $f) {
+
+          if($f->name != 'title' && wire('fields')->getNumPages($f) == 0) {
+            $t->fields->remove($f);
+            $t->fields->save();
+            wire('fields')->delete($f);
+          }
+        }
+        wire('templates')->delete($t);
+      }
+      if ($fg) {
+        wire('fieldgroups')->delete($fg);
+      }
+    }
+
+  }
+
+
+  public function downloadModule($name, $update = false) {
+
+    // if ($this->session->download_modules != '1') return false;
+
+    $name = $this->wire('sanitizer')->name($name);
+    $info = self::getModuleInfo();
+
+    $redirectURL = $update ? "./edit?name=$name" : "./";
+    $className = $name;
+    $url = trim($this->wire('config')->moduleServiceURL, '/') . "/$className/?apikey=" . $this->wire('sanitizer')->name($this->wire('config')->moduleServiceKey);
+
+    $http = new WireHttp();
+    $data = $http->get($url);
+
+    if (empty($data)) {
+      $this->error($this->_('Error retrieving data from web service URL') . ' - ' . $http->getError());
+      return $this->session->redirect($redirectURL);
+    }
+    $data = json_decode($data, true);
+    if (empty($data)) {
+      $this->error($this->_('Error decoding JSON from web service'));
+      return $this->session->redirect($redirectURL);
+    }
+    if ($data['status'] == 'success') {
+
+      $installed = $this->modules->isInstalled($className) ? $this->modules->getModuleInfoVerbose($className) : null;
+  
+        $destinationDir = $this->wire('config')->paths->siteModules . $className . '/';
+        require_once(wire('config')->paths->modules . 'Process/ProcessModule/ProcessModuleInstall.php');
+        $install = new ProcessModuleInstall();
+
+        $completedDir = $install->downloadModule($data['download_url'], $destinationDir);
+        if ($completedDir) {
+          return true;
+        }
+      
+    }
+  }
+}
