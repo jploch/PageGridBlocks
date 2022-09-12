@@ -12,35 +12,36 @@ class PageGridBlocks extends WireData implements Module {
       // 'icon' => 'help',
       "href" => "https://github.com/jploch/PageGridBlocks",
       'autoload' => 'template=admin',
-      'version' => 12
+      'version' => 001
     ];
   }
 
 
   //helper to create template
-  public function createTemplate($tName, $tLabel, $tIcon, $folderName) {
-    $this->message("Create Template " . $tName);
-    $this->log->save("PageGridBlock", "Create Template " . $tName);
+  public function createTemplate($name, $label, $icon, $folderName) {
+    $this->message("Create Template " . $name);
+    $this->log->save("PageGridBlock", "Create Template " . $name);
 
     $fs = wire('fields');
     $t = wire('templates');
 
-    if (!$t->get($tName)) {
+    if (!$t->get($name)) {
 
-      $f = $fs->get($tName);
+      $f = $fs->get($name);
       $titleF = $fs->get('title');
 
       // fieldgroup for template
       $fg = new Fieldgroup();
-      $fg->name = $tName;
+      $fg->name = $name;
       $fg->add($titleF);
       $fg->save();
 
       $t = new Template();
-      $t->name = $tName;
-      $t->label = $tLabel;
+      $t->name = $name;
+      $t->label = $label;
       $t->fieldgroup = $fg;
-      $t->icon = $tIcon;
+      $t->icon = $icon;
+      // $t->useRoles = 1;
       $t->save();
     }
 
@@ -48,6 +49,28 @@ class PageGridBlocks extends WireData implements Module {
     $copyFrom = $this->config->paths->PageGridBlocks . $folderName;
     $copyTo =  $this->config->paths->templates . "blocks/";
     $this->files->copy($copyFrom, $copyTo);
+  }
+
+  //helper to create field
+  public function createField($name, $type, $tName) {
+    $this->message("Create Field " . $name);
+    $this->log->save("PageGridBlock", "Create Field " . $name);
+
+    $fs = wire('fields');
+    $t = wire('templates');
+
+    if (!$fs->get($name)) {
+      $f = new Field;
+      $f->name = $name;
+      $f->type = $this->modules->get($type);
+      $f->tags = 'PageGrid';
+      $f->save();
+      $t->get($tName)->fieldgroup->add($f);
+      $t->get($tName)->fieldgroup->save();
+    }
+
+    return $fs->get($name);
+
   }
 
   ///helper remove template/filed
@@ -60,7 +83,7 @@ class PageGridBlocks extends WireData implements Module {
       throw new WireException("Can't uninstall because template or fields been used by some pages.");
     } else {
       $this->message("Remove Block " . $blockName);
-      
+
       if ($t) {
         foreach ($t->fields as $f) {
 

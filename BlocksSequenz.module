@@ -10,7 +10,7 @@ class BlocksSequenz extends WireData implements Module {
       'icon' => 'film',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => 1
+      'version' => 001
     ];
   }
 
@@ -24,29 +24,21 @@ class BlocksSequenz extends WireData implements Module {
   //function to create block
   public function createBlock() {
 
-    $fs = wire('fields');
-    $t = wire('templates');
+    $b = $this->modules->get('PageGridBlocks');
     $blockName = $this->getBlockName()['name'];
     $blockLabel = $this->getBlockName()['label'];
     $blockIcon = $this->getModuleInfo()['icon'];
     $folderName = $this->className();
 
-    $this->modules->get('PageGridBlocks')->createTemplate($blockName, $blockLabel, $blockIcon, $folderName);
+    $b->createTemplate($blockName, $blockLabel, $blockIcon, $folderName);
 
-    if (!$fs->get($blockName)) {
-      $f = new Field;
-      $f->type = $this->modules->get("FieldtypeImage");
-      $f->name = $blockName;
-      $f->label = $blockLabel;
-      $f->extensions = 'gif jpg jpeg png';
-      $f->maxFiles = 0;
-      $f->outputFormat = 0;
-      $f->overwrite = 1;
-      $f->tags = 'PageGrid';
-      $f->save();
-      $t->get($blockName)->fieldgroup->add($f);
-      $t->get($blockName)->fieldgroup->save();
-    }
+    $f = $b->createField($blockName, 'FieldtypeImage', $blockName);
+    $f->label = $blockLabel;
+    $f->extensions = 'gif jpg jpeg png';
+    $f->maxFiles = 0;
+    $f->outputFormat = 0;
+    $f->overwrite = 1;
+    $f->save();
     
   }
 

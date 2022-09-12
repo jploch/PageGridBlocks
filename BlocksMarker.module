@@ -10,7 +10,7 @@ class BlocksMarker extends WireData implements Module {
       'icon' => 'map-pin',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => 1
+      'version' => 001
     ];
   }
 
@@ -24,38 +24,22 @@ class BlocksMarker extends WireData implements Module {
   //function to create block
   public function createBlock() {
 
-    $fs = wire('fields');
-    $t = wire('templates');
+    $b = $this->modules->get('PageGridBlocks');
     $blockName = $this->getBlockName()['name'];
     $blockLabel = $this->getBlockName()['label'];
     $blockIcon = $this->getModuleInfo()['icon'];
     $folderName = $this->className();
 
-    $this->modules->get('PageGridBlocks')->createTemplate($blockName, $blockLabel, $blockIcon, $folderName);
+    $b->createTemplate($blockName, $blockLabel, $blockIcon, $folderName);
 
-    if (!$fs->get($blockName . '_label')) {
-      $f = new Field;
-      $f->type = $this->modules->get("FieldtypeText");
-      $f->textformatters = array(0 => 'TextformatterEntities');
-      $f->name = $blockName . '_label';
-      $f->label = 'Marker Label';
-      $f->tags = 'PageGrid';
-      $f->save();
-      $t->get($blockName)->fieldgroup->add($f);
-      $t->get($blockName)->fieldgroup->save();
-    }
-
-    if (!$fs->get($blockName)) {
-      $f = new Field;
-      $f->type = $this->modules->get("FieldtypeTextarea");
-      $f->inputfieldClass = 'InputfieldCKEditor';
-      $f->name = $blockName;
-      $f->label = $blockLabel;
-      $f->tags = 'PageGrid';
-      $f->save();
-      $t->get($blockName)->fieldgroup->add($f);
-      $t->get($blockName)->fieldgroup->save();
-    }
+    $f = $b->createField($blockName . '_label', 'FieldtypeText', $blockName);
+    $f->textformatters = array(0 => 'TextformatterEntities');
+    $f->label = 'Marker Label';
+    $f->save();
+    
+    $f = $b->createField($blockName, 'FieldtypeTextarea', $blockName);
+    $f->label = $blockLabel;
+    $f->save();
     
   }
 

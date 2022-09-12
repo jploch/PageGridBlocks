@@ -1,4 +1,6 @@
-<?php namespace ProcessWire;
+<?php
+
+namespace ProcessWire;
 
 class BlocksGallery extends WireData implements Module {
 
@@ -11,7 +13,7 @@ class BlocksGallery extends WireData implements Module {
       'autoload' => 'template=admin',
       'installs' => array('FileValidatorSvgSanitizer'),
       'requires' => array('PageGridBlocks'),
-      'version' => 1
+      'version' => 001
     ];
   }
 
@@ -25,29 +27,20 @@ class BlocksGallery extends WireData implements Module {
   //function to create block
   public function createBlock() {
 
-    $fs = wire('fields');
-    $t = wire('templates');
+    $b = $this->modules->get('PageGridBlocks');
     $blockName = $this->getBlockName()['name'];
     $blockLabel = $this->getBlockName()['label'];
     $blockIcon = $this->getModuleInfo()['icon'];
     $folderName = $this->className();
 
-    $this->modules->get('PageGridBlocks')->createTemplate($blockName, $blockLabel, $blockIcon, $folderName);
+    $b->createTemplate($blockName, $blockLabel, $blockIcon, $folderName);
 
-    if (!$fs->get($blockName)) {
-      $f = new Field;
-      $f->type = $this->modules->get("FieldtypeImage");
-      $f->name = $blockName;
-      $f->label = $blockLabel;
-      $f->extensions = 'gif jpg jpeg png svg';
-      $f->maxFiles = 1;
-      $f->outputFormat = 2;
-      $f->tags = 'PageGrid';
-      $f->save();
-      $t->get($blockName)->fieldgroup->add($f);
-      $t->get($blockName)->fieldgroup->save();
-    }
-    
+    $f = $b->createField($blockName, 'FieldtypeImage', $blockName);
+    $f->label = $blockLabel;
+    $f->extensions = 'gif jpg jpeg png svg';
+    $f->maxFiles = 1;
+    $f->outputFormat = 2;
+    $f->save();
   }
 
   public function ___upgrade($fromVersion, $toVersion) {
@@ -64,5 +57,4 @@ class BlocksGallery extends WireData implements Module {
     $blockName = $this->getBlockName()['name'];
     $this->modules->get('PageGridBlocks')->removeBlock($blockName);
   }
-  
 }

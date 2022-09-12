@@ -10,7 +10,7 @@ class BlocksReference extends WireData implements Module {
       'icon' => 'link',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => 1
+      'version' => 001
     ];
   }
 
@@ -24,31 +24,23 @@ class BlocksReference extends WireData implements Module {
   //function to create block
   public function createBlock() {
 
-    $fs = wire('fields');
-    $t = wire('templates');
+    $b = $this->modules->get('PageGridBlocks');
     $blockName = $this->getBlockName()['name'];
     $blockLabel = $this->getBlockName()['label'];
     $blockIcon = $this->getModuleInfo()['icon'];
     $folderName = $this->className();
 
-    $this->modules->get('PageGridBlocks')->createTemplate($blockName, $blockLabel, $blockIcon, $folderName);
+    $b->createTemplate($blockName, $blockLabel, $blockIcon, $folderName);
 
-    if (!$fs->get($blockName)) {
-      $f = new Field;
-      $f->type = $this->modules->get("FieldtypePage");
-      $f->inputfield = 'InputfieldPageListSelect';
-      $f->derefAsPage = 1;
-      $f->parent_id = 1;
-      $f->labelFieldName = 'title';
-      $f->name = $blockName;
-      $f->label = $blockLabel;
-      $f->contentType = 1;
-      $f->tags = 'PageGrid';
-      $f->save();
-      $t->get($blockName)->fieldgroup->add($f);
-      $t->get($blockName)->fieldgroup->save();
-    }
-    
+    $f = $b->createField($blockName, 'FieldtypePage', $blockName);
+    $f->label = $blockLabel;
+    $f->inputfield = 'InputfieldPageListSelect';
+    $f->derefAsPage = 1;
+    $f->parent_id = 1;
+    $f->labelFieldName = 'title';
+    $f->contentType = 1;
+    $f->save();
+  
   }
 
   public function ___upgrade($fromVersion, $toVersion) {

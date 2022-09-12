@@ -2,7 +2,7 @@
 if(!function_exists("renderSubnav")) {
   function renderSubnav( $pageItem ) {
 
-    $out = '<ul id="nav-main">';
+    $out = '<ul id="nav-main" class="nav-main" data-class="nav-main">';
     foreach ( $pageItem->children() as $item ) {
         $out .= renderSubnavItem( $item );
     }
@@ -25,7 +25,7 @@ function renderSubnavItem( $item ) {
 //    }
   
     $out = '<li id="pg-nav-'.$item->name.'" class="pg-nav-'.$item->name.'">';
-    $out .= '<a href="'.$item->url().'" id="" class="'.$active.' pg-style-panel">'.$item->title.'</a>';
+    $out .= '<a href="'.$item->url().'" id="'.$active.'" class="'.$active.' pg-style-panel">'.$item->title.'</a>';
     $out .= '</li>';
     return $out;
 

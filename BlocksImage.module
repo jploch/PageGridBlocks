@@ -1,8 +1,12 @@
-<?php namespace ProcessWire;
+<?php
 
-class BlocksImage extends WireData implements Module {
+namespace ProcessWire;
 
-  public static function getModuleInfo() {
+class BlocksImage extends WireData implements Module
+{
+
+  public static function getModuleInfo()
+  {
     return [
       'title' => 'Image Block',
       'summary' => 'Installs Template and Fields for a PageGrid Block',
@@ -11,11 +15,12 @@ class BlocksImage extends WireData implements Module {
       'autoload' => 'template=admin',
       'installs' => array('FileValidatorSvgSanitizer'),
       'requires' => array('PageGridBlocks'),
-      'version' => 2
+      'version' => 001
     ];
   }
 
-  public function getBlockName() {
+  public function getBlockName()
+  {
     return array(
       'name' => 'pg_image',
       'label' => 'Image',
@@ -23,46 +28,53 @@ class BlocksImage extends WireData implements Module {
   }
 
   //function to create block
-  public function createBlock() {
-
-    $fs = wire('fields');
-    $t = wire('templates');
+  public function createBlock()
+  {
+    $b = $this->modules->get('PageGridBlocks');
     $blockName = $this->getBlockName()['name'];
     $blockLabel = $this->getBlockName()['label'];
     $blockIcon = $this->getModuleInfo()['icon'];
     $folderName = $this->className();
 
-    $this->modules->get('PageGridBlocks')->createTemplate($blockName, $blockLabel, $blockIcon, $folderName);
+    $b->createTemplate($blockName, $blockLabel, $blockIcon, $folderName);
 
-    if (!$fs->get($blockName)) {
-      $f = new Field;
-      $f->type = $this->modules->get("FieldtypeImage");
-      $f->name = $blockName;
-      $f->label = $blockLabel;
-      $f->extensions = 'gif jpg jpeg png svg';
-      $f->maxFiles = 1;
-      $f->outputFormat = 2;
-      $f->tags = 'PageGrid';
-      $f->save();
-      $t->get($blockName)->fieldgroup->add($f);
-      $t->get($blockName)->fieldgroup->save();
-    }
-    
+    $f = $b->createField($blockName, 'FieldtypeImage', $blockName);
+    $f->label = $blockLabel;
+    $f->extensions = 'gif jpg jpeg png svg';
+    $f->maxFiles = 1;
+    $f->outputFormat = 2;
+    $f->save();
+
+    $f = $b->createField($blockName . '_link', 'FieldtypePage', $blockName);
+    $f->label = 'Link';
+    $f->inputfield = 'InputfieldPageListSelect';
+    $f->derefAsPage = 1;
+    $f->parent_id = 1;
+    $f->labelFieldName = 'title';
+    $f->contentType = 1;
+    $f->save();
+
+    $f = $b->createField($blockName . '_link_external', 'FieldtypeText', $blockName);
+    $f->label = 'Externer Link';
+    $f->save();
+
   }
 
-  public function ___upgrade($fromVersion, $toVersion) {
+  public function ___upgrade($fromVersion, $toVersion)
+  {
     $this->createBlock();
   }
 
-  public function ___install() {
+  public function ___install()
+  {
     //install module
     $this->modules->get('PageGridBlocks')->downloadModule('FileValidatorSvgSanitizer');
     $this->createBlock();
   }
 
-  public function ___uninstall() {
+  public function ___uninstall()
+  {
     $blockName = $this->getBlockName()['name'];
     $this->modules->get('PageGridBlocks')->removeBlock($blockName);
   }
-  
 }

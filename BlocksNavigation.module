@@ -10,7 +10,7 @@ class BlocksNavigation extends WireData implements Module {
       'icon' => 'bars',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => 1
+      'version' => 001
     ];
   }
 
@@ -24,14 +24,13 @@ class BlocksNavigation extends WireData implements Module {
   //function to create block
   public function createBlock() {
 
-    $fs = wire('fields');
-    $t = wire('templates');
+    $b = $this->modules->get('PageGridBlocks');
     $blockName = $this->getBlockName()['name'];
     $blockLabel = $this->getBlockName()['label'];
     $blockIcon = $this->getModuleInfo()['icon'];
     $folderName = $this->className();
 
-    $this->modules->get('PageGridBlocks')->createTemplate($blockName, $blockLabel, $blockIcon, $folderName);
+    $b->createTemplate($blockName, $blockLabel, $blockIcon, $folderName);
 
   }
 

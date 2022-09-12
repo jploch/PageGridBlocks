@@ -10,7 +10,7 @@ class BlocksVideo extends WireData implements Module {
       'icon' => 'file-video-o',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => 1
+      'version' => 001
     ];
   }
 
@@ -24,54 +24,32 @@ class BlocksVideo extends WireData implements Module {
   //function to create block
   public function createBlock() {
 
-    $fs = wire('fields');
-    $t = wire('templates');
+    $b = $this->modules->get('PageGridBlocks');
     $blockName = $this->getBlockName()['name'];
     $blockLabel = $this->getBlockName()['label'];
     $blockIcon = $this->getModuleInfo()['icon'];
     $folderName = $this->className();
 
-    $this->modules->get('PageGridBlocks')->createTemplate($blockName, $blockLabel, $blockIcon, $folderName);
+    $b->createTemplate($blockName, $blockLabel, $blockIcon, $folderName);
 
-    if (!$fs->get($blockName)) {
-      $f = new Field;
-      $f->type = $this->modules->get("FieldtypeFile");
-      $f->name = $blockName;
-      $f->label = $blockLabel;
-      $f->extensions = 'mp4';
-      $f->maxFiles = 1;
-      $f->outputFormat = 0;
-      $f->tags = 'PageGrid';
-      $f->save();
-      $t->get($blockName)->fieldgroup->add($f);
-      $t->get($blockName)->fieldgroup->save();
-    }
-
-    if (!$fs->get($blockName . '_poster')) {
-      $f = new Field;
-      $f->type = $this->modules->get("FieldtypeImage");
-      $f->name = $blockName . '_poster';
-      $f->label = 'Preview Image';
-      $f->extensions = 'gif jpg jpeg png';
-      $f->maxFiles = 1;
-      $f->tags = 'PageGrid';
-      $f->save();
-      $t->get($blockName)->fieldgroup->add($f);
-      $t->get($blockName)->fieldgroup->save();
-    }
-
-    if (!$fs->get($blockName . '_options')) {
-      $f = new Field;
-      $f->type = $this->modules->get("FieldtypeText");
-      $f->name = $blockName . '_options';
-      $f->label = 'Options';
-      $f->notes = 'example: autoplay muted loop';
-      $f->tags = 'PageGrid';
-      $f->save();
-      $t->get($blockName)->fieldgroup->add($f);
-      $t->get($blockName)->fieldgroup->save();
-    }
+    $f = $b->createField($blockName, 'FieldtypeFile', $blockName);
+    $f->label = $blockLabel;
+    $f->extensions = 'mp4';
+    $f->maxFiles = 1;
+    $f->outputFormat = 0;
+    $f->save();
     
+    $f = $b->createField($blockName . '_poster', 'FieldtypeImage', $blockName);
+    $f->label = 'Preview Image';
+    $f->extensions = 'gif jpg jpeg png';
+    $f->maxFiles = 1;
+    $f->save();
+
+    $f = $b->createField($blockName . '_options', 'FieldtypeText', $blockName);
+    $f->label = 'Options';
+    $f->notes = 'example: autoplay muted loop';
+    $f->save();
+
   }
 
   public function ___upgrade($fromVersion, $toVersion) {

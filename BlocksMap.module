@@ -11,7 +11,7 @@ class BlocksMap extends WireData implements Module {
       'autoload' => 'template=admin',
       'installs' => array('FieldtypeLeafletMapMarker'),
       'requires' => array('PageGridBlocks'),
-      'version' => 1
+      'version' => 001
     ];
   }
 
@@ -25,28 +25,20 @@ class BlocksMap extends WireData implements Module {
   //function to create block
   public function createBlock() {
 
-    $fs = wire('fields');
-    $t = wire('templates');
+    $b = $this->modules->get('PageGridBlocks');
     $blockName = $this->getBlockName()['name'];
     $blockLabel = $this->getBlockName()['label'];
     $blockIcon = $this->getModuleInfo()['icon'];
     $folderName = $this->className();
 
-    $this->modules->get('PageGridBlocks')->createTemplate($blockName, $blockLabel, $blockIcon, $folderName);
+    $b->createTemplate($blockName, $blockLabel, $blockIcon, $folderName);
 
-    if (!$fs->get($blockName)) {
-      $f = new Field;
-      $f->type = $this->modules->get("FieldtypeLeafletMapMarker");
-      $f->name = $blockName;
-      $f->label = $blockLabel;
-      $f->defaultLat = '53.550341';
-      $f->defaultLng = '10.000654';
-      $f->defaultProvider = 'Stamen.Toner';
-      $f->tags = 'PageGrid';
-      $f->save();
-      $t->get($blockName)->fieldgroup->add($f);
-      $t->get($blockName)->fieldgroup->save();
-    }
+    $f = $b->createField($blockName, 'FieldtypeLeafletMapMarker', $blockName);
+    $f->label = $blockLabel;
+    $f->defaultLat = '53.550341';
+    $f->defaultLng = '10.000654';
+    $f->defaultProvider = 'Stamen.Toner';
+    $f->save();
     
   }
 

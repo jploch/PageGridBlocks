@@ -10,7 +10,7 @@ class BlocksSlider extends WireData implements Module {
       'icon' => 'ellipsis-h',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => 2
+      'version' => 001
     ];
   }
 
@@ -24,14 +24,20 @@ class BlocksSlider extends WireData implements Module {
   //function to create block
   public function createBlock() {
 
-    $fs = wire('fields');
-    $t = wire('templates');
+    $b = $this->modules->get('PageGridBlocks');
     $blockName = $this->getBlockName()['name'];
     $blockLabel = $this->getBlockName()['label'];
     $blockIcon = $this->getModuleInfo()['icon'];
     $folderName = $this->className();
 
-    $this->modules->get('PageGridBlocks')->createTemplate($blockName, $blockLabel, $blockIcon, $folderName);
+    $b->createTemplate($blockName, $blockLabel, $blockIcon, $folderName);
+
+    $f = $b->createField('pg_slider_autoplay', 'FieldtypeTextarea', $blockName);
+    $f->label = 'Autoplay';
+    $f->note = 'False, or number for milliseconds';
+    $f->inputfieldClass = 'InputfieldText';
+    $f->contentType = 1;
+    $f->save();
 
   }
 

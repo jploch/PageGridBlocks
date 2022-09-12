@@ -1,4 +1,6 @@
-<?php namespace ProcessWire;
+<?php
+
+namespace ProcessWire;
 
 class BlocksEditor extends WireData implements Module {
 
@@ -10,7 +12,7 @@ class BlocksEditor extends WireData implements Module {
       'icon' => 'font',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => 1
+      'version' => 001
     ];
   }
 
@@ -23,28 +25,30 @@ class BlocksEditor extends WireData implements Module {
 
   //function to create block
   public function createBlock() {
-
-    $fs = wire('fields');
-    $t = wire('templates');
+    $b = $this->modules->get('PageGridBlocks');
     $blockName = $this->getBlockName()['name'];
     $blockLabel = $this->getBlockName()['label'];
     $blockIcon = $this->getModuleInfo()['icon'];
     $folderName = $this->className();
 
-    $this->modules->get('PageGridBlocks')->createTemplate($blockName, $blockLabel, $blockIcon, $folderName);
+    $b->createTemplate($blockName, $blockLabel, $blockIcon, $folderName);
 
-    if (!$fs->get($blockName)) {
-      $f = new Field;
-      $f->type = $this->modules->get("FieldtypeTextarea");
-      $f->inputfieldClass = 'InputfieldCKEditor';
-      $f->name = $blockName;
-      $f->label = $blockLabel;
-      $f->tags = 'PageGrid';
-      $f->save();
-      $t->get($blockName)->fieldgroup->add($f);
-      $t->get($blockName)->fieldgroup->save();
-    }
-    
+    $editorJS = 'mystyles:/site/templates/blocks/pg_editor_styles.js';
+    $f = $b->createField($blockName, 'FieldtypeTextarea', $blockName);
+    $f->inputfieldClass = 'InputfieldCKEditor';
+    $f->label = $blockLabel;
+    $f->contentType = 1;
+    $f->htmlOptions = array(0 => 2);
+    $f->inlineMode = 1;
+    $f->useACF = 1;
+    $f->usePurifier = 0;
+    $f->toolbar = 'Styles, Bold, Italic, RemoveFormat, JustifyLeft, JustifyCenter, JustifyRight, JustifyBlock
+NumberedList, BulletedList, Blockquote
+PWLink, Unlink, Anchor
+PWImage, Table, HorizontalRule, SpecialChar
+Scayt, Sourcedialog, Loremipsum, ckeditorfa';
+    $f->stylesSet = $editorJS;
+    $f->save();
   }
 
   public function ___upgrade($fromVersion, $toVersion) {
@@ -59,5 +63,4 @@ class BlocksEditor extends WireData implements Module {
     $blockName = $this->getBlockName()['name'];
     $this->modules->get('PageGridBlocks')->removeBlock($blockName);
   }
-  
 }
