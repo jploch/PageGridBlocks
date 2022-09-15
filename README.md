@@ -8,8 +8,8 @@ Make sure you don't have any files with the name prefix "pg_" in this folder, as
 To use this module you need to [buy a copy of PAGEGRID](https://page-grid.com/buy-now/). 
 
 ## Requirements
-– Process Wire 3.0.100 or greater
-– a copy of PAGEGRID Fieldtype Module
+- Process Wire 3.0.100 or greater
+- a copy of PAGEGRID Fieldtype Module
 
 ## Installation
 
