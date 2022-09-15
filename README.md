@@ -9,7 +9,7 @@ To use this module you need to [buy a copy of PAGEGRID](https://page-grid.com/bu
 
 ## Requirements
 - Process Wire 3.0.100 or greater
-- a copy of PAGEGRID Fieldtype Module
+- PAGEGRID Fieldtype Module
 
 ## Installation
 
