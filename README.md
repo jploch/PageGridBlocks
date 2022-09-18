@@ -1,5 +1,5 @@
 # PAGEGRID Blocks
-This module installs templates and fields for PAEGRID blocks. PAEGRID is a friendly pagebuilder for ProcessWire.
+This module installs templates and fields for PAGEGRID blocks. PAGEGRID is a friendly pagebuilder for ProcessWire.
 
 When you install a block module, all necessary files will be copied to your "site/template/blocks/" folder automatically (the blocks folder will be created if not already present).
 
