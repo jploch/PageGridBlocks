@@ -8,11 +8,12 @@ $placeholder='data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAIC
 <a href="<?= $page->page_reference->url() ?>">
     <?php } ?>
 
-    <img src="<?= $page->getFormatted('pg_image')->size(0,10)->url ?>" data-sizes="auto" data-srcset="
-            <?= $page->getFormatted('pg_image')->size(0,300)->url ?> 300w,
-            <?= $page->getFormatted('pg_image')->size(0,600)->url ?> 600w,
-            <?= $page->getFormatted('pg_image')->size(0,1000)->url ?> 1000w,
-            <?= $page->getFormatted('pg_image')->size(0,1500)->url ?> 1500w" class="lazyload pg-style-panel pg-fileupload" alt="<?= $page->getFormatted('pg_image')->description ?>" />
+    <img src="<?= $page->getFormatted('pg_image')->size(10,0)->url ?>" data-sizes="auto" data-srcset="
+            <?= $page->getFormatted('pg_image')->size(300, 0)->url ?> 300w,
+            <?= $page->getFormatted('pg_image')->size(600, 0)->url ?> 600w,
+            <?= $page->getFormatted('pg_image')->size(1000, 0)->url ?> 1000w,
+            <?= $page->getFormatted('pg_image')->size(1500, 0)->url ?> 1500w,
+            <?= $page->getFormatted('pg_image')->size(2000, 0)->url ?> 2000w" class="lazyload pg-style-panel pg-fileupload" alt="<?= $page->getFormatted('pg_image')->description ?>" />
 
     <?php if($page->page_reference) { ?>
 </a>
