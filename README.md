@@ -17,4 +17,4 @@ PAGEGRID is not free software. However, you can try PAGEGRID and the site profil
 3. Go to “Modules > Refresh” in your admin
 
 © 2023 Jan Ploch
-[page-grid.com](https://page-grid.com) · [License agreement](https://github.com/FieldtypePageGrid/license)
+[page-grid.com](https://page-grid.com) · [License agreement](https://github.com/jploch/FieldtypePageGrid/blob/main/LICENSE.md)
