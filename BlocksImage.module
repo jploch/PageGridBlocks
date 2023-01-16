@@ -15,7 +15,7 @@ class BlocksImage extends WireData implements Module
       'autoload' => 'template=admin',
       'installs' => array('FileValidatorSvgSanitizer'),
       'requires' => array('PageGridBlocks'),
-      'version' => 001
+      'version' => 002
     ];
   }
 
