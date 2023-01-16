@@ -1,14 +1,13 @@
 # PAGEGRID Blocks
 This module installs templates and fields for PAGEGRID blocks. PAGEGRID is a friendly pagebuilder for ProcessWire.
+The module will load the block template files from "site/modules/PageGridBlocks/blocks". If you want to modify any of the files, copy them to your
+"site/templates/blocks" folder.
 
-When you install a block module, all necessary files will be copied to your "site/template/blocks/" folder automatically (the blocks folder will be created if not already present).
-
-Make sure you don't have any files with the name prefix "pg_" in this folder, as they might get overwritten.
-
-To use this module you need to [buy a copy of PAGEGRID](https://page-grid.com/buy-now/). 
+### Try PAGEGRID for free  
+PAGEGRID is not free software. However, you can try PAGEGRID and the site profile on your local machine or on a test server as long as you need to make sure it is the right tool for your next project. … and when you’re convinced, [buy your license](https://page-grid.com/buy).
 
 ## Requirements
-- Process Wire 3.0.100 or greater
+- Process Wire 3.0.210 or greater
 - PAGEGRID Fieldtype Module
 
 ## Installation
@@ -17,10 +16,5 @@ To use this module you need to [buy a copy of PAGEGRID](https://page-grid.com/bu
 2. Insert this URL: https://github.com/jploch/PageGridBlocks/archive/master.zip
 3. Go to “Modules > Refresh” in your admin
 
-## License: MIT
-
-Please note that you have to buy the commercial PAGEGRID Fieldtype Module separately, as it is not part of this repository. The MIT license only applies to the files in this repository not the PAGEGRID Fieldtype Module.
-
-See included [LICENSE](https://github.com/jploch/PageGridBlocks/blob/master/LICENSE) file for full license text.
-
-© [jploch.com](https://www.janploch.de) | [ProcessWire Modules](https://modules.processwire.com/authors/jploch/)
+© 2023 Jan Ploch
+[page-grid.com](https://page-grid.com) · [License agreement](https://github.com/FieldtypePageGrid/license)
