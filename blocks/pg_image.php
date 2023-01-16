@@ -13,10 +13,11 @@ $image = $page->getFormatted('pg_image') ;
         <?php } ?>
 
         <img src="<?= $image ->size(0, 10)->url ?>" data-sizes="auto" data-srcset="
-            <?= $image ->size(0, 300)->url ?> 300w,
-            <?= $image ->size(0, 600)->url ?> 600w,
-            <?= $image ->size(0, 1000)->url ?> 1000w,
-            <?= $image ->size(0, 1500)->url ?> 1500w" class="lazyload pg-style-panel pg-fileupload" alt="<?= $image ->description ?>" />
+            <?= $image->size(300, 0)->url ?> 300w,
+            <?= $image->size(600, 0)->url ?> 600w,
+            <?= $image->size(1000, 0)->url ?> 1000w,
+            <?= $image->size(1500, 0)->url ?> 1500w,
+            <?= $image->size(2000, 0)->url ?> 2000w" class="lazyload pg-style-panel pg-fileupload" alt="<?= $image ->description ?>" />
 
         <?php if ($link) { ?>
         </a>
@@ -24,7 +25,7 @@ $image = $page->getFormatted('pg_image') ;
 
 <?php } ?>
 
-<?php if (!($image ) && $pageGrid['backend']) { ?>
+<?php if (!($image ) && $pagegrid->isBackend()) { ?>
     <img src="<?= $placeholder ?>" data-sizes="auto" data-srcset="" class="pg-fileupload pg-style-panel" />
 
 <?php } ?>

@@ -33,7 +33,7 @@ class BlocksEditor extends WireData implements Module {
 
     $b->createTemplate($blockName, $blockLabel, $blockIcon, $folderName);
 
-    $editorJS = 'mystyles:/site/templates/blocks/pg_editor_styles.js';
+    $editorJS = 'mystyles:/site/modules/PageGridBlocks/blocks/pg_editor_styles.js';
     $f = $b->createField($blockName, 'FieldtypeTextarea', $blockName);
     $f->inputfieldClass = 'InputfieldCKEditor';
     $f->label = $blockLabel;

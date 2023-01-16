@@ -16,16 +16,16 @@ function renderSubnavItem( $item ) {
     $subheadline = '';
     
     if ( wire('page')->id == $item->id ) {
-        $active = 'active';
+        $active = 'nav-active';
     }
 //  if($page->template->name !== 'home') {
 //    if ( $page->parent()->id == $item->id || $page->parent()->parent()->id == $item->id) {
 //        $active = ' active parent-active ';
 //    }
 //    }
-  
-    $out = '<li id="pg-nav-'.$item->name.'" class="pg-nav-'.$item->name.'">';
-    $out .= '<a href="'.$item->url().'" id="'.$active.'" class="'.$active.' pg-style-panel">'.$item->title.'</a>';
+
+    $out = '<li class="nav-'.$item->name.' nav-li nav-'.$item->name.'">';
+    $out .= '<a href="'.$item->url().'" class="'.$active.' pg-style-panel">'.$item->title.'</a>';
     $out .= '</li>';
     return $out;
 

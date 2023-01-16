@@ -1,1 +1,0 @@
-<?= $page->pg_editor ?>

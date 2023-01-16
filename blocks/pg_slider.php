@@ -2,7 +2,7 @@
 
 namespace ProcessWire;
 
-$modules->get('InputfieldPageGrid')->renderOptions(array("children" => true));
+$pagegrid->renderOptions(array("children" => true));
 
 ?>
 
@@ -12,7 +12,7 @@ $modules->get('InputfieldPageGrid')->renderOptions(array("children" => true));
 
             <?php foreach ($page->children() as $item) { ?>
                 <li class="glide__slide">
-                    <?php echo $modules->get('InputfieldPageGrid')->renderItem($item); ?>
+                    <?php echo $pagegrid->renderItem($item); ?>
                 </li>
             <?php }; ?>
 

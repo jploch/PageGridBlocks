@@ -10,7 +10,7 @@ class BlocksText extends WireData implements Module {
       'icon' => 'header',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => 002
+      'version' => 001
     ];
   }
 

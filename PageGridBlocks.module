@@ -12,7 +12,7 @@ class PageGridBlocks extends WireData implements Module {
       // 'icon' => 'help',
       "href" => "https://github.com/jploch/PageGridBlocks",
       'autoload' => 'template=admin',
-      'version' => 001
+      'version' => 002
     ];
   }
 
@@ -46,9 +46,9 @@ class PageGridBlocks extends WireData implements Module {
     }
 
     // Copy block files
-    $copyFrom = $this->config->paths->PageGridBlocks . $folderName;
-    $copyTo =  $this->config->paths->templates . "blocks/";
-    $this->files->copy($copyFrom, $copyTo);
+    // $copyFrom = $this->config->paths->PageGridBlocks . $folderName;
+    // $copyTo =  $this->config->paths->templates . "blocks/";
+    // $this->files->copy($copyFrom, $copyTo);
   }
 
   //helper to create field
