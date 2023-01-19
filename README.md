@@ -19,7 +19,7 @@ PAGEGRID is not free software. However, you can try PAGEGRID and the site profil
 ### Contribute
 
 **Found a bug?**  
-Please post all bug reports in our [issue tracker](https://github.com/jploch/PageGrid/issues/).
+Please post all bug reports in our [issue tracker](https://github.com/jploch/FieldtypePageGrid/issues/).
 
 **Suggest a feature**  
 If you have ideas for a feature or enhancement for PAGEGRID, please make a post on the [PAGEGRID forum](https://processwire.com/talk/forum/64-pagegrid/).
@@ -27,8 +27,8 @@ If you have ideas for a feature or enhancement for PAGEGRID, please make a post 
 ## What's PAGEGRID?
 - **[page-grid.com](https://page-grid.com)** – Get to know PAGEGRID.
 - **[Documentation](https://page-grid.com/docs/)** – Read the official documentation.
-- **[Issues](https://github.com/jploch/PageGrid/issues/)** – Report bugs and other problems.
+- **[Issues](https://github.com/jploch/FieldtypePageGrid/issues/)** – Report bugs and other problems.
 - **[Forum](https://processwire.com/talk/forum/64-pagegrid/)** – Whenever you get stuck, don't hesitate to reach out for questions and support.
 
 © 2023 Jan Ploch
-[page-grid.com](https://page-grid.com) · [License agreement](https://github.com/jploch/PageGrid/blob/main/LICENSE.md)
+[page-grid.com](https://page-grid.com) · [License agreement](https://github.com/jploch/FieldtypePageGrid/blob/main/LICENSE.md)
