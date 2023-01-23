@@ -13,10 +13,11 @@ You can use this PageGridBlocks Module for free.
 - PAGEGRID Fieldtype Module
 
 ## Installation
-
-1. Go to “Modules > Site > New” in your admin and click "Add Module From URL"
-2. Insert this URL: https://github.com/jploch/PageGridBlocks/archive/master.zip and click "Download"
-3. Go to “Modules > Refresh” in your admin
+1. Go to “Modules > Site > Add New“ in your admin
+2. Paste the Module Class Name "PageGridBlocks" into the field “Add Module From Directory“
+3. Click “Get Module Info“
+4. On the overview, click “Download And Install“
+5. On the following screen, click “Install Now“
 
 ### Contribute
 
