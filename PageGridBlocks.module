@@ -1,6 +1,4 @@
-<?php
-
-namespace ProcessWire;
+<?php namespace ProcessWire;
 
 class PageGridBlocks extends WireData implements Module {
 
@@ -12,22 +10,22 @@ class PageGridBlocks extends WireData implements Module {
       // 'icon' => 'help',
       "href" => "https://github.com/jploch/PageGridBlocks",
       'autoload' => 'template=admin',
-      'version' => 002
+      'version' => 003
     ];
   }
 
 
   //helper to create template
-  public function createTemplate($name, $label, $icon, $folderName) {
+  public function createTemplate($name, $label, $icon) {
     $this->message("Create Template " . $name);
     $this->log->save("PageGridBlock", "Create Template " . $name);
 
     $fs = wire('fields');
-    $t = wire('templates');
+    $t = wire('templates')->get($name);
 
-    if (!$t->get($name)) {
+    //create template
+    if (!$t || $t->id == 0) {
 
-      $f = $fs->get($name);
       $titleF = $fs->get('title');
 
       // fieldgroup for template
@@ -37,18 +35,15 @@ class PageGridBlocks extends WireData implements Module {
       $fg->save();
 
       $t = new Template();
-      $t->name = $name;
-      $t->label = $label;
       $t->fieldgroup = $fg;
-      $t->icon = $icon;
-      // $t->useRoles = 1;
-      $t->save();
     }
 
-    // Copy block files
-    // $copyFrom = $this->config->paths->PageGridBlocks . $folderName;
-    // $copyTo =  $this->config->paths->templates . "blocks/";
-    // $this->files->copy($copyFrom, $copyTo);
+    //save name and label even if already created to force update
+    $t->name = $name;
+    $t->label = $label;
+    $t->icon = $icon;
+    // $t->useRoles = 1;
+    $t->save();
   }
 
   //helper to create field
@@ -56,20 +51,20 @@ class PageGridBlocks extends WireData implements Module {
     $this->message("Create Field " . $name);
     $this->log->save("PageGridBlock", "Create Field " . $name);
 
-    $fs = wire('fields');
-    $t = wire('templates');
+    $f = wire('fields')->get($name);
+    $t = wire('templates')->get($tName);
 
-    if (!$fs->get($name)) {
+    if (!$f || $f->id == 0) {
       $f = new Field;
       $f->name = $name;
       $f->type = $this->modules->get($type);
       $f->tags = 'PageGrid';
       $f->save();
-      $t->get($tName)->fieldgroup->add($f);
-      $t->get($tName)->fieldgroup->save();
+      $t->fieldgroup->add($f);
+      $t->fieldgroup->save();
     }
 
-    return $fs->get($name);
+    return $f;
 
   }
 

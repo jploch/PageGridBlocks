@@ -28,9 +28,8 @@ class BlocksReference extends WireData implements Module {
     $blockName = $this->getBlockName()['name'];
     $blockLabel = $this->getBlockName()['label'];
     $blockIcon = $this->getModuleInfo()['icon'];
-    $folderName = $this->className();
 
-    $b->createTemplate($blockName, $blockLabel, $blockIcon, $folderName);
+    $b->createTemplate($blockName, $blockLabel, $blockIcon);
 
     $f = $b->createField($blockName, 'FieldtypePage', $blockName);
     $f->label = $blockLabel;

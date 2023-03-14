@@ -1,24 +1,23 @@
 <?php namespace ProcessWire;
 
-class BlocksMap extends WireData implements Module {
+class BlocksTextPlain extends WireData implements Module {
 
   public static function getModuleInfo() {
     return [
-      'title' => 'Map Block',
+      'title' => 'Plain Text Block (no HTML)',
       'summary' => 'Installs Template and Fields for a PageGrid Block',
       'author' => 'Jan Ploch',
-      'icon' => 'map',
+      'icon' => 'i-cursor',
       'autoload' => 'template=admin',
-      'installs' => array('FieldtypeLeafletMapMarker'),
       'requires' => array('PageGridBlocks'),
-      'version' => 001
+      'version' => 002
     ];
   }
 
   public function getBlockName() {
     return array(
-      'name' => 'pg_map',
-      'label' => 'Map',
+      'name' => 'pg_text_plain',
+      'label' => 'Plain Text',
     );
   }
 
@@ -32,11 +31,12 @@ class BlocksMap extends WireData implements Module {
     
     $b->createTemplate($blockName, $blockLabel, $blockIcon);
 
-    $f = $b->createField($blockName, 'FieldtypeLeafletMapMarker', $blockName);
+    $f = $b->createField($blockName, 'FieldtypeTextarea', $blockName);
     $f->label = $blockLabel;
-    $f->defaultLat = '53.550341';
-    $f->defaultLng = '10.000654';
-    $f->defaultProvider = 'Stamen.Toner';
+    $f->inputfieldClass = 'InputfieldTextarea';
+    $f->contentType = 1;
+    $f->stripTags = 1;
+    $f->textformatters = array(0 => 'TextformatterEntities');
     $f->save();
     
   }
@@ -46,8 +46,6 @@ class BlocksMap extends WireData implements Module {
   }
 
   public function ___install() {
-    //install module
-    $this->modules->get('PageGridBlocks')->downloadModule('FieldtypeLeafletMapMarker');
     $this->createBlock();
   }
 

@@ -31,9 +31,8 @@ class BlocksGallery extends WireData implements Module {
     $blockName = $this->getBlockName()['name'];
     $blockLabel = $this->getBlockName()['label'];
     $blockIcon = $this->getModuleInfo()['icon'];
-    $folderName = $this->className();
 
-    $b->createTemplate($blockName, $blockLabel, $blockIcon, $folderName);
+    $b->createTemplate($blockName, $blockLabel, $blockIcon);
 
     $f = $b->createField($blockName, 'FieldtypeImage', $blockName);
     $f->label = $blockLabel;

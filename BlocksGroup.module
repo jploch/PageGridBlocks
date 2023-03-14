@@ -10,7 +10,7 @@ class BlocksGroup extends WireData implements Module {
       'icon' => 'folder-open',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => 001
+      'version' => 002
     ];
   }
 
@@ -28,9 +28,8 @@ class BlocksGroup extends WireData implements Module {
     $blockName = $this->getBlockName()['name'];
     $blockLabel = $this->getBlockName()['label'];
     $blockIcon = $this->getModuleInfo()['icon'];
-    $folderName = $this->className();
-
-    $b->createTemplate($blockName, $blockLabel, $blockIcon, $folderName);
+    
+    $b->createTemplate($blockName, $blockLabel, $blockIcon);
 
   }
 

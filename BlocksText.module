@@ -4,13 +4,14 @@ class BlocksText extends WireData implements Module {
 
   public static function getModuleInfo() {
     return [
-      'title' => 'Text Block',
+      'title' => 'Text Block (line breaks + links via TinyMCE)',
       'summary' => 'Installs Template and Fields for a PageGrid Block',
       'author' => 'Jan Ploch',
-      'icon' => 'header',
+      'icon' => 'font',
       'autoload' => 'template=admin',
+      'installs' => array('InputfieldTinyMCE'),
       'requires' => array('PageGridBlocks'),
-      'version' => 001
+      'version' => 004
     ];
   }
 
@@ -24,20 +25,37 @@ class BlocksText extends WireData implements Module {
   //function to create block
   public function createBlock() {
 
+    //make sure module is available
+    if (!$this->modules->isInstalled('InputfieldTinyMCE')) {
+      $this->modules->install('InputfieldTinyMCE');
+      $this->modules->refresh();
+    }
+
+    // enable json module settings
+    $data = $this->modules->getConfig('InputfieldTinyMCE');
+    // $data['optionals'] = array('settingsJSON');
+    array_push($data['optionals'], "settingsJSON");
+    $this->modules->saveConfig('InputfieldTinyMCE', $data);
+    // END enable json module settings
+
     $b = $this->modules->get('PageGridBlocks');
     $blockName = $this->getBlockName()['name'];
     $blockLabel = $this->getBlockName()['label'];
     $blockIcon = $this->getModuleInfo()['icon'];
-    $folderName = $this->className();
 
-    $b->createTemplate($blockName, $blockLabel, $blockIcon, $folderName);
+    $b->createTemplate($blockName, $blockLabel, $blockIcon);
 
     $f = $b->createField($blockName, 'FieldtypeTextarea', $blockName);
     $f->label = $blockLabel;
-    $f->inputfieldClass = 'InputfieldTextarea';
+    $f->inputfieldClass = 'InputfieldTinyMCE';
     $f->contentType = 1;
+    $f->htmlOptions = array(0 => 2);
+    $f->inlineMode = 1;
+    $f->features = array(0 => 'toolbar', 1 => 'stickybars', 2 => 'spellcheck', 3 => 'purifier', 4 => 'pasteFilter');
+    $f->toolbar = 'pwlink';
+    $f->plugins = array(0 => 'link', 1 => 'lists', 2 => 'pwlink');
+    $f->settingsJSON = '{"forced_root_block": "div", "newline_behavior": "linebreak", "valid_elements": "a[href|target=_blank],br"}';
     $f->save();
-    
   }
 
   public function ___upgrade($fromVersion, $toVersion) {
@@ -45,6 +63,8 @@ class BlocksText extends WireData implements Module {
   }
 
   public function ___install() {
+    //install module
+    $this->modules->get('PageGridBlocks')->downloadModule('InputfieldTinyMCE');
     $this->createBlock();
   }
 
@@ -52,5 +72,4 @@ class BlocksText extends WireData implements Module {
     $blockName = $this->getBlockName()['name'];
     $this->modules->get('PageGridBlocks')->removeBlock($blockName);
   }
-  
 }

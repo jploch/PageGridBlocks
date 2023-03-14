@@ -1,53 +1,49 @@
-<?php
-
-namespace ProcessWire;
+<?php namespace ProcessWire;
 
 class BlocksEditor extends WireData implements Module {
 
   public static function getModuleInfo() {
     return [
-      'title' => 'Editor Block',
+      'title' => 'Rich Text Editor Block',
       'summary' => 'Installs Template and Fields for a PageGrid Block',
       'author' => 'Jan Ploch',
-      'icon' => 'font',
+      'icon' => 'text-height',
       'autoload' => 'template=admin',
+      'installs' => array('InputfieldTinyMCE'),
       'requires' => array('PageGridBlocks'),
-      'version' => 001
+      'version' => 003
     ];
   }
 
   public function getBlockName() {
     return array(
       'name' => 'pg_editor',
-      'label' => 'Editor',
+      'label' => 'Rich Text',
     );
   }
 
   //function to create block
   public function createBlock() {
+
+    //make sure module is available
+    if (!$this->modules->isInstalled('InputfieldTinyMCE')) {
+      $this->modules->install('InputfieldTinyMCE');
+      $this->modules->refresh();
+    }
+
     $b = $this->modules->get('PageGridBlocks');
     $blockName = $this->getBlockName()['name'];
     $blockLabel = $this->getBlockName()['label'];
     $blockIcon = $this->getModuleInfo()['icon'];
-    $folderName = $this->className();
 
-    $b->createTemplate($blockName, $blockLabel, $blockIcon, $folderName);
-
-    $editorJS = 'mystyles:/site/modules/PageGridBlocks/blocks/pg_editor_styles.js';
+    $b->createTemplate($blockName, $blockLabel, $blockIcon);
     $f = $b->createField($blockName, 'FieldtypeTextarea', $blockName);
-    $f->inputfieldClass = 'InputfieldCKEditor';
+    $f->inputfieldClass = 'InputfieldTinyMCE';
     $f->label = $blockLabel;
     $f->contentType = 1;
     $f->htmlOptions = array(0 => 2);
     $f->inlineMode = 1;
-    $f->useACF = 1;
-    $f->usePurifier = 0;
-    $f->toolbar = 'Styles, Bold, Italic, RemoveFormat, JustifyLeft, JustifyCenter, JustifyRight, JustifyBlock
-NumberedList, BulletedList, Blockquote
-PWLink, Unlink, Anchor
-PWImage, Table, HorizontalRule, SpecialChar
-Scayt, Sourcedialog, Loremipsum, ckeditorfa';
-    $f->stylesSet = $editorJS;
+    $f->features = array(0 => 'toolbar', 1 => 'stickybars', 2 => 'spellcheck', 3 => 'purifier', 4 => 'pasteFilter');
     $f->save();
   }
 
@@ -56,6 +52,7 @@ Scayt, Sourcedialog, Loremipsum, ckeditorfa';
   }
 
   public function ___install() {
+    $this->modules->get('PageGridBlocks')->downloadModule('InputfieldTinyMCE');
     $this->createBlock();
   }
 

@@ -1,6 +1,7 @@
 <?php namespace ProcessWire; 
 
-$pagegrid->renderOptions(["children" => true]);
+//allow children and to change tag
+$pagegrid->renderOptions(['page' => $page, "children" => true, 'tag' => 'div', 'tags' => 'div section article header footer nav']);
 
 // you can set optional children array at runtime
 $children = $page->pgChildren ? $page->pgChildren : $page->children();
