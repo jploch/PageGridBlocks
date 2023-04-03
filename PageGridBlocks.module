@@ -1,4 +1,6 @@
-<?php namespace ProcessWire;
+<?php
+
+namespace ProcessWire;
 
 class PageGridBlocks extends WireData implements Module {
 
@@ -10,7 +12,7 @@ class PageGridBlocks extends WireData implements Module {
       // 'icon' => 'help',
       "href" => "https://github.com/jploch/PageGridBlocks",
       'autoload' => 'template=admin',
-      'version' => 003
+      'version' => 004
     ];
   }
 
@@ -65,7 +67,6 @@ class PageGridBlocks extends WireData implements Module {
     }
 
     return $f;
-
   }
 
   ///helper remove template/filed
@@ -73,6 +74,14 @@ class PageGridBlocks extends WireData implements Module {
 
     $t = $this->templates->get($blockName);
     $fg = $this->fieldgroups->get($blockName);
+
+    //delete dummy pages
+    $dummyParent = $this->pages->get('name=pg-dummies, template=pg_container');
+
+    if ($dummyParent->id) {
+      $dummyParent->delete(true);
+    }
+    //END delete dummy pages
 
     if ($t && $t->getNumPages() > 0) {
       throw new WireException("Can't uninstall because template or fields been used by some pages.");
@@ -82,7 +91,7 @@ class PageGridBlocks extends WireData implements Module {
       if ($t) {
         foreach ($t->fields as $f) {
 
-          if($f->name != 'title' && wire('fields')->getNumPages($f) == 0) {
+          if ($f->name != 'title' && wire('fields')->getNumPages($f) == 0) {
             $t->fields->remove($f);
             $t->fields->save();
             wire('fields')->delete($f);
@@ -94,7 +103,6 @@ class PageGridBlocks extends WireData implements Module {
         wire('fieldgroups')->delete($fg);
       }
     }
-
   }
 
 
@@ -124,16 +132,15 @@ class PageGridBlocks extends WireData implements Module {
     if ($data['status'] == 'success') {
 
       $installed = $this->modules->isInstalled($className) ? $this->modules->getModuleInfoVerbose($className) : null;
-  
-        $destinationDir = $this->wire('config')->paths->siteModules . $className . '/';
-        require_once(wire('config')->paths->modules . 'Process/ProcessModule/ProcessModuleInstall.php');
-        $install = new ProcessModuleInstall();
 
-        $completedDir = $install->downloadModule($data['download_url'], $destinationDir);
-        if ($completedDir) {
-          return true;
-        }
-      
+      $destinationDir = $this->wire('config')->paths->siteModules . $className . '/';
+      require_once(wire('config')->paths->modules . 'Process/ProcessModule/ProcessModuleInstall.php');
+      $install = new ProcessModuleInstall();
+
+      $completedDir = $install->downloadModule($data['download_url'], $destinationDir);
+      if ($completedDir) {
+        return true;
+      }
     }
   }
 }
