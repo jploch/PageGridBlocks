@@ -10,7 +10,7 @@ class BlocksVideo extends WireData implements Module {
       'icon' => 'file-video-o',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => 001
+      'version' => 004
     ];
   }
 
@@ -48,6 +48,20 @@ class BlocksVideo extends WireData implements Module {
     $f->label = 'Options';
     $f->notes = 'example: autoplay muted loop';
     $f->save();
+
+    $f = $b->createField($blockName . '_caption', 'FieldtypeTextarea', $blockName);
+    $f->label = 'Caption';
+    $f->inputfieldClass = 'InputfieldTinyMCE';
+    $f->contentType = 1;
+    $f->htmlOptions = array(0 => 2);
+    $f->inlineMode = 1;
+    $f->features = array(0 => 'toolbar', 1 => 'stickybars', 2 => 'spellcheck', 3 => 'purifier', 4 => 'pasteFilter');
+    $f->toolbar = 'pwlink';
+    $f->plugins = array(0 => 'link', 1 => 'lists', 2 => 'pwlink');
+    $f->settingsJSON = '{"forced_root_block": "div", "newline_behavior": "linebreak", "valid_elements": "a[href|target=_blank],br"}';
+    $f->save();
+
+    $this->modules->get('PageGridBlocks')->enableInlineEdit($f);
 
   }
 

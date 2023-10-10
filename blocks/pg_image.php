@@ -1,31 +1,33 @@
-<?php namespace ProcessWire;
+<?php
 
-$placeholder = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+namespace ProcessWire;
+
 $linkInternal = $page->pg_image_link ? $page->pg_image_link->url() : 0;
 $link = $linkInternal ? $linkInternal : $page->pg_image_link_external;
-$image = $page->getFormatted('pg_image') ;
+$image = $page->getFormatted('pg_image');
+// $image = $page->pg_image;
 ?>
 
-<?php if ($image ) { ?>
-
-    <?php if ($link) { ?>
-        <a href="<?= $link ?>" <?= $linkInternal ? '' : 'target="blank"' ?> >
-        <?php } ?>
-
-        <img src="<?= $image ->size(0, 10)->url ?>" data-sizes="auto" data-srcset="
+<?php if ($link && $image) { ?>
+    <a href="<?= $link ?>" <?= $linkInternal ? '' : 'target="blank"' ?> class="image-link" data-class="image-link">
+    <?php } ?>
+    <pg-edit page="<?= $page->id ?>" field="pg_image">
+        <?php if ($image) { ?>
+            <img src="<?= $image->size(10, 0, ['quality' => 1])->url ?>" data-sizes="auto" data-srcset="
             <?= $image->size(300, 0)->url ?> 300w,
             <?= $image->size(600, 0)->url ?> 600w,
             <?= $image->size(1000, 0)->url ?> 1000w,
             <?= $image->size(1500, 0)->url ?> 1500w,
-            <?= $image->size(2000, 0)->url ?> 2000w" class="lazyload pg-style-panel pg-fileupload" alt="<?= $image ->description ?>" />
-
-        <?php if ($link) { ?>
-        </a>
-    <?php } ?>
-
+            <?= $image->size(2000, 0)->url ?> 2000w" class="lazyload" alt="<?= $image->description ?>" />
+        <?php } ?>
+    </pg-edit>
+    <?php if ($link && $image) { ?>
+    </a>
 <?php } ?>
 
-<?php if (!($image ) && $pagegrid->isBackend()) { ?>
-    <img src="<?= $placeholder ?>" data-sizes="auto" data-srcset="" class="pg-fileupload pg-style-panel" />
-
+<?php if ($page->pg_image_caption) {
+    // remove all tags but br and a
+    $value = $sanitizer->textarea(nl2br($page->pg_image_caption), ['allowableTags' => '<div><br><a>']);
+?>
+    <div class="caption" data-class="caption"><?= $value ?></div>
 <?php } ?>

@@ -1,0 +1,143 @@
+<?php
+
+namespace ProcessWire;
+
+class BlocksDatalist extends WireData implements Module {
+
+  public static function getModuleInfo() {
+    return [
+      'title' => 'Datalist Block',
+      'summary' => 'Installs Template and Fields for a PageGrid Block',
+      'author' => 'Jan Ploch',
+      'icon' => 'list',
+      'autoload' => 'template=admin',
+      'installs' => array('FieldtypeOptions'),
+      'requires' => array('PageGridBlocks'),
+      'version' => 004
+    ];
+  }
+
+  public function getBlockName() {
+    return array(
+      'name' => 'pg_datalist',
+      'label' => 'Datalist',
+    );
+  }
+
+  //function to create block
+  public function createBlock() {
+
+    //make sure module is available
+    if (!$this->modules->isInstalled('FieldtypeOptions')) {
+      $this->modules->install('FieldtypeOptions');
+      $this->modules->refresh();
+    }
+
+    $b = $this->modules->get('PageGridBlocks');
+    $blockName = $this->getBlockName()['name'];
+    $blockLabel = $this->getBlockName()['label'];
+    $blockIcon = $this->getModuleInfo()['icon'];
+
+    $b->createTemplate($blockName, $blockLabel, $blockIcon);
+
+    //create ref field
+    $f = $b->createField($blockName, 'FieldtypePage', $blockName);
+    $f->label = 'Parent Page';
+    $f->description = 'The list will be generated from the children of the parent page you select here.';
+    $f->inputfield = 'InputfieldPageListSelect';
+    $f->derefAsPage = 1;
+    $f->parent_id = 1;
+    $f->labelFieldName = 'title';
+    $f->contentType = 1;
+    $f->save();
+
+    //create select field
+    $f = $b->createField($blockName . '_fields', 'FieldtypeOptions', $blockName);
+    $f->label = 'Fields';
+    $f->description = 'Select the fields that each list item will display. Those fields will be added to the child template automatically.';
+    $f->inputfieldClass = 'InputfieldAsmSelect';
+    $f->save();
+    $this->manager = new \ProcessWire\SelectableOptionManager();
+    $options = 'title|Title 
+    date|Date
+    image|Image/Video
+    text|Text';
+    $this->manager->setOptionsString($f, $options, true);
+    $f->showIf = 'pg_datalist!=0';
+    $f->save();
+
+    //create limit number field
+    $f = $b->createField($blockName . '_limit', 'FieldtypeInteger', $blockName);
+    $f->label = 'Number of list items';
+    $f->description = '0 = show all';
+    $f->inputType = 'text';
+    $f->showIf = 'pg_datalist!=0';
+    $f->save();
+
+    //create fields to add to regular page for the list data
+
+    //create tab
+    $f = $b->createField($blockName . '_tab', 'FieldtypeFieldsetTabOpen');
+    $f->label = $blockLabel;
+    $f->save();
+
+    $f = $b->createField($blockName . '_tab_END', 'FieldtypeFieldsetClose');
+    $f->label = $blockLabel;
+    $f->save();
+
+    $f = $b->createField($blockName .  '_date', 'FieldtypeDatetime');
+    $f->label = 'Date';
+    $f->dateOutputFormat = 'j.n.Y';
+    $f->datepicker = 3;
+    $f->timeInputSelect = 0;
+    $f->dateInputFormat = 'j.n.y';
+    $f->inputType = 'text';
+    $f->htmlType = 'date';
+    $f->dateSelectFormat = 'yMd';
+    $f->contentType = 1;
+    $f->stripTags = 1;
+    $f->textformatters = array(0 => 'TextformatterEntities');
+    $f->defaultToday = 1;
+    $f->size = 100;
+    $f->save();
+
+    $f = $b->createField($blockName . '_image', 'FieldtypeImage');
+    $f->label = 'Image';
+    $f->extensions = 'gif jpg jpeg png svg';
+    $f->maxFiles = 1;
+    $f->outputFormat = 2;
+    $f->save();
+    $this->modules->get('PageGridBlocks')->enableInlineEdit($f);
+
+    $f = $b->createField($blockName . '_video', 'FieldtypeFile');
+    $f->label = 'Video';
+    $f->description = 'when you upload an image and a video, the video is displayed and the image serves as a placeholder until the video is loaded.';
+    $f->extensions = 'mp4';
+    $f->maxFiles = 1;
+    $f->outputFormat = 0;
+    $f->save();
+    $this->modules->get('PageGridBlocks')->enableInlineEdit($f);
+
+    $f = $b->createField($blockName .  '_text', 'FieldtypeTextarea');
+    $f->label = 'Text';
+    $f->inputfieldClass = 'InputfieldTextarea';
+    $f->contentType = 1;
+    $f->stripTags = 1;
+    $f->textformatters = array(0 => 'TextformatterEntities');
+    $f->save();
+    $this->modules->get('PageGridBlocks')->enableInlineEdit($f);
+  }
+
+  public function ___upgrade($fromVersion, $toVersion) {
+    $this->createBlock();
+  }
+
+  public function ___install() {
+    $this->createBlock();
+  }
+
+  public function ___uninstall() {
+    $blockName = $this->getBlockName()['name'];
+    $this->modules->get('PageGridBlocks')->removeBlock($blockName);
+  }
+}

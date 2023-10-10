@@ -3,7 +3,7 @@
 
 <?php if($page->pg_sequenz->first()) { ?>
 
-<canvas id="block-sequenz-canvas" data-count="<?= $page->pg_sequenz->count() ?>" data-url="<?= $page->pg_sequenz->url() ?>" data-type="jpg" />
+<canvas id="pg-sequenz-canvas" data-count="<?= $page->pg_sequenz->count() ?>" data-url="<?= $page->pg_sequenz->url() ?>" data-type="jpg" />
 
 <!--load js inside backend-->
 <?php if($pagegrid->isBackend()){ 

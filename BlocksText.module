@@ -11,7 +11,7 @@ class BlocksText extends WireData implements Module {
       'autoload' => 'template=admin',
       'installs' => array('InputfieldTinyMCE'),
       'requires' => array('PageGridBlocks'),
-      'version' => 004
+      'version' => 006
     ];
   }
 
@@ -56,6 +56,9 @@ class BlocksText extends WireData implements Module {
     $f->plugins = array(0 => 'link', 1 => 'lists', 2 => 'pwlink');
     $f->settingsJSON = '{"forced_root_block": "div", "newline_behavior": "linebreak", "valid_elements": "a[href|target=_blank],br"}';
     $f->save();
+
+    $this->modules->get('PageGridBlocks')->enableInlineEdit($f);
+    $this->modules->get('PageGridBlocks')->setPlaceholderText($f, 'Click twice to edit this text');
   }
 
   public function ___upgrade($fromVersion, $toVersion) {

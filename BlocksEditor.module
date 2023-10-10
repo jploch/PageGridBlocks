@@ -11,7 +11,7 @@ class BlocksEditor extends WireData implements Module {
       'autoload' => 'template=admin',
       'installs' => array('InputfieldTinyMCE'),
       'requires' => array('PageGridBlocks'),
-      'version' => 003
+      'version' => 006
     ];
   }
 
@@ -45,6 +45,9 @@ class BlocksEditor extends WireData implements Module {
     $f->inlineMode = 1;
     $f->features = array(0 => 'toolbar', 1 => 'stickybars', 2 => 'spellcheck', 3 => 'purifier', 4 => 'pasteFilter');
     $f->save();
+
+    $this->modules->get('PageGridBlocks')->enableInlineEdit($f);
+    $this->modules->get('PageGridBlocks')->setPlaceholderText($f, 'Click twice to edit this text');
   }
 
   public function ___upgrade($fromVersion, $toVersion) {

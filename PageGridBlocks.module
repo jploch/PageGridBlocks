@@ -12,7 +12,7 @@ class PageGridBlocks extends WireData implements Module {
       // 'icon' => 'help',
       "href" => "https://github.com/jploch/PageGridBlocks",
       'autoload' => 'template=admin',
-      'version' => 004
+      'version' => 007
     ];
   }
 
@@ -49,12 +49,11 @@ class PageGridBlocks extends WireData implements Module {
   }
 
   //helper to create field
-  public function createField($name, $type, $tName) {
+  public function createField($name, $type, $tName = '') {
     $this->message("Create Field " . $name);
     $this->log->save("PageGridBlock", "Create Field " . $name);
 
     $f = wire('fields')->get($name);
-    $t = wire('templates')->get($tName);
 
     if (!$f || $f->id == 0) {
       $f = new Field;
@@ -62,8 +61,11 @@ class PageGridBlocks extends WireData implements Module {
       $f->type = $this->modules->get($type);
       $f->tags = 'PageGrid';
       $f->save();
-      $t->fieldgroup->add($f);
-      $t->fieldgroup->save();
+      if ($tName) {
+        $t = wire('templates')->get($tName);
+        $t->fieldgroup->add($f);
+        $t->fieldgroup->save();
+      }
     }
 
     return $f;
@@ -105,8 +107,29 @@ class PageGridBlocks extends WireData implements Module {
     }
   }
 
+  //helper to enable inline edit for field
+  public function enableInlineEdit($f) {
+    if ($this->modules->isInstalled('PageFrontEdit') && $f->type instanceof FieldtypeText) {
+      $config = $this->modules->getConfig('PageFrontEdit');
+      if (!in_array($f->id, $config['inlineEditFields'])) array_push($config['inlineEditFields'], $f->id);
+      $this->modules->saveConfig('PageFrontEdit', $config);
+    }
+  }
 
+  //helper to set placeholder text
+  public function setPlaceholderText($f, $placeholder) {
+    if ($this->modules->isInstalled('FieldtypePageGrid') && $f->type instanceof FieldtypeText) {
+      $config = $this->modules->getConfig('FieldtypePageGrid');
+      if( array_key_exists( "placeholderText_$f->id", $config ) && $config["placeholderText_$f->id"]) return;
+      $config["placeholderText_$f->id"] = $placeholder;
+      $this->modules->saveConfig('FieldtypePageGrid', $config);
+    }
+  }
+
+  //helper to download and install missing modules
   public function downloadModule($name, $update = false) {
+
+    if ($this->modules->get($name)) return;
 
     // if ($this->session->download_modules != '1') return false;
 

@@ -29,7 +29,7 @@ class BlocksGalleryVideo extends WireData implements Module {
     $blockLabel = $this->getBlockName()['label'];
     $blockIcon = $this->getModuleInfo()['icon'];
 
-    $this->modules->get('PageGridBlocks')->createTemplate($blockName, $blockLabel, $blockIcon, $folderName);
+    $b->createTemplate($blockName, $blockLabel, $blockIcon);
 
     $f = $b->createField($blockName, 'FieldtypeFile', $blockName);
     $f->label = $blockLabel;

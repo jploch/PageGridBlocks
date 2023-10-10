@@ -12,7 +12,7 @@ require_once 'pg_navigation_functions.php';
     </button>
 
     <!--Main nav-->
-    <div id="menu" class="menu" data-class="menu">
+    <div id="pg-nav-menu" class="pg-nav-menu" data-class="pg-nav-menu">
         <?php echo renderSubnav($pages->get("/")); ?>
     </div>
 
