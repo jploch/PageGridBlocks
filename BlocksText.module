@@ -11,7 +11,7 @@ class BlocksText extends WireData implements Module {
       'autoload' => 'template=admin',
       'installs' => array('InputfieldTinyMCE'),
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.6.0'
+      'version' => '0.0.7.0'
     ];
   }
 
@@ -34,6 +34,7 @@ class BlocksText extends WireData implements Module {
     // enable json module settings
     $data = $this->modules->getConfig('InputfieldTinyMCE');
     // $data['optionals'] = array('settingsJSON');
+    if(!array_key_exists('optionals', $data)) $data['optionals'] = [];
     array_push($data['optionals'], "settingsJSON");
     $this->modules->saveConfig('InputfieldTinyMCE', $data);
     // END enable json module settings
