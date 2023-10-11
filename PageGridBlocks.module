@@ -12,7 +12,7 @@ class PageGridBlocks extends WireData implements Module {
       // 'icon' => 'help',
       "href" => "https://github.com/jploch/PageGridBlocks",
       'autoload' => 'template=admin',
-      'version' => 007
+      'version' => 008
     ];
   }
 
@@ -109,8 +109,10 @@ class PageGridBlocks extends WireData implements Module {
 
   //helper to enable inline edit for field
   public function enableInlineEdit($f) {
+    if (!$this->modules->isInstalled('PageFrontEdit')) $this->modules->install('PageFrontEdit');
     if ($this->modules->isInstalled('PageFrontEdit') && $f->type instanceof FieldtypeText) {
       $config = $this->modules->getConfig('PageFrontEdit');
+      if (!array_key_exists('inlineEditFields', $config)) $config['inlineEditFields'] = [];
       if (!in_array($f->id, $config['inlineEditFields'])) array_push($config['inlineEditFields'], $f->id);
       $this->modules->saveConfig('PageFrontEdit', $config);
     }
@@ -120,7 +122,7 @@ class PageGridBlocks extends WireData implements Module {
   public function setPlaceholderText($f, $placeholder) {
     if ($this->modules->isInstalled('FieldtypePageGrid') && $f->type instanceof FieldtypeText) {
       $config = $this->modules->getConfig('FieldtypePageGrid');
-      if( array_key_exists( "placeholderText_$f->id", $config ) && $config["placeholderText_$f->id"]) return;
+      if (array_key_exists("placeholderText_$f->id", $config) && $config["placeholderText_$f->id"]) return;
       $config["placeholderText_$f->id"] = $placeholder;
       $this->modules->saveConfig('FieldtypePageGrid', $config);
     }
