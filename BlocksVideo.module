@@ -10,7 +10,7 @@ class BlocksVideo extends WireData implements Module {
       'icon' => 'file-video-o',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => 004
+      'version' => '0.0.4.0'
     ];
   }
 

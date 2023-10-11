@@ -10,7 +10,7 @@ class BlocksReference extends WireData implements Module {
       'icon' => 'link',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => 001
+      'version' => '0.0.1.0'
     ];
   }
 

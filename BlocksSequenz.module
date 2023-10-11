@@ -10,7 +10,7 @@ class BlocksSequenz extends WireData implements Module {
       'icon' => 'film',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => 001
+      'version' => '0.0.1.0'
     ];
   }
 

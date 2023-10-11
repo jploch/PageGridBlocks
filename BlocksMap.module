@@ -11,7 +11,7 @@ class BlocksMap extends WireData implements Module {
       'autoload' => 'template=admin',
       'installs' => array('FieldtypeLeafletMapMarker'),
       'requires' => array('PageGridBlocks'),
-      'version' => 001
+      'version' => '0.0.1.0'
     ];
   }
 

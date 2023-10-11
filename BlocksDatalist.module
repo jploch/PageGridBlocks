@@ -13,7 +13,7 @@ class BlocksDatalist extends WireData implements Module {
       'autoload' => 'template=admin',
       'installs' => array('FieldtypeOptions'),
       'requires' => array('PageGridBlocks'),
-      'version' => 004
+      'version' => '0.0.4.0'
     ];
   }
 

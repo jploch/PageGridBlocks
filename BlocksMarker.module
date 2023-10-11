@@ -10,7 +10,7 @@ class BlocksMarker extends WireData implements Module {
       'icon' => 'map-pin',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => 001
+      'version' => '0.0.1.0'
     ];
   }
 

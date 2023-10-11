@@ -10,7 +10,7 @@ class BlocksSlider extends WireData implements Module {
       'icon' => 'ellipsis-h',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => 001
+      'version' => '0.0.1.0'
     ];
   }
 
