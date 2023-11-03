@@ -11,7 +11,7 @@ class BlocksEditor extends WireData implements Module {
       'autoload' => 'template=admin',
       'installs' => array('InputfieldTinyMCE'),
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.7.0'
+      'version' => '0.0.8.0'
     ];
   }
 

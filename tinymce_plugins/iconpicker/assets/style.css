@@ -1,0 +1,50 @@
+.tox .tox-dialog {
+    max-width: none;
+}
+
+.tox .mce-iconpicker--body {
+    height: 500px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.tox .mce-iconpicker--content {
+    float: left;
+    /* width: calc(100% - 150px); */
+    width: 100%;
+    height: auto;
+    padding-left: 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    /* grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr; */
+    gap: 15px;
+}
+
+.tox .mce-iconpicker--search {
+    background-image: url('/site/modules/PageGridBlocks/tinymce_plugins/iconpicker/assets/icon-search.svg'); /* Add a search icon to input */
+    background-position: 10px 12px; /* Position the search icon */
+    background-repeat: no-repeat; /* Do not repeat the icon image */
+    width: 100%; /* Full-width */
+    font-size: 16px; /* Increase font-size */
+    padding: 12px 20px 12px 40px; /* Add some padding */
+    border: 1px solid #ddd; /* Add a grey border */
+    margin-bottom: 30px; /* Add some space below the input */
+  }
+  
+
+  .tox .mce-iconpicker--body .mce-iconpicker--icon {
+    text-align: center;
+    font-size: 30px;
+    max-width: 38px;
+    padding: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 5px;
+  }
+
+  .tox .mce-iconpicker--body .mce-iconpicker--icon:hover {
+    background-color: #ddd;
+    color: black;
+  }
