@@ -1,4 +1,6 @@
-<?php namespace ProcessWire;
+<?php
+
+namespace ProcessWire;
 
 class BlocksEditor extends WireData implements Module {
 
@@ -11,7 +13,7 @@ class BlocksEditor extends WireData implements Module {
       'autoload' => 'template=admin',
       'installs' => array('InputfieldTinyMCE'),
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.8.0'
+      'version' => '0.0.9.0'
     ];
   }
 
@@ -32,6 +34,10 @@ class BlocksEditor extends WireData implements Module {
       $this->modules->refresh();
     }
 
+    //set font picker plugin
+    $tinymce = $this->modules->get("InputfieldTinyMCE");
+    $tinymce->addPlugin("/site/modules/PageGridBlocks/tinymce_plugins/iconpicker/iconpicker.js");
+
     $b = $this->modules->get('PageGridBlocks');
     $blockName = $this->getBlockName()['name'];
     $blockLabel = $this->getBlockName()['label'];
@@ -45,6 +51,8 @@ class BlocksEditor extends WireData implements Module {
     $f->htmlOptions = array(0 => 2);
     $f->inlineMode = 1;
     $f->features = array(0 => 'toolbar', 1 => 'stickybars', 2 => 'spellcheck', 3 => 'purifier', 4 => 'pasteFilter');
+    $f->toolbar = 'styles bold italic pwlink pwimage blockquote hr bullist numlist table anchor code emoticons iconpicker';
+    $f->extPlugins = array(0 => '/site/modules/PageGridBlocks/tinymce_plugins/iconpicker/iconpicker.js');
     $f->save();
 
     $this->modules->get('PageGridBlocks')->enableInlineEdit($f);
