@@ -25,7 +25,7 @@ $image = $page->getFormatted('pg_image');
     </a>
 <?php } ?>
 
-<?php if ($page->pg_image_caption) {
+<?php if ($page->pg_image_caption && strip_tags($page->pg_image_caption)) {
     // remove all tags but br and a
     $value = $sanitizer->textarea(nl2br($page->pg_image_caption), ['allowableTags' => '<div><br><a>']);
 ?>

@@ -15,7 +15,7 @@ class BlocksImage extends WireData implements Module
       'autoload' => 'template=admin',
       'installs' => array('FileValidatorSvgSanitizer'),
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.4.0'
+      'version' => '0.0.5.0'
     ];
   }
 
@@ -66,7 +66,7 @@ class BlocksImage extends WireData implements Module
     $f->features = array(0 => 'toolbar', 1 => 'stickybars', 2 => 'spellcheck', 3 => 'purifier', 4 => 'pasteFilter');
     $f->toolbar = 'pwlink';
     $f->plugins = array(0 => 'link', 1 => 'lists', 2 => 'pwlink');
-    $f->settingsJSON = '{"forced_root_block": "div", "newline_behavior": "linebreak", "valid_elements": "a[href|target=_blank],br"}';
+    $f->settingsJSON = '{"forced_root_block": "div", "newline_behavior": "linebreak", "valid_elements": "div,a[id|class|href],br"}';
     $f->save();
 
     $this->modules->get('PageGridBlocks')->enableInlineEdit($f);
