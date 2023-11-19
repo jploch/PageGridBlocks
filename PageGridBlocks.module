@@ -6,13 +6,13 @@ class PageGridBlocks extends WireData implements Module {
 
   public static function getModuleInfo() {
     return [
-      'title' => 'PageGridBlocks',
-      'summary' => 'Install and uninstall PageGrid Blocks',
+      'title' => 'PAGEGRID Blocks',
+      'summary' => 'Install and uninstall PAGEGRID Blocks',
       'author' => 'Jan Ploch',
-      // 'icon' => 'help',
+      'icon' => 'cubes',
       "href" => "https://github.com/jploch/PageGridBlocks",
       'autoload' => 'template=admin',
-      'version' => '0.1.0.2'
+      'version' => '1.0.0'
     ];
   }
 
