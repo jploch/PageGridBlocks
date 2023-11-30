@@ -12,8 +12,12 @@ class PageGridBlocks extends WireData implements Module {
       'icon' => 'cubes',
       "href" => "https://github.com/jploch/PageGridBlocks",
       'autoload' => 'template=admin',
-      'version' => '1.0.0'
+      'version' => '1.0.1'
     ];
+  }
+
+  public function ready() {
+    $this->listBlockModules();
   }
 
 
@@ -44,8 +48,17 @@ class PageGridBlocks extends WireData implements Module {
     $t->name = $name;
     $t->label = $label;
     $t->icon = $icon;
+    $t->tags = 'Blocks';
     // $t->useRoles = 1;
     $t->save();
+
+    // add template to all pagegrid fields automatically
+    foreach ($fs->find('type=FieldtypePageGrid') as $pgField) {
+      $pgFieldArray = $pgField->template_id ? $pgField->template_id : [];
+      if (!in_array($t->id, $pgFieldArray)) array_push($pgFieldArray, $t->id);
+      $pgField->template_id = $pgFieldArray;
+      $pgField->save();
+    }
   }
 
   //helper to create field
@@ -59,7 +72,7 @@ class PageGridBlocks extends WireData implements Module {
       $f = new Field;
       $f->name = $name;
       $f->type = $this->modules->get($type);
-      $f->tags = 'PageGrid';
+      $f->tags = 'Blocks';
       $f->save();
       if ($tName) {
         $t = wire('templates')->get($tName);
@@ -126,6 +139,13 @@ class PageGridBlocks extends WireData implements Module {
       $config["placeholderText_$f->id"] = $placeholder;
       $this->modules->saveConfig('FieldtypePageGrid', $config);
     }
+  }
+
+  public function listBlockModules() {
+    // if ($this->page->name !== 'module') return;
+    if (!$this->modules->isInstalled('PageGridBlocks')) return;
+    $showBlocks = isset($_GET['showBlocks']);
+    if ($showBlocks) $this->config->styles->add($this->config->urls->PageGridBlocks . "listBlocks.css");
   }
 
   //helper to download and install missing modules

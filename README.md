@@ -1,7 +1,8 @@
 # PAGEGRID Blocks
 This module installs templates and fields for PAGEGRID blocks. PAGEGRID is a friendly pagebuilder for ProcessWire.
 
-Simply install the desired block modules and select the corresponding templates in the field settings of your PAGEGRID field. The module will load the block template files from "site/modules/PageGridBlocks/blocks". If you want to modify any of the files, copy them to your "site/templates/blocks" folder.
+## How to use
+After installing the "PageGridBlocks" module, go to "Setup > PAGEGRID" in your ProcessWire admin and select the blocks you want to use. The module will load the block template files from "site/modules/PageGridBlocks/blocks". If you want to modify any of the files, copy them to your "site/templates/blocks" folder.
 
 ### Try PAGEGRID for free  
 The PAGEGRID Module is not free software. However, you can try PAGEGRID and the site profile on your local machine or on a test server as long as you need to make sure it is the right tool for your next project. … and when you’re convinced, [buy your license](https://page-grid.com/buy).

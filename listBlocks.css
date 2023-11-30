@@ -1,0 +1,29 @@
+.ProcessModule .WireTabs,
+.ProcessModule #pw-content-head,
+.ProcessModule button[name="delete"],
+.modules_section.modules_Blocks > h2,
+.ProcessModule .modules_section.modules_Blocks tr,
+.ProcessModule .InputfieldContent > *,
+.ProcessModule .InputfieldHeader,
+.ProcessModule .modules_section {
+    display: none !important;
+}
+
+.ProcessModule .modules_section.modules_Blocks {
+    display: block !important;
+}
+.ProcessModule .modules_section.modules_Blocks thead tr,
+.ProcessModule .modules_section.modules_Blocks tr:has(.not_installed) {
+    display: table-row !important;
+}
+
+.ProcessModule #main,
+.ProcessModule .ModulesList,
+.ProcessModule .modules_section > .pw-table-responsive {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.ProcessModule .InputfieldContent {
+    padding-bottom: 0 !important;
+}
