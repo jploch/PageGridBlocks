@@ -13,7 +13,7 @@ class BlocksEditor extends WireData implements Module {
       'autoload' => 'template=admin',
       'installs' => array('InputfieldTinyMCE'),
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.9.0'
+      'version' => '0.0.10.0'
     ];
   }
 
@@ -51,7 +51,7 @@ class BlocksEditor extends WireData implements Module {
     $f->htmlOptions = array(0 => 2);
     $f->inlineMode = 1;
     $f->features = array(0 => 'toolbar', 1 => 'stickybars', 2 => 'spellcheck', 3 => 'purifier', 4 => 'pasteFilter');
-    $f->toolbar = 'styles bold italic pwlink pwimage blockquote hr bullist numlist table anchor code emoticons iconpicker';
+    $f->toolbar = 'styles bold italic pwlink blockquote hr bullist numlist table anchor code emoticons iconpicker';
     $f->extPlugins = array(0 => '/site/modules/PageGridBlocks/tinymce_plugins/iconpicker/iconpicker.js');
     $f->save();
 

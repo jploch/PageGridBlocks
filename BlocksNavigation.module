@@ -10,7 +10,7 @@ class BlocksNavigation extends WireData implements Module {
       'icon' => 'bars',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.1.0'
+      'version' => '0.0.11.0'
     ];
   }
 
@@ -30,6 +30,12 @@ class BlocksNavigation extends WireData implements Module {
     $blockIcon = $this->getModuleInfo()['icon'];
 
     $b->createTemplate($blockName, $blockLabel, $blockIcon);
+
+    $f = $b->createField($blockName . '_showHamburger', 'FieldtypeInteger', $blockName);
+    $f->label = 'Mobile menu breakpoint';
+    $f->description = 'Screen size in pixel, when the mobile menu icon should be shown instead of the menu links (Default: 640).';
+    $f->placeholder = '640';
+    $f->save();
 
   }
 
