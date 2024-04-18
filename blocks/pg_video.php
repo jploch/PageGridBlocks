@@ -18,7 +18,7 @@ if (strpos($page->pg_video_options, 'controls') !== false) {
   <?php } ?>
 </pg-edit>
 
-<?php if ($page->pg_video_caption) { ?>
+<?php if ($page->pg_video_caption && strip_tags($page->pg_video_caption)) { ?>
     <div class="caption" data-class="caption"><?= $page->pg_video_caption ?></div>
 <?php } ?>
 
