@@ -2,7 +2,7 @@
 
 namespace ProcessWire;
 
-$linkInternal = $page->pg_image_link ? $page->pg_image_link->url() : 0;
+$linkInternal = $page->pg_image_link ? $page->pg_image_link->url() : '';
 $link = $linkInternal ? $linkInternal : $page->pg_image_link_external;
 $image = $page->getFormatted('pg_image');
 // $image = $page->pg_image;
