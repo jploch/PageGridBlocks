@@ -10,7 +10,7 @@ class BlocksNavigation extends WireData implements Module {
       'icon' => 'bars',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.11.0'
+      'version' => '0.0.12.0'
     ];
   }
 

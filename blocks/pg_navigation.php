@@ -6,32 +6,7 @@ namespace ProcessWire;
 $showHamburger = $page->pg_navigation_showHamburger ? $page->pg_navigation_showHamburger : 640;
 $showHamburger .= 'px';
 
-if (!function_exists("renderSubnav")) {
-    function renderSubnav($pageItem) {
-
-        $out = '<ul id="nav-main" class="nav-main" data-class="nav-main">';
-        foreach ($pageItem->children() as $item) {
-            $out .= renderSubnavItem($item);
-        }
-        $out .= '</ul>';
-        return $out;
-    }
-}
-if (!function_exists("renderSubnavItem")) {
-    function renderSubnavItem($item) {
-        $active = '';
-        $subheadline = '';
-
-        if (wire('page')->id == $item->id) {
-            $active = 'nav-active';
-        }
-
-        $out = '<li class="nav-' . $item->name . ' nav-li nav-' . $item->name . '">';
-        $out .= '<a href="' . $item->url() . '" class="' . $active . ' pg-style-panel">' . $item->title . '</a>';
-        $out .= '</li>';
-        return $out;
-    }
-}
+require_once 'pg_navigation_functions.php';
 ?>
 
 <!-- hamburger styles defined here so breakpoint var can be set -->
