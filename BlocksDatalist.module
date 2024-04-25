@@ -9,11 +9,11 @@ class BlocksDatalist extends WireData implements Module {
       'title' => 'Datalist Block',
       'summary' => 'Installs Template and Fields for a PageGrid Block',
       'author' => 'Jan Ploch',
-      'icon' => 'list',
+      'icon' => 'database',
       'autoload' => 'template=admin',
       'installs' => array('FieldtypeOptions'),
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.4.0'
+      'version' => '0.0.5.0'
     ];
   }
 
