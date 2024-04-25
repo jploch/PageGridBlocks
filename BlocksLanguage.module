@@ -1,0 +1,47 @@
+<?php namespace ProcessWire;
+
+class BlocksLanguage extends WireData implements Module {
+
+  public static function getModuleInfo() {
+    return [
+      'title' => 'Language Switcher Block',
+      'summary' => 'Installs Template and Fields for a PageGrid Block',
+      'author' => 'Jan Ploch',
+      'icon' => 'language',
+      'autoload' => 'template=admin',
+      'requires' => array('PageGridBlocks', 'FieldtypePageGrid>=2.0.52'),
+      'version' => '0.0.0.1'
+    ];
+  }
+
+  public function getBlockName() {
+    return array(
+      'name' => 'pg_language',
+      'label' => 'Language',
+    );
+  }
+
+  //function to create block
+  public function createBlock() {
+    $b = $this->modules->get('PageGridBlocks');
+    $blockName = $this->getBlockName()['name'];
+    $blockLabel = $this->getBlockName()['label'];
+    $blockIcon = $this->getModuleInfo()['icon'];
+
+    $b->createTemplate($blockName, $blockLabel, $blockIcon);
+  }
+
+  public function ___upgrade($fromVersion, $toVersion) {
+    $this->createBlock();
+  }
+
+  public function ___install() {
+    $this->createBlock();
+  }
+
+  public function ___uninstall() {
+    $blockName = $this->getBlockName()['name'];
+    $this->modules->get('PageGridBlocks')->removeBlock($blockName);
+  }
+  
+}
