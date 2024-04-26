@@ -1,0 +1,49 @@
+<?php namespace ProcessWire;
+
+class BlocksAccordion extends WireData implements Module {
+
+  public static function getModuleInfo() {
+    return [
+      'title' => 'Accordion Block',
+      'summary' => 'Installs Template and Fields for a PageGrid Block',
+      'author' => 'Jan Ploch',
+      'icon' => 'plus',
+      'autoload' => 'template=admin',
+      'requires' => array('PageGridBlocks'),
+      'version' => '0.0.0.1'
+    ];
+  }
+
+  public function getBlockName() {
+    return array(
+      'name' => 'pg_accordion',
+      'label' => 'Accordion',
+    );
+  }
+
+  //function to create block
+  public function createBlock() {
+
+    $b = $this->modules->get('PageGridBlocks');
+    $blockName = $this->getBlockName()['name'];
+    $blockLabel = $this->getBlockName()['label'];
+    $blockIcon = $this->getModuleInfo()['icon'];
+
+    $b->createTemplate($blockName, $blockLabel, $blockIcon);
+  }
+
+  public function ___upgrade($fromVersion, $toVersion) {
+    $this->createBlock();
+  }
+
+  public function ___install() {
+    //install module
+    $this->modules->get('PageGridBlocks')->downloadModule('InputfieldTinyMCE');
+    $this->createBlock();
+  }
+
+  public function ___uninstall() {
+    $blockName = $this->getBlockName()['name'];
+    $this->modules->get('PageGridBlocks')->removeBlock($blockName);
+  }
+}
