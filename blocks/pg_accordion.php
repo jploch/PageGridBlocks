@@ -8,8 +8,11 @@ $pagegrid->renderOptions(['page' => $page, "children" => true, "autoTitle" => fa
 
 <?php foreach ($page->children() as $item) : ?>
     <div class="accordion-header" data-class="accordion-header">
-        <p class="accordion-headline" data-class="accordion-headline"><?= $item->title ?></p>
-        <div class="accordion-icon" data-class="accordion-icon" >+</div>
+        <div class="accordion-headline" data-class="accordion-headline"><?= $item->title ?></div>
+        <div class="accordion-icon" data-class="accordion-icon">
+            <div class="accordion-icon-inner" data-class="accordion-icon-inner"></div>
+            <div class="accordion-icon-inner" data-class="accordion-icon-inner"></div>
+        </div>
     </div>
     <div class="accordion-content" data-class="accordion-content">
         <?= $pagegrid->renderItem($item) ?>
