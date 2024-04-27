@@ -15,6 +15,8 @@ $pagegrid->renderOptions(['page' => $page, "children" => true, "autoTitle" => fa
         </div>
     </div>
     <div class="accordion-content" data-class="accordion-content">
-        <?= $pagegrid->renderItem($item) ?>
+        <div class="accordion-content-inner" data-class="accordion-content-inner">
+            <?= $pagegrid->renderItem($item) ?>
+        </div>
     </div>
 <?php endforeach ?>
