@@ -15,7 +15,7 @@ class BlocksImage extends WireData implements Module
       'autoload' => 'template=admin',
       'installs' => array('FileValidatorSvgSanitizer'),
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.5.0'
+      'version' => '0.0.5.1'
     ];
   }
 
@@ -54,7 +54,7 @@ class BlocksImage extends WireData implements Module
     $f->save();
 
     $f = $b->createField($blockName . '_link_external', 'FieldtypeText', $blockName);
-    $f->label = 'Externer Link';
+    $f->label = 'External Link';
     $f->save();
 
     $f = $b->createField($blockName . '_caption', 'FieldtypeTextarea', $blockName);
