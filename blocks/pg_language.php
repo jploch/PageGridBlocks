@@ -3,6 +3,7 @@
 namespace ProcessWire;
 if (!$templates->get('language')) return 'no language found!';
 if (!$modules->isInstalled('LanguageSupport')) return 'no language found!';
+if (!$modules->isInstalled('LanguageSupportPageNames')) return 'please install the LanguageSupportPageNames module!';
 if (!$page->parents()->get('template=pg_container')) return;
 
 // check if there are more languages then the default language
