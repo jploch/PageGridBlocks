@@ -9,8 +9,8 @@ class BlocksLanguage extends WireData implements Module {
       'author' => 'Jan Ploch',
       'icon' => 'language',
       'autoload' => 'template=admin',
-      'requires' => array('PageGridBlocks', 'FieldtypePageGrid>=2.0.52'),
-      'version' => '0.0.0.2'
+      'requires' => array('PageGridBlocks'),
+      'version' => '0.0.0.3'
     ];
   }
 
