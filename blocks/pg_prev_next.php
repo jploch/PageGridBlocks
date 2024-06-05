@@ -2,9 +2,8 @@
 
 namespace ProcessWire;
 
-$parentPageID = $page->closest('template=pg_container');
-$parentPageID = preg_replace('/[^0-9]/', '', $parentPageID->name);
-$page = $pages->get($parentPageID);
+//get main page
+$page = $pagegrid->getPage($page);
 
 if (!$page || $page->id == 0) return;
 
