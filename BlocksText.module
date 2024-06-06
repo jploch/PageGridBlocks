@@ -1,4 +1,6 @@
-<?php namespace ProcessWire;
+<?php
+
+namespace ProcessWire;
 
 class BlocksText extends WireData implements Module {
 
@@ -31,18 +33,13 @@ class BlocksText extends WireData implements Module {
       $this->modules->refresh();
     }
 
-    // enable json module settings
-    $data = $this->modules->getConfig('InputfieldTinyMCE');
-    // $data['optionals'] = array('settingsJSON');
-    if(!array_key_exists('optionals', $data)) $data['optionals'] = [];
-    array_push($data['optionals'], "settingsJSON");
-    $this->modules->saveConfig('InputfieldTinyMCE', $data);
-    // END enable json module settings
-
     $b = $this->modules->get('PageGridBlocks');
     $blockName = $this->getBlockName()['name'];
     $blockLabel = $this->getBlockName()['label'];
     $blockIcon = $this->getModuleInfo()['icon'];
+
+    //enable editor json module settings
+    $b->enableEditorSettings();
 
     $b->createTemplate($blockName, $blockLabel, $blockIcon);
 

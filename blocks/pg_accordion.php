@@ -6,7 +6,7 @@ namespace ProcessWire;
 $pagegrid->renderOptions(['page' => $page, "children" => true, "autoTitle" => false]);
 ?>
 
-<?php foreach ($page->children() as $item) : ?>
+<?php foreach ($page->children('sort=-sort') as $item) : ?>
     <div class="accordion-header" data-class="accordion-header">
         <div class="accordion-headline" data-class="accordion-headline"><?= $item->title ?></div>
         <div class="accordion-icon" data-class="accordion-icon">

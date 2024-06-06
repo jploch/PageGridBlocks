@@ -12,12 +12,21 @@ class PageGridBlocks extends WireData implements Module {
       'icon' => 'cubes',
       "href" => "https://github.com/jploch/PageGridBlocks",
       'autoload' => 'template=admin',
-      'version' => '1.0.17'
+      'version' => '1.0.18'
     ];
   }
 
   public function ready() {
     $this->listBlockModules();
+  }
+
+  public function enableEditorSettings() {
+    // enable json module settings
+    $data = $this->modules->getConfig('InputfieldTinyMCE');
+    if (!array_key_exists('optionals', $data)) $data['optionals'] = [];
+    array_push($data['optionals'], "settingsJSON");
+    $this->modules->saveConfig('InputfieldTinyMCE', $data);
+    // END enable json module settings
   }
 
 

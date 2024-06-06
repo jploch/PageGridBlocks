@@ -40,7 +40,7 @@ if (count($page->pg_datalist_fields) && $parent->hasChildren()) {
 
       <!-- image/video -->
       <?php if ($item->value === 'image') { ?>
-        <pg-edit page="<?= $child->id ?>" field="pg_datalist_image">
+        <pg-edit page="<?= $child->id ?>" field="<?= $child->pg_datalist_video ? 'pg_datalist_video' : 'pg_datalist_image' ?>">
 
           <!-- get image or placeholder -->
           <?php
@@ -82,17 +82,15 @@ if (count($page->pg_datalist_fields) && $parent->hasChildren()) {
 
       <!-- title -->
       <?php if ($item->value === 'title') { ?>
-        <h3><?= $child->title ?></h3>
+        <h3 class="datalist-item-title datalist-item-title-<?= $child->id ?>" data-class="datalist-item-title"><?= $child->title ?></h3>
       <?php } ?>
       <!-- date -->
       <?php if ($item->value === 'date' && $child->pg_datalist_date) { ?>
-        <h6><?= $child->pg_datalist_date ?></h6>
+        <h6 class="datalist-item-date datalist-item-date-<?= $child->id ?>" data-class="datalist-item-date"><?= $child->pg_datalist_date ?></h6>
       <?php } ?>
       <!-- text -->
       <?php if ($item->value === 'text' && $child->pg_datalist_text) { ?>
-        <?= $user->hasPermission('PageFrontEdit') ? '<pg-ptag>' : '<p>' ?>
-        <?= $child->pg_datalist_text ?>
-        <?= $user->hasPermission('PageFrontEdit') ? '</pg-ptag>' : '</p>' ?>
+        <h4 class="datalist-item-text datalist-item-text-<?= $child->id ?>" data-class="datalist-item-text"><?= $child->pg_datalist_text ?></h4>
       <?php } ?>
 
     <?php } ?>

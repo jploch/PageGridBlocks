@@ -11,9 +11,9 @@ class BlocksDatalist extends WireData implements Module {
       'author' => 'Jan Ploch',
       'icon' => 'database',
       'autoload' => 'template=admin',
-      'installs' => array('FieldtypeOptions'),
+      'installs' => array('FieldtypeOptions', 'InputfieldTinyMCE'),
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.5.0'
+      'version' => '0.0.5.1'
     ];
   }
 
@@ -56,14 +56,17 @@ class BlocksDatalist extends WireData implements Module {
     $f->label = 'Fields';
     $f->description = 'Select the fields that each list item will display. Those fields will be added to the child template automatically.';
     $f->inputfieldClass = 'InputfieldAsmSelect';
+    $f->showIf = 'pg_datalist!=0';
     $f->save();
-    $this->manager = new \ProcessWire\SelectableOptionManager();
+
+    //needed to save options
     $options = 'title|Title 
     date|Date
     image|Image/Video
     text|Text';
+    $this->manager = new \ProcessWire\SelectableOptionManager();
+    $this->manager->deleteAllOptionsForField($f);
     $this->manager->setOptionsString($f, $options, true);
-    $f->showIf = 'pg_datalist!=0';
     $f->save();
 
     //create limit number field
@@ -118,13 +121,29 @@ class BlocksDatalist extends WireData implements Module {
     $f->save();
     $this->modules->get('PageGridBlocks')->enableInlineEdit($f);
 
-    $f = $b->createField($blockName .  '_text', 'FieldtypeTextarea');
+    // InputfieldTinyMCE
+    //make sure module is available
+    if (!$this->modules->isInstalled('InputfieldTinyMCE')) {
+      $this->modules->install('InputfieldTinyMCE');
+      $this->modules->refresh();
+    }
+    //enable editor json module settings
+    $b->enableEditorSettings();
+
+    $f = $b->createField($blockName . '_text', 'FieldtypeTextarea');
     $f->label = 'Text';
-    $f->inputfieldClass = 'InputfieldTextarea';
+    $f->inputfieldClass = 'InputfieldTinyMCE';
     $f->contentType = 1;
-    $f->stripTags = 1;
-    $f->textformatters = array(0 => 'TextformatterEntities');
+    $f->htmlOptions = array(0 => 2);
+    $f->inlineMode = 1;
+    $f->features = array(0 => 'spellcheck', 1 => 'purifier', 2 => 'pasteFilter');
+    $f->toolbar = '';
+    $f->stripTags = 0;
+    $f->textformatters = array();
+    // $f->plugins = array(0 => 'link', 1 => 'lists', 2 => 'pwlink');
+    $f->settingsJSON = '{"forced_root_block": "div", "newline_behavior": "linebreak", "valid_elements": "div,br"}';
     $f->save();
+
     $this->modules->get('PageGridBlocks')->enableInlineEdit($f);
   }
 
