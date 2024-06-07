@@ -10,7 +10,7 @@ class BlocksAccordion extends WireData implements Module {
       'icon' => 'plus',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.0.3'
+      'version' => '0.0.0.4'
     ];
   }
 
