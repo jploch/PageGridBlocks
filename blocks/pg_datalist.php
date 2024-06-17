@@ -64,14 +64,14 @@ if (count($page->pg_datalist_fields) && $parent->hasChildren()) {
             <?= $image->size(600, 0)->url ?> 600w,
             <?= $image->size(1000, 0)->url ?> 1000w,
             <?= $image->size(1500, 0)->url ?> 1500w,
-            <?= $image->size(2000, 0)->url ?> 2000w" class="lazyload" alt="<?= $image->description ?>" />
+            <?= $image->size(2000, 0)->url ?> 2000w" class="lazyload pg-media-responsive" alt="<?= $image->description ?>" />
           <?php } ?>
 
           <?php if ($child->pg_datalist_video) {
             $video = $child->pg_datalist_video;
             $image = $child->pg_datalist_image;
           ?>
-            <video title="<?= $video->description ?>" muted loop data-autoplay="" webkit-playsinline playsinline class="lazyload" preload="none" poster="<?= $image ? $image->url : '' ?>">;
+            <video title="<?= $video->description ?>" muted loop data-autoplay="" webkit-playsinline playsinline class="lazyload pg-media-responsive" preload="none" poster="<?= $image ? $image->url : '' ?>">;
               <source src="<?= $video->url ?>" type="video/mp4">
               Your browser does not support the video tag.
             </video>
