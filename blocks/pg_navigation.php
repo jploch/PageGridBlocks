@@ -8,8 +8,6 @@ $showHamburger .= 'px';
 
 // wire('page') returns parent page
 // $page returns block page
-
-require_once 'pg_navigation_functions.php';
 ?>
 
 <!-- hamburger styles defined here so breakpoint var can be set -->
