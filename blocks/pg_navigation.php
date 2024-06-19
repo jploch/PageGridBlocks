@@ -5,7 +5,6 @@ namespace ProcessWire;
 // breakpoint var when the hamburger is shown
 $showHamburger = $page->pg_navigation_showHamburger ? $page->pg_navigation_showHamburger : 640;
 $showHamburger .= 'px';
-
 // wire('page') returns parent page
 // $page returns block page
 ?>
@@ -68,8 +67,9 @@ $showHamburger .= 'px';
             <?php } ?>
             <?php foreach ($page->pg_navigation_links as $l) { ?>
                 <?php $active = wire('page')->title == $l->pg_navigation_link_label ? 'nav-active' : ''; ?>
+                <?php $target = str_starts_with($l->pg_navigation_link, 'http') ? 'target="_blank"' : ''; ?>
                 <li class="nav-<?= $l->pg_navigation_link_label ?> nav-li">
-                    <a href="<?= $l->pg_navigation_link ?>" class="<?= $active ?>"><?= $l->pg_navigation_link_label ?></a>
+                    <a href="<?= $l->pg_navigation_link ?>" $target class="<?= $active ?>"><?= $l->pg_navigation_link_label ?></a>
                 </li>
             <?php } ?>
         </ul>
