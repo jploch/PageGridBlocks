@@ -1,4 +1,6 @@
-<?php namespace ProcessWire;
+<?php
+
+namespace ProcessWire;
 
 class BlocksNavigation extends WireData implements Module {
 
@@ -10,7 +12,8 @@ class BlocksNavigation extends WireData implements Module {
       'icon' => 'bars',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.12.0'
+      'installs' => array('FieldtypeRepeater'),
+      'version' => '0.0.12.1'
     ];
   }
 
@@ -37,6 +40,29 @@ class BlocksNavigation extends WireData implements Module {
     $f->placeholder = '640';
     $f->save();
 
+    $f = $b->createField($blockName . '_link_label', 'FieldtypeText');
+    $f->label = 'Label';
+    $f->placeholder = $f->label;
+    $f->hideFieldTitle = 1;
+    $f->contentType = 1;
+    $f->stripTags = 1;
+    $f->textformatters = array(0 => 'TextformatterEntities');
+    $f->save();
+
+    $f = $b->createField($blockName . '_link', 'FieldtypeText');
+    $f->label = 'URL';
+    $f->placeholder = $f->label;
+    $f->hideFieldTitle = 1;
+    $f->contentType = 1;
+    $f->stripTags = 1;
+    $f->textformatters = array(0 => 'TextformatterEntities');
+    $f->save();
+
+    $f = $b->createRepeater($blockName . '_links', $blockName . '_link_label ' . $blockName . '_link', 'Links','', $blockName);
+    $f->description = 'This block generates links to your published, non-hidden pages automatically. Optionally you can add more links here.';
+    $f->repeaterTitle = '{pg_navigation_link_label}';
+    $f->save();
+    
   }
 
   public function ___upgrade($fromVersion, $toVersion) {
@@ -51,5 +77,4 @@ class BlocksNavigation extends WireData implements Module {
     $blockName = $this->getBlockName()['name'];
     $this->modules->get('PageGridBlocks')->removeBlock($blockName);
   }
-  
 }

@@ -10,7 +10,7 @@ class BlocksPrevNext extends WireData implements Module {
       'icon' => 'exchange',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.1.1'
+      'version' => '0.0.1.2'
     ];
   }
 
@@ -30,6 +30,40 @@ class BlocksPrevNext extends WireData implements Module {
     $blockIcon = $this->getModuleInfo()['icon'];
     
     $b->createTemplate($blockName, $blockLabel, $blockIcon);
+
+    $f = $b->createField($blockName . '_index', 'FieldtypePage', $blockName);
+    $f->label = 'Index Page';
+    $f->description = 'The index link will point to the parent page. Optionally you can set an alternative index page here.';
+    $f->inputfield = 'InputfieldPageListSelect';
+    $f->derefAsPage = 1;
+    $f->parent_id = 1;
+    $f->labelFieldName = 'title';
+    $f->contentType = 1;
+    $f->save();
+
+    $f = $b->createField($blockName . '_indexlabel', 'FieldtypeText', $blockName);
+    $f->label = 'Index Label';
+    $f->placeholder = 'Index';
+    $f->contentType = 1;
+    $f->stripTags = 1;
+    $f->textformatters = array(0 => 'TextformatterEntities');
+    $f->save();
+
+    $f = $b->createField($blockName . '_prevlabel', 'FieldtypeText', $blockName);
+    $f->label = 'Previous Label';
+    $f->placeholder = 'Page Title';
+    $f->contentType = 1;
+    $f->stripTags = 1;
+    $f->textformatters = array(0 => 'TextformatterEntities');
+    $f->save();
+
+    $f = $b->createField($blockName . '_nextlabel', 'FieldtypeText', $blockName);
+    $f->label = 'Next Label';
+    $f->placeholder = 'Page Title';
+    $f->contentType = 1;
+    $f->stripTags = 1;
+    $f->textformatters = array(0 => 'TextformatterEntities');
+    $f->save();
 
   }
 

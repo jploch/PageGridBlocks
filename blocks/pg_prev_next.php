@@ -3,14 +3,18 @@
 namespace ProcessWire;
 
 //get main page
-$page = $pagegrid->getPage($page);
+$p = $pagegrid->getPage($page);
+if (!$p || $p->id == 0) return;
 
-if (!$page || $page->id == 0) return;
-
+$next = $p->next->id ? $p->next : $p->siblings->first();
+$prev = $p->prev->id ? $p->prev : $p->siblings->last();
+$indexLabel = $page->pg_prev_next_indexlabel ? $page->pg_prev_next_indexlabel : 'Index';
+$prevLabel = $page->pg_prev_next_prevlabel ? $page->pg_prev_next_prevlabel : $prev->title;
+$nextLabel = $page->pg_prev_next_nextlabel ? $page->pg_prev_next_nextlabel : $next->title;
+$indexLink = $page->pg_prev_next_index ? $page->pg_prev_next_index->url() : $p->parent()->url();
 ?>
 <div class="prev">
-    <a class="prev-link" href="<?php $prev = $page->prev->id ? $page->prev : $page->siblings->last();
-                                echo $prev->url; ?>#top">
+    <a class="prev-link" href="<?= $prev->url ?>">
         <span class="prev-icon">
             <svg height="55px" viewBox="0 0 81 55" width="81px" xmlns="http://www.w3.org/2000/svg">
                 <g fill="none" stroke="#000000" stroke-width="6">
@@ -20,19 +24,19 @@ if (!$page || $page->id == 0) return;
                 </g>
             </svg>
         </span>
-        <span class="prev-title"><?php $prev = $page->prev->id ? $page->prev : $page->siblings->last();
-                                    echo $prev->title; ?></span>
+        <span class="prev-title"><?= $prevLabel; ?></span>
     </a>
 </div>
 
 <div class="index">
-    <a class="index-link" href="<?= $page->parent()->url() ?>">Index</a>
+    <a class="index-link" href="<?= $indexLink ?>">
+    <span class="index-title"><?= $indexLabel ?></span>
+    </a>
 </div>
+
 <div class="next">
-    <a class="next-link" href="<?php $next = $page->next->id ? $page->next : $page->siblings->first();
-                                echo $next->url; ?>#top">
-        <span class="next-title"><?php $prev = $page->prev->id ? $page->prev : $page->siblings->last();
-                                    echo $next->title; ?></span>
+    <a class="next-link" href="<?= $next->url ?>">
+        <span class="next-title"><?= $nextLabel ?></span>
         <span class="next-icon">
             <svg height="55px" viewBox="0 0 81 55" width="81px" xmlns="http://www.w3.org/2000/svg">
                 <g fill="none" stroke="#000000" stroke-width="6">

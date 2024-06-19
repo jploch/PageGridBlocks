@@ -6,6 +6,9 @@ namespace ProcessWire;
 $showHamburger = $page->pg_navigation_showHamburger ? $page->pg_navigation_showHamburger : 640;
 $showHamburger .= 'px';
 
+// wire('page') returns parent page
+// $page returns block page
+
 require_once 'pg_navigation_functions.php';
 ?>
 
@@ -58,7 +61,20 @@ require_once 'pg_navigation_functions.php';
 
     <!--Main nav-->
     <div id="pg-nav-menu" class="pg-nav-menu" data-class="pg-nav-menu">
-        <?php echo renderSubnav($pages->get("/")); ?>
+        <ul id="nav-main" class="nav-main" data-class="nav-main">
+            <?php foreach ($pages->get('/')->children() as $p) { ?>
+                <?php $active = wire('page')->id == $p->id ? 'nav-active' : ''; ?>
+                <li class="nav-<?= $p->name ?> nav-li">
+                    <a href="<?= $p->url() ?>" class="<?= $active ?>"><?= $p->title ?></a>
+                </li>
+            <?php } ?>
+            <?php foreach ($page->pg_navigation_links as $l) { ?>
+                <?php $active = wire('page')->title == $l->pg_navigation_link_label ? 'nav-active' : ''; ?>
+                <li class="nav-<?= $l->pg_navigation_link_label ?> nav-li">
+                    <a href="<?= $l->pg_navigation_link ?>" class="<?= $active ?>"><?= $l->pg_navigation_link_label ?></a>
+                </li>
+            <?php } ?>
+        </ul>
     </div>
 
 </nav>

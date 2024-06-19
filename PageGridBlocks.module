@@ -12,7 +12,7 @@ class PageGridBlocks extends WireData implements Module {
       'icon' => 'cubes',
       "href" => "https://github.com/jploch/PageGridBlocks",
       'autoload' => 'template=admin',
-      'version' => '1.0.22'
+      'version' => '1.0.23'
     ];
   }
 
@@ -31,7 +31,7 @@ class PageGridBlocks extends WireData implements Module {
 
 
   //helper to create template
-  public function createTemplate($name, $label, $icon) {
+  public function createTemplate($name, $label, $icon, $isBlock = true) {
     $this->message("Create Template " . $name);
     $this->log->save("PageGridBlock", "Create Template " . $name);
 
@@ -57,16 +57,18 @@ class PageGridBlocks extends WireData implements Module {
     $t->name = $name;
     $t->label = $label;
     $t->icon = $icon;
-    $t->tags = 'Blocks';
+    if ($isBlock) $t->tags = 'Blocks';
     // $t->useRoles = 1;
     $t->save();
 
     // add template to all pagegrid fields automatically
-    foreach ($fs->find('type=FieldtypePageGrid') as $pgField) {
-      $pgFieldArray = $pgField->template_id ? $pgField->template_id : [];
-      if (!in_array($t->id, $pgFieldArray)) array_push($pgFieldArray, $t->id);
-      $pgField->template_id = $pgFieldArray;
-      $pgField->save();
+    if ($isBlock) {
+      foreach ($fs->find('type=FieldtypePageGrid') as $pgField) {
+        $pgFieldArray = $pgField->template_id ? $pgField->template_id : [];
+        if (!in_array($t->id, $pgFieldArray)) array_push($pgFieldArray, $t->id);
+        $pgField->template_id = $pgFieldArray;
+        $pgField->save();
+      }
     }
   }
 
@@ -92,6 +94,75 @@ class PageGridBlocks extends WireData implements Module {
 
     return $f;
   }
+
+  //helper to create repeater
+  /**
+	 * Creates a repeater field with associated fieldgroup, template, and page
+	 *
+	 * @param string $repeaterName The name of your repeater field
+	 * @param string $repeaterFields List of field names to add to the repeater, separated by spaces
+	 * @param string $repeaterLabel The label for your repeater
+	 * @param string $repeaterTags Tags for the repeater field
+	 * @return Returns the new Repeater field
+	 *
+	 */
+	public function createRepeater($repeaterName,$repeaterFields,$repeaterLabel,$repeaterTags, $tName = '') {
+    $f = wire('fields')->get($repeaterName);
+		$fieldsArray = explode(' ',$repeaterFields);
+
+    if ($f && $f->id) return $f;
+		
+		$f = new Field();
+		$f->type = $this->modules->get("FieldtypeRepeater");
+		$f->name = $repeaterName;
+		$f->label = $repeaterLabel;
+		$f->tags = $repeaterTags;
+		$f->repeaterReadyItems = 3;
+		
+		//Create fieldgroup
+		$repeaterFg = new Fieldgroup();
+		$repeaterFg->name = "repeater_$repeaterName";
+		
+		//Add fields to fieldgroup
+		foreach($fieldsArray as $field) {
+			$repeaterFg->append($this->fields->get($field));
+		}
+		
+		$repeaterFg->save();
+		
+		//Create template
+		$repeaterT = new Template();
+		$repeaterT->name = "repeater_$repeaterName";
+		$repeaterT->flags = 8;
+		$repeaterT->noChildren = 1;
+		$repeaterT->noParents = 1;
+		$repeaterT->noGlobal = 1;
+		$repeaterT->slashUrls = 1;
+		$repeaterT->fieldgroup = $repeaterFg;
+		
+		$repeaterT->save();
+		
+		//Setup page for the repeater - Very important
+		$repeaterPage = "for-field-{$f->id}";
+		$f->parent_id = $this->pages->get("name=$repeaterPage")->id;
+		$f->template_id = $repeaterT->id;
+		$f->repeaterReadyItems = 3;
+		
+		//Now, add the fields directly to the repeater field
+		foreach($fieldsArray as $field) {
+			$f->repeaterFields = $this->fields->get($field);
+		}
+		
+		$f->save();
+
+    if ($tName) {
+      $t = wire('templates')->get($tName);
+      $t->fieldgroup->add($f);
+      $t->fieldgroup->save();
+    }
+		
+		return $f;
+	}
 
   ///helper remove template/filed
   public function removeBlock($blockName) {
