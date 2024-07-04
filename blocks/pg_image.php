@@ -13,12 +13,16 @@ $image = $page->getFormatted('pg_image');
     <?php } ?>
     <pg-edit page="<?= $page->id ?>" field="pg_image">
         <?php if ($image) { ?>
-            <img src="<?= $image->size(10, 0, ['quality' => 1])->url ?>" data-sizes="auto" data-srcset="
+            <?php if ($image->ext == "gif" || $image->ext == "GIF") { ?>
+                <img src="<?= $image->size(10, 0, ['quality' => 1])->url ?>" data-src="<?= $image->url ?>" class="lazyload pg-media-responsive" alt="<?= $image->description ?>" />
+            <?php } else { ?>
+                <img src="<?= $image->size(10, 0, ['quality' => 1])->url ?>" data-sizes="auto" data-srcset="
             <?= $image->size(300, 0)->url ?> 300w,
             <?= $image->size(600, 0)->url ?> 600w,
             <?= $image->size(1000, 0)->url ?> 1000w,
             <?= $image->size(1500, 0)->url ?> 1500w,
             <?= $image->size(2000, 0)->url ?> 2000w" class="lazyload pg-media-responsive" alt="<?= $image->description ?>" />
+            <?php } ?>
         <?php } ?>
     </pg-edit>
     <?php if ($link && $image) { ?>
