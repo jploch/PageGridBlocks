@@ -1,0 +1,59 @@
+<?php
+
+namespace ProcessWire;
+
+class BlocksCode extends WireData implements Module {
+
+  public static function getModuleInfo() {
+    return [
+      'title' => 'Custom Code Block',
+      'summary' => 'Installs Template and Fields for a PageGrid Block',
+      'author' => 'Jan Ploch',
+      'icon' => 'code',
+      'autoload' => 'template=admin',
+      'requires' => array('PageGridBlocks'),
+      'version' => '0.0.0.1'
+    ];
+  }
+
+  public function getBlockName() {
+    return array(
+      'name' => 'pg_code',
+      'label' => 'Custom Code',
+    );
+  }
+
+  //function to create block
+  public function createBlock() {
+
+    $b = $this->modules->get('PageGridBlocks');
+    $blockName = $this->getBlockName()['name'];
+    $blockLabel = $this->getBlockName()['label'];
+    $blockIcon = $this->getModuleInfo()['icon'];
+
+    $b->createTemplate($blockName, $blockLabel, $blockIcon);
+
+    $f = $b->createField($blockName, 'FieldtypeTextarea', $blockName);
+    $f->label = $blockLabel;
+    $f->inputfieldClass = 'InputfieldTextarea';
+    $f->contentType = 1;
+    $f->stripTags = 0;
+    $f->rows = 30;
+    $f->textformatters = array();
+    $f->save();
+
+  }
+
+  public function ___upgrade($fromVersion, $toVersion) {
+    $this->createBlock();
+  }
+
+  public function ___install() {
+    $this->createBlock();
+  }
+
+  public function ___uninstall() {
+    $blockName = $this->getBlockName()['name'];
+    $this->modules->get('PageGridBlocks')->removeBlock($blockName);
+  }
+}
