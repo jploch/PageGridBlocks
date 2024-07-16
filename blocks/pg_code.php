@@ -1,8 +1,15 @@
 <?php
 
-namespace ProcessWire; ?>
+namespace ProcessWire;
+?>
 
-<?= $page->pg_code ?>
+<!-- reload iframe when ajax so we execute custom jsvascript code again -->
+<?php if ($pagegrid->isBackend() && $config->ajax) { ?>
+    <script>
+        let iframe = document.querySelector('.pg-iframe-canvas');
+        if(iframe) iframe.contentWindow.location.reload();
+    </script>
+<?php return; } ?>
 
 <?php if ($pagegrid->isBackend()) { ?>
     <style>
@@ -11,3 +18,6 @@ namespace ProcessWire; ?>
         }
     </style>
 <?php } ?>
+
+<!-- render code -->
+<?= $page->pg_code ?>
