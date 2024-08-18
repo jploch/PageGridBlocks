@@ -3,12 +3,9 @@
 namespace ProcessWire;
 ?>
 
-<!-- reload iframe when ajax so we execute custom jsvascript code again -->
+<!-- Ajax update can cause JS errors with custom code -->
 <?php if ($pagegrid->isBackend() && $config->ajax) { ?>
-    <script>
-        let iframe = document.querySelector('.pg-iframe-canvas');
-        if(iframe) iframe.contentWindow.location.reload();
-    </script>
+<code>Reload your browser to see your custom code changes.</code>
 <?php return; } ?>
 
 <?php if ($pagegrid->isBackend()) { ?>
