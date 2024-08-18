@@ -17,7 +17,7 @@ namespace ProcessWire;
 <?php } ?>
 
 <!-- render code -->
- <?php if(!$page->pg_code) { ?>
+ <?php if($pagegrid->isBackend() && !$page->pg_code) { ?>
     <code>Custom Code</code>
  <?php } ?>
 <?= $page->pg_code ?>
