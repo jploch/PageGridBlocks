@@ -50,7 +50,7 @@ $showHamburger .= 'px';
 <nav id="pg-nav" class="pg-nav" role="navigation">
 
     <!--mobile nav buttom-->
-    <button id="hamburger-button" class="hamburger hamburger--spin" type="button">
+    <button id="hamburger-button" class="hamburger-button hamburger hamburger--spin" type="button">
         <span class="hamburger-box">
             <span class="hamburger-inner hamburger-<?= $page->id ?>" data-class="hamburger-<?= $page->id ?>"></span>
         </span>
