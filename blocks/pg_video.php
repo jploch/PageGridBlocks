@@ -17,7 +17,7 @@ $link = $linkInternal ? $linkInternal : $page->pg_video_link_external;
   <?php } ?>
   <pg-edit page="<?= $page->id ?>" field="pg_video">
     <?php if ($page->pg_video) { ?>
-      <video title="<?= $page->pg_video->description ?>" <?= $page->pg_video_options ? $page->pg_video_options : 'muted loop' ?> data-autoplay="" webkit-playsinline playsinline class="<?= $lazyload ?> pg-media-responsive" preload="none" poster="<?= $page->pg_video_poster ? $page->pg_video_poster->url : '' ?>">
+      <video title="<?= $page->pg_video->description ?>" <?= $page->pg_video_options ? $page->pg_video_options : 'muted loop' ?> data-autoplay="" webkit-playsinline playsinline class="<?= $lazyload ?> <?= $pagegrid->getCssClasses($page, 'video') ?> pg-media-responsive" preload="none" poster="<?= $page->pg_video_poster ? $page->pg_video_poster->url : '' ?>">
         <source src="<?= $page->pg_video->url ?>" type="video/mp4">
         Your browser does not support the video tag.
       </video>

@@ -24,7 +24,7 @@ $showHamburger .= 'px';
             margin: 0;
             padding: 20px;
             display: flex;
-            transition: all 500ms cubic-bezier(0.645, 0.045, 0.355, 1);
+            transition: all 600ms cubic-bezier(0.645, 0.045, 0.355, 1);
             z-index: 98;
         }
 

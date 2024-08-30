@@ -21,7 +21,7 @@ $image = $page->getFormatted('pg_image');
             <?= $image->size(600, 0)->url ?> 600w,
             <?= $image->size(1000, 0)->url ?> 1000w,
             <?= $image->size(1500, 0)->url ?> 1500w,
-            <?= $image->size(2000, 0)->url ?> 2000w" class="lazyload pg-media-responsive" alt="<?= $image->description ?>" />
+            <?= $image->size(2000, 0)->url ?> 2000w" class="lazyload pg-media-responsive <?= $pagegrid->getCssClasses($page, 'img') ?>" alt="<?= $image->description ?>" />
             <?php } ?>
         <?php } ?>
     </pg-edit>
