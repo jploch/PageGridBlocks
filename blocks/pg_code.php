@@ -10,7 +10,7 @@ namespace ProcessWire;
 
 <?php if ($pagegrid->isBackend()) { ?>
     <style>
-        .pg-code *:not(.ui-resizable-handle) {
+        .pg-code *:not(.ui-resizable-handle, svg, path, g) {
             pointer-events: none !important;
         }
     </style>
