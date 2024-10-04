@@ -15,7 +15,7 @@ class BlocksImage extends WireData implements Module
       'autoload' => 'template=admin',
       'installs' => array('FileValidatorSvgSanitizer'),
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.5.4'
+      'version' => '0.0.5.5'
     ];
   }
 
@@ -55,6 +55,26 @@ class BlocksImage extends WireData implements Module
 
     $f = $b->createField($blockName . '_link_external', 'FieldtypeText', $blockName);
     $f->label = 'External Link';
+    $f->save();
+
+    $f = $b->createField($blockName . '_ratio_fieldset', 'FieldtypeFieldsetOpen', $blockName);
+    $f->label = 'Aspect Ratio';
+    $f->description = "Enter a ratio, e.g. 16:9 is you want to crop the image, leave these fields blank to retain the original size.";
+    $f->save();
+
+    $f = $b->createField($blockName . '_ratio_width', 'FieldtypeInteger', $blockName);
+    $f->label = 'Width';
+    $f->inputType = 'number';
+    $f->columnWidth = 50;
+    $f->save();
+
+    $f = $b->createField($blockName . '_ratio_height', 'FieldtypeInteger', $blockName);
+    $f->label = 'Height';
+    $f->inputType = 'number';
+    $f->columnWidth = 50;
+    $f->save();
+
+    $f = $b->createField($blockName . '_ratio_fieldset_close', 'FieldtypeFieldsetClose', $blockName);
     $f->save();
 
     $f = $b->createField($blockName . '_caption', 'FieldtypeTextarea', $blockName);
