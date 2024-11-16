@@ -13,7 +13,7 @@ class BlocksGallery extends WireData implements Module {
       'autoload' => 'template=admin',
       'installs' => array('FileValidatorSvgSanitizer'),
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.1.4'
+      'version' => '0.0.1.5'
     ];
   }
 
@@ -39,6 +39,8 @@ class BlocksGallery extends WireData implements Module {
     $f->extensions = 'gif jpg jpeg png svg';
     $f->maxFiles = 1;
     $f->outputFormat = 2;
+    if (!$f->maxWidth) $f->maxWidth = 3000;
+    if (!$f->maxHeight) $f->maxHeight = 3000;
     $f->save();
   }
 

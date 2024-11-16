@@ -13,7 +13,7 @@ class BlocksDatalist extends WireData implements Module {
       'autoload' => 'template=admin',
       'installs' => array('FieldtypeOptions', 'InputfieldTinyMCE'),
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.5.4'
+      'version' => '0.0.5.5'
     ];
   }
 
@@ -109,6 +109,8 @@ class BlocksDatalist extends WireData implements Module {
     $f->extensions = 'gif jpg jpeg png svg';
     $f->maxFiles = 1;
     $f->outputFormat = 2;
+    if (!$f->maxWidth) $f->maxWidth = 3000;
+    if (!$f->maxHeight) $f->maxHeight = 3000;
     $f->save();
     $this->modules->get('PageGridBlocks')->enableInlineEdit($f);
 

@@ -2,11 +2,9 @@
 
 namespace ProcessWire;
 
-class BlocksImage extends WireData implements Module
-{
+class BlocksImage extends WireData implements Module {
 
-  public static function getModuleInfo()
-  {
+  public static function getModuleInfo() {
     return [
       'title' => 'Image Block',
       'summary' => 'Installs Template and Fields for a PageGrid Block',
@@ -15,12 +13,11 @@ class BlocksImage extends WireData implements Module
       'autoload' => 'template=admin',
       'installs' => array('FileValidatorSvgSanitizer'),
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.5.5'
+      'version' => '0.0.5.7'
     ];
   }
 
-  public function getBlockName()
-  {
+  public function getBlockName() {
     return array(
       'name' => 'pg_image',
       'label' => 'Image',
@@ -28,8 +25,7 @@ class BlocksImage extends WireData implements Module
   }
 
   //function to create block
-  public function createBlock()
-  {
+  public function createBlock() {
     $b = $this->modules->get('PageGridBlocks');
     $blockName = $this->getBlockName()['name'];
     $blockLabel = $this->getBlockName()['label'];
@@ -42,6 +38,8 @@ class BlocksImage extends WireData implements Module
     $f->extensions = 'gif jpg jpeg png svg';
     $f->maxFiles = 1;
     $f->outputFormat = 2;
+    if (!$f->maxWidth) $f->maxWidth = 3000;
+    if (!$f->maxHeight) $f->maxHeight = 3000;
     $f->save();
 
     $f = $b->createField($blockName . '_link', 'FieldtypePage', $blockName);
@@ -59,7 +57,7 @@ class BlocksImage extends WireData implements Module
 
     $f = $b->createField($blockName . '_ratio_fieldset', 'FieldtypeFieldsetOpen', $blockName);
     $f->label = 'Aspect Ratio';
-    $f->description = "Enter a ratio, e.g. 16:9 is you want to crop the image, leave these fields blank to retain the original size.";
+    $f->description = "Enter a ratio, e.g. 16:9 if you want to crop the image, leave these fields blank to retain the original size.";
     $f->save();
 
     $f = $b->createField($blockName . '_ratio_width', 'FieldtypeInteger', $blockName);
@@ -90,23 +88,19 @@ class BlocksImage extends WireData implements Module
     $f->save();
 
     $this->modules->get('PageGridBlocks')->enableInlineEdit($f);
-
   }
 
-  public function ___upgrade($fromVersion, $toVersion)
-  {
+  public function ___upgrade($fromVersion, $toVersion) {
     $this->createBlock();
   }
 
-  public function ___install()
-  {
+  public function ___install() {
     //install module
     $this->modules->get('PageGridBlocks')->downloadModule('FileValidatorSvgSanitizer');
     $this->createBlock();
   }
 
-  public function ___uninstall()
-  {
+  public function ___uninstall() {
     $blockName = $this->getBlockName()['name'];
     $this->modules->get('PageGridBlocks')->removeBlock($blockName);
   }

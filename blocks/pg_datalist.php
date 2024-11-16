@@ -4,6 +4,16 @@ namespace ProcessWire;
 
 $parent = $page->pg_datalist;
 $limit = $page->pg_datalist_limit;
+$thumbnailSizes = [
+  [300, 0],
+  [600, 0],
+  [1000, 0],
+  [1500, 0],
+  [2000, 0],
+];
+
+//inside backend only create one image size
+if ($pagegrid->isBackend()) $thumbnailSizes = [[1000, 0]];
 
 if (!$parent || !$parent->id) {
   return;
@@ -56,15 +66,19 @@ if (count($page->pg_datalist_fields) && $parent->hasChildren()) {
               }
             }
           }
+          //build srcset string from sizes array
+          $srcset = '';
+          if ($image) {
+            foreach ($thumbnailSizes as $s) {
+              $srcset .= $image->size($s[0], $s[1])->url . " $s[0]w, ";
+            }
+            if ($srcset) $srcset = substr($srcset, 0, -2);
+          }
+
           ?>
           <!-- render image -->
           <?php if ($image && !$child->pg_datalist_video) { ?>
-            <img src="<?= $image->size(10, 0, ['quality' => 1])->url ?>" data-sizes="auto" data-srcset="
-            <?= $image->size(300, 0)->url ?> 300w,
-            <?= $image->size(600, 0)->url ?> 600w,
-            <?= $image->size(1000, 0)->url ?> 1000w,
-            <?= $image->size(1500, 0)->url ?> 1500w,
-            <?= $image->size(2000, 0)->url ?> 2000w" class="lazyload datalist-media pg-media-responsive" alt="<?= $image->description ?>" />
+            <img src="<?= $image->size(10, 0, ['quality' => 1])->url ?>" data-sizes="auto" data-srcset="<?= $srcset ?>" class="lazyload datalist-media pg-media-responsive" alt="<?= $image->description ?>" />
           <?php } ?>
 
           <?php if ($child->pg_datalist_video) {

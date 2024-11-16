@@ -10,7 +10,7 @@ class BlocksVideo extends WireData implements Module {
       'icon' => 'file-video-o',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.4.4'
+      'version' => '0.0.4.5'
     ];
   }
 
@@ -42,6 +42,8 @@ class BlocksVideo extends WireData implements Module {
     $f->label = 'Preview Image';
     $f->extensions = 'gif jpg jpeg png';
     $f->maxFiles = 1;
+    if (!$f->maxWidth) $f->maxWidth = 3000;
+    if (!$f->maxHeight) $f->maxHeight = 3000;
     $f->save();
 
     $f = $b->createField($blockName . '_options', 'FieldtypeText', $blockName);

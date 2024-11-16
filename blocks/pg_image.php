@@ -14,6 +14,9 @@ $sizes = [
     [2000, 0],
 ];
 
+//inside backend only generate one size to render faster (optional)
+if ($pagegrid->isBackend()) $sizes = [[1000, 0]];
+
 //take aspect ratio field into account
 if ($image && $page->pg_image_ratio_width && $page->pg_image_ratio_height) {
     $ratioWidth = $page->pg_image_ratio_width;
@@ -25,6 +28,8 @@ if ($image && $page->pg_image_ratio_width && $page->pg_image_ratio_height) {
         [1500, 1500 * $ratioHeight / $ratioWidth],
         [2000, 2000 * $ratioHeight / $ratioWidth],
     ];
+    //inside backend only generate one size to render faster (optional)
+    if ($pagegrid->isBackend()) $sizes = [[1000, 1000 * $ratioHeight / $ratioWidth]];
 }
 
 //build srcset string from sizes array
@@ -43,7 +48,7 @@ if ($image) {
     <pg-edit page="<?= $page->id ?>" field="pg_image">
         <?php if ($image) { ?>
             <?php if ($image->ext == "gif" || $image->ext == "GIF") { ?>
-                <img src="<?= $image->size(10, 0, ['quality' => 1])->url ?>" data-src="<?= $image->url ?>" class="lazyload pg-media-responsive" alt="<?= $image->description ?>" />
+                <img src="<?= $image->size(10, 0, ['quality' => 1])->url ?>" data-src="<?= $image->url ?>" class="lazyload pg-media-responsive <?= $pagegrid->getCssClasses($page, 'img') ?>" alt="<?= $image->description ?>" />
             <?php } else { ?>
                 <img src="<?= $image->size(10, 0, ['quality' => 1])->url ?>" data-sizes="auto" data-srcset="<?= $srcset ?>" class="lazyload pg-media-responsive <?= $pagegrid->getCssClasses($page, 'img') ?>" alt="<?= $image->description ?>" />
             <?php } ?>
