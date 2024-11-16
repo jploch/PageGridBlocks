@@ -1,18 +1,19 @@
 <?php
 
 namespace ProcessWire;
+
 if (!$templates->get('language')) return 'no language found!';
 if (!$modules->isInstalled('LanguageSupport')) return 'no language found!';
 if (!$modules->isInstalled('LanguageSupportPageNames')) return 'please install the LanguageSupportPageNames module!';
-if (!$page->parents()->get('template=pg_container')) return;
+if (!$page->parents()->get('template=pg_container')->id) return;
 
 // check if there are more languages then the default language
-$languageCount = count($pages->find('template=language'));
+$languageCount = count($pages->find('template=language, include=all'));
 if ($languageCount <= 1) return 'no language found!';
 
 // get main document page for this item ($page in this context is the block item)
 $mainPage = $pagegrid->getPage($page);
-if(!$mainPage || !$mainPage->id) return;
+if (!$mainPage || !$mainPage->id) return;
 
 foreach ($languages as $language) {
     $selected = '';
@@ -29,4 +30,3 @@ foreach ($languages as $language) {
     // output the option tag
     echo "<a href='$url' data-class='language-link' class='language-link $selected'>$language->title</a>";
 }
-

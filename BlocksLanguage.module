@@ -10,7 +10,7 @@ class BlocksLanguage extends WireData implements Module {
       'icon' => 'language',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.0.4'
+      'version' => '0.0.0.5'
     ];
   }
 
