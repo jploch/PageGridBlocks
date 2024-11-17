@@ -1,0 +1,88 @@
+<?php
+
+namespace ProcessWire;
+
+class BlocksLottie extends WireData implements Module {
+
+  public static function getModuleInfo() {
+    return [
+      'title' => 'Lottie Animation',
+      'summary' => 'Installs Template and Fields for a PageGrid Block',
+      'author' => 'Jan Ploch',
+      'icon' => 'caret-square-o-right',
+      'autoload' => 'template=admin',
+      'requires' => array('PageGridBlocks'),
+      'version' => '0.0.0.1'
+    ];
+  }
+
+  public function getBlockName() {
+    return array(
+      'name' => 'pg_lottie',
+      'label' => 'Lottie Animation',
+    );
+  }
+
+  //function to create block
+  public function createBlock() {
+
+    $b = $this->modules->get('PageGridBlocks');
+    $blockName = $this->getBlockName()['name'];
+    $blockLabel = $this->getBlockName()['label'];
+    $blockIcon = $this->getModuleInfo()['icon'];
+
+    $b->createTemplate($blockName, $blockLabel, $blockIcon);
+
+    $f = $b->createField($blockName, 'FieldtypeFile', $blockName);
+    $f->label = $blockLabel;
+    $f->extensions = 'json';
+    $f->maxFiles = 1;
+    $f->outputFormat = 2;
+    $f->descriptionRows = 0;
+    $f->save();
+
+    //event create select field
+    $f = $b->createField($blockName . '_event', 'FieldtypeOptions', $blockName);
+    $f->label = 'Event';
+    $f->inputfieldClass = 'InputfieldSelect';
+    $f->columnWidth = 90;
+    $f->save();
+
+    //needed to save options
+    $options = 'load|on load 
+      hover|on hover
+      click|on click';
+    $this->manager = new \ProcessWire\SelectableOptionManager();
+    $this->manager->deleteAllOptionsForField($f);
+    $this->manager->setOptionsString($f, $options, true);
+    $f->initValue = 1;
+    $f->required = 1;
+    $f->save();
+
+    //loop
+    $f = $b->createField($blockName . '_loop', 'FieldtypeCheckbox', $blockName);
+    $f->label = 'Loop';
+    $f->columnWidth = 100;
+    $f->save();
+
+    //reverse
+    $f = $b->createField($blockName . '_reverse', 'FieldtypeCheckbox', $blockName);
+    $f->label = 'Reverse';
+    $f->columnWidth = 100;
+    $f->showIf = $blockName . '_event>1';
+    $f->save();
+  }
+
+  public function ___upgrade($fromVersion, $toVersion) {
+    $this->createBlock();
+  }
+
+  public function ___install() {
+    $this->createBlock();
+  }
+
+  public function ___uninstall() {
+    $blockName = $this->getBlockName()['name'];
+    $this->modules->get('PageGridBlocks')->removeBlock($blockName);
+  }
+}
