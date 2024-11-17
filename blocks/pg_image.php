@@ -49,9 +49,7 @@ if ($image) {
         <?php if ($image) { ?>
             <?php if ($image->ext == "gif" || $image->ext == "GIF") { ?>
                 <img src="<?= $image->size(10, 0, ['quality' => 1])->url ?>" data-src="<?= $image->url ?>" class="lazyload pg-media-responsive <?= $pagegrid->getCssClasses($page, 'img') ?>" alt="<?= $image->description ?>" />
-                <?php } elseif ($image->ext == "svg") { ?>
-                    <div class="pg-media-responsive"><?= file_get_contents($image->filename) ?></div>
-                <?php } else { ?>
+            <?php } else { ?>
                 <img src="<?= $image->size(10, 0, ['quality' => 1])->url ?>" data-sizes="auto" data-srcset="<?= $srcset ?>" class="lazyload pg-media-responsive <?= $pagegrid->getCssClasses($page, 'img') ?>" alt="<?= $image->description ?>" />
             <?php } ?>
         <?php } ?>
