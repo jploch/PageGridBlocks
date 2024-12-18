@@ -3,9 +3,9 @@
 namespace ProcessWire;
 ?>
 
-<!-- Ajax update can cause JS errors with custom code -->
-<?php if ($pagegrid->isBackend() && $config->ajax && str_contains($page->pg_code, '<script')) { ?>
-<code>Reload your browser to see custom code changes.</code>
+<!-- Custom JS code can cause JS errors in backend, so we only load it for the frontend -->
+<?php if ($pagegrid->isBackend() && str_contains($page->pg_code, '<script')) { ?>
+<code>Custom JS code will only be executed on the frontend.</code>
 <?php return; } ?>
 
 <?php if ($pagegrid->isBackend()) { ?>
