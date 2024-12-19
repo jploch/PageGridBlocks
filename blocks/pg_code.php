@@ -15,12 +15,6 @@ namespace ProcessWire;
             pointer-events: none !important;
         }
     </style>
-<?php } else { ?>
-    <style>
-        .pg-item.pg-code {
-            display: none !important;
-        }
-    </style>
 <?php } ?>
 
 <!-- render code -->
