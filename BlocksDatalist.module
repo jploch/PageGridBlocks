@@ -13,7 +13,7 @@ class BlocksDatalist extends WireData implements Module {
       'autoload' => 'template=admin',
       'installs' => array('FieldtypeOptions', 'InputfieldTinyMCE'),
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.5.5'
+      'version' => '0.0.5.6'
     ];
   }
 
@@ -146,6 +146,10 @@ class BlocksDatalist extends WireData implements Module {
     $f->settingsJSON = '{"forced_root_block": "div", "newline_behavior": "linebreak", "valid_elements": "div,br"}';
     $f->save();
 
+    $this->modules->get('PageGridBlocks')->enableInlineEdit($f);
+
+    //enable title field for inline editing
+    $f = $this->fields->get('title');
     $this->modules->get('PageGridBlocks')->enableInlineEdit($f);
   }
 

@@ -10,7 +10,7 @@ class BlocksAccordion extends WireData implements Module {
       'icon' => 'plus',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.0.4'
+      'version' => '0.0.0.6'
     ];
   }
 
@@ -30,6 +30,10 @@ class BlocksAccordion extends WireData implements Module {
     $blockIcon = $this->getModuleInfo()['icon'];
 
     $b->createTemplate($blockName, $blockLabel, $blockIcon);
+
+    //enable title field for inline editing (title is used for accordion header)
+    $f = $this->fields->get('title');
+    $this->modules->get('PageGridBlocks')->enableInlineEdit($f);
   }
 
   public function ___upgrade($fromVersion, $toVersion) {
