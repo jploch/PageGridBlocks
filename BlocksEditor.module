@@ -43,7 +43,7 @@ class BlocksEditor extends WireData implements Module {
     $blockLabel = $this->getBlockName()['label'];
     $blockIcon = $this->getModuleInfo()['icon'];
 
-    $b->createTemplate($blockName, $blockLabel, $blockIcon);
+    $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
     $f = $b->createField($blockName, 'FieldtypeTextarea', $blockName);
     $f->inputfieldClass = 'InputfieldTinyMCE';
     $f->label = $blockLabel;

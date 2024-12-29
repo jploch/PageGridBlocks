@@ -2,7 +2,7 @@
 
 namespace ProcessWire;
 
-$pagegrid->renderOptions(array("children" => true));
+$pagegrid->renderOptions(["children" => true]);
 
 ?>
 

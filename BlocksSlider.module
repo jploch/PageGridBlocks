@@ -1,4 +1,6 @@
-<?php namespace ProcessWire;
+<?php
+
+namespace ProcessWire;
 
 class BlocksSlider extends WireData implements Module {
 
@@ -10,7 +12,7 @@ class BlocksSlider extends WireData implements Module {
       'icon' => 'ellipsis-h',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.1.3'
+      'version' => '0.0.1.5'
     ];
   }
 
@@ -21,23 +23,57 @@ class BlocksSlider extends WireData implements Module {
     );
   }
 
+  public function ready() {
+
+    wire()->addHookAfter('ProcessPageEdit::buildForm', function (HookEvent $e) {
+      // make sure we're editing a page and not a user
+      if ($e->process != 'ProcessPageEdit') return;
+
+      // RESTRICT BY TEMPLATE
+      $page = $e->object->getPage();
+      if ($page->template != 'pg_slider') return;
+
+      $form = $e->return;
+
+      $contentTab = $form->children->get('id=ProcessPageEditContent');
+      $childrenTab = $form->children->get('id=ProcessPageEditChildren');
+      // $childrenTab = $form->children->get('id=ProcessPageEditChildren');
+
+      // if page template is set noSettings = true, $settings will not exist
+      if (!$childrenTab) return;
+
+      // MOVE FIELD TO CHILDREN TAB
+      $title = $contentTab->get('pg_slider_autoplay');
+      if (!$title) return;
+      $contentTab->remove('pg_slider_autoplay');
+      $childrenTab->append($title);
+    });
+  }
+
   //function to create block
   public function createBlock() {
 
     $b = $this->modules->get('PageGridBlocks');
     $blockName = $this->getBlockName()['name'];
     $blockLabel = $this->getBlockName()['label'];
-    $blockIcon = $this->getModuleInfo()['icon'];  
+    $blockIcon = $this->getModuleInfo()['icon'];
 
-    $b->createTemplate($blockName, $blockLabel, $blockIcon);
+    $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
+    //set allowed templates for children if not defined already
+    if (!count($t->childTemplates) && $this->templates->get('pg_image')->id && $this->templates->get('pg_video')->id && $this->templates->get('pg_group')->id) {
+      $t->childTemplates = [$this->templates->get('pg_image')->id, $this->templates->get('pg_video')->id, $this->templates->get('pg_group')->id];
+      $t->save();
+    }
 
     $f = $b->createField('pg_slider_autoplay', 'FieldtypeTextarea', $blockName);
     $f->label = 'Autoplay';
-    $f->note = 'False, or number for milliseconds';
+    $f->description = 'Delay in milliseconds. Leave empty to disable autoplay.';
     $f->inputfieldClass = 'InputfieldText';
+    $f->inputType = 'number';
     $f->contentType = 1;
+    $f->collapsed = 1;
+    $f->columnWidth = 99;
     $f->save();
-
   }
 
   public function ___upgrade($fromVersion, $toVersion) {
@@ -52,5 +88,4 @@ class BlocksSlider extends WireData implements Module {
     $blockName = $this->getBlockName()['name'];
     $this->modules->get('PageGridBlocks')->removeBlock($blockName);
   }
-  
 }

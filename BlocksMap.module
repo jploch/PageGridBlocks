@@ -30,7 +30,7 @@ class BlocksMap extends WireData implements Module {
     $blockLabel = $this->getBlockName()['label'];
     $blockIcon = $this->getModuleInfo()['icon'];
     
-    $b->createTemplate($blockName, $blockLabel, $blockIcon);
+    $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
 
     $f = $b->createField($blockName, 'FieldtypeLeafletMapMarker', $blockName);
     $f->label = $blockLabel;

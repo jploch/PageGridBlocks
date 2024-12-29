@@ -32,7 +32,7 @@ class BlocksNavigation extends WireData implements Module {
     $blockLabel = $this->getBlockName()['label'];
     $blockIcon = $this->getModuleInfo()['icon'];
 
-    $b->createTemplate($blockName, $blockLabel, $blockIcon);
+    $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
 
     $f = $b->createField($blockName . '_showHamburger', 'FieldtypeInteger', $blockName);
     $f->label = 'Mobile menu breakpoint';

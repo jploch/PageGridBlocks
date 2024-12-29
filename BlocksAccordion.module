@@ -1,4 +1,6 @@
-<?php namespace ProcessWire;
+<?php
+
+namespace ProcessWire;
 
 class BlocksAccordion extends WireData implements Module {
 
@@ -10,7 +12,7 @@ class BlocksAccordion extends WireData implements Module {
       'icon' => 'plus',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.0.6'
+      'version' => '0.0.0.7'
     ];
   }
 
@@ -29,7 +31,12 @@ class BlocksAccordion extends WireData implements Module {
     $blockLabel = $this->getBlockName()['label'];
     $blockIcon = $this->getModuleInfo()['icon'];
 
-    $b->createTemplate($blockName, $blockLabel, $blockIcon);
+    $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
+    //set allowed templates for children if not defined already
+    if (!count($t->childTemplates) && $this->templates->get('pg_editor')->id && $this->templates->get('pg_group')->id) {
+      $t->childTemplates = [$this->templates->get('pg_editor')->id, $this->templates->get('pg_group')->id];
+      $t->save();
+    }
 
     //enable title field for inline editing (title is used for accordion header)
     $f = $this->fields->get('title');

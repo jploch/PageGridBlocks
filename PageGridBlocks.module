@@ -12,7 +12,7 @@ class PageGridBlocks extends WireData implements Module {
       'icon' => 'cubes',
       "href" => "https://github.com/jploch/PageGridBlocks",
       'autoload' => 'template=admin',
-      'version' => '1.0.51'
+      'version' => '1.0.54'
     ];
   }
 
@@ -70,6 +70,7 @@ class PageGridBlocks extends WireData implements Module {
         $pgField->save();
       }
     }
+    return $t;
   }
 
   //helper to create field

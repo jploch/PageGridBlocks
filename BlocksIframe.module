@@ -29,7 +29,7 @@ class BlocksIframe extends WireData implements Module {
     $blockLabel = $this->getBlockName()['label'];
     $blockIcon = $this->getModuleInfo()['icon'];
 
-    $b->createTemplate($blockName, $blockLabel, $blockIcon);
+    $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
 
     $f = $b->createField($blockName . '_url', 'FieldtypeText', $blockName);
     $f->label = 'Url';

@@ -3,7 +3,7 @@
 namespace ProcessWire;
 
 //allow children
-$pagegrid->renderOptions(['page' => $page, "children" => true, "autoTitle" => false]);
+$pagegrid->renderOptions(["children" => true, "autoTitle" => false]);
 ?>
 
 <?php foreach ($page->children('sort=sort') as $item) : ?>

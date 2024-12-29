@@ -41,7 +41,7 @@ class BlocksText extends WireData implements Module {
     //enable editor json module settings
     $b->enableEditorSettings();
 
-    $b->createTemplate($blockName, $blockLabel, $blockIcon);
+    $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
 
     $f = $b->createField($blockName, 'FieldtypeTextarea', $blockName);
     $f->label = $blockLabel;
