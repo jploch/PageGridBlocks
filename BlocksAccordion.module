@@ -12,7 +12,7 @@ class BlocksAccordion extends WireData implements Module {
       'icon' => 'plus',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.0.7'
+      'version' => '0.0.0.8'
     ];
   }
 
@@ -33,10 +33,10 @@ class BlocksAccordion extends WireData implements Module {
 
     $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
     //set allowed templates for children if not defined already
-    if (!count($t->childTemplates) && $this->templates->get('pg_editor')->id && $this->templates->get('pg_group')->id) {
-      $t->childTemplates = [$this->templates->get('pg_editor')->id, $this->templates->get('pg_group')->id];
-      $t->save();
-    }
+    // if (!count($t->childTemplates) && $this->templates->get('pg_editor')->id && $this->templates->get('pg_group')->id) {
+    //   $t->childTemplates = [$this->templates->get('pg_editor')->id, $this->templates->get('pg_group')->id];
+    //   $t->save();
+    // }
 
     //enable title field for inline editing (title is used for accordion header)
     $f = $this->fields->get('title');

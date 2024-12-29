@@ -12,7 +12,7 @@ class BlocksSlider extends WireData implements Module {
       'icon' => 'ellipsis-h',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.1.5'
+      'version' => '0.0.1.6'
     ];
   }
 
@@ -60,10 +60,10 @@ class BlocksSlider extends WireData implements Module {
 
     $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
     //set allowed templates for children if not defined already
-    if (!count($t->childTemplates) && $this->templates->get('pg_image')->id && $this->templates->get('pg_video')->id && $this->templates->get('pg_group')->id) {
-      $t->childTemplates = [$this->templates->get('pg_image')->id, $this->templates->get('pg_video')->id, $this->templates->get('pg_group')->id];
-      $t->save();
-    }
+    // if (!count($t->childTemplates) && $this->templates->get('pg_image')->id && $this->templates->get('pg_video')->id && $this->templates->get('pg_group')->id) {
+    //   $t->childTemplates = [$this->templates->get('pg_image')->id, $this->templates->get('pg_video')->id, $this->templates->get('pg_group')->id];
+    //   $t->save();
+    // }
 
     $f = $b->createField('pg_slider_autoplay', 'FieldtypeTextarea', $blockName);
     $f->label = 'Autoplay';
