@@ -2,8 +2,7 @@
 
 namespace ProcessWire;
 
-$pagegrid->renderOptions(["children" => true]);
-
+$pagegrid->renderOptions(["children" => true, "reloadScript" => false]);
 ?>
 
 <div class="glide" data-autoplay="<?= $page->pg_slider_autoplay ?>">
