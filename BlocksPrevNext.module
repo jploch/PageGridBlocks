@@ -4,13 +4,13 @@ class BlocksPrevNext extends WireData implements Module {
 
   public static function getModuleInfo() {
     return [
-      'title' => 'Previous/Next Page',
+      'title' => 'Previous/Next Block',
       'summary' => 'Installs Template and Fields for a PageGrid Block',
       'author' => 'Jan Ploch',
       'icon' => 'exchange',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.1.3'
+      'version' => '0.0.1.4'
     ];
   }
 

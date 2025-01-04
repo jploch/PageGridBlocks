@@ -2,7 +2,7 @@
 
 namespace ProcessWire;
 
-$pagegrid->renderOptions(["children" => true, "reloadScript" => true]);
+$pagegrid->renderOptions(["children" => ['pg_image', 'pg_video', 'pg_editor', 'pg_group'], 'childrenTab' => 'append', 'childrenLabel' => 'Slides', "reloadScript" => true]);
 ?>
 
 <div class="glide" data-autoplay="<?= $page->pg_slider_autoplay ?>">
@@ -14,7 +14,6 @@ $pagegrid->renderOptions(["children" => true, "reloadScript" => true]);
                     <?php echo $pagegrid->renderItem($item); ?>
                 </li>
             <?php }; ?>
-
         </ul>
     </div>
     <div class="glide__arrows" data-glide-el="controls">

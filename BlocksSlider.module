@@ -12,7 +12,7 @@ class BlocksSlider extends WireData implements Module {
       'icon' => 'ellipsis-h',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.1.8'
+      'version' => '0.0.1.10'
     ];
   }
 
@@ -21,33 +21,6 @@ class BlocksSlider extends WireData implements Module {
       'name' => 'pg_slider',
       'label' => 'Slider',
     );
-  }
-
-  public function ready() {
-
-    wire()->addHookAfter('ProcessPageEdit::buildForm', function (HookEvent $e) {
-      // make sure we're editing a page and not a user
-      if ($e->process != 'ProcessPageEdit') return;
-
-      // RESTRICT BY TEMPLATE
-      $page = $e->object->getPage();
-      if ($page->template != 'pg_slider') return;
-
-      $form = $e->return;
-
-      $contentTab = $form->children->get('id=ProcessPageEditContent');
-      $childrenTab = $form->children->get('id=ProcessPageEditChildren');
-      // $childrenTab = $form->children->get('id=ProcessPageEditChildren');
-
-      // if page template is set noSettings = true, $settings will not exist
-      if (!$childrenTab) return;
-
-      // MOVE FIELD TO CHILDREN TAB
-      $title = $contentTab->get('pg_slider_autoplay');
-      if (!$title) return;
-      $contentTab->remove('pg_slider_autoplay');
-      $childrenTab->append($title);
-    });
   }
 
   //function to create block
@@ -59,11 +32,6 @@ class BlocksSlider extends WireData implements Module {
     $blockIcon = $this->getModuleInfo()['icon'];
 
     $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
-    //set allowed templates for children if not defined already
-    // if (!count($t->childTemplates) && $this->templates->get('pg_image')->id && $this->templates->get('pg_video')->id && $this->templates->get('pg_group')->id) {
-    //   $t->childTemplates = [$this->templates->get('pg_image')->id, $this->templates->get('pg_video')->id, $this->templates->get('pg_group')->id];
-    //   $t->save();
-    // }
 
     $f = $b->createField('pg_slider_autoplay', 'FieldtypeTextarea', $blockName);
     $f->label = 'Autoplay';
