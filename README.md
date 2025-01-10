@@ -5,13 +5,13 @@ This module installs templates and fields for PAGEGRID blocks. PAGEGRID is a fri
 After installing the "PageGridBlocks" module, go to "Setup > PAGEGRID" in your ProcessWire admin and select the blocks you want to use. The module will load the block template files from "site/modules/PageGridBlocks/blocks". If you want to modify any of the files, copy them to your "site/templates/blocks" folder.
 
 ### Try PAGEGRID for free  
-The PAGEGRID Module is not free software. However, you can try PAGEGRID and the site profile on your local machine or on a test server as long as you need to make sure it is the right tool for your next project. … and when you’re convinced, [buy your license](https://page-grid.com/buy).
+The PAGEGRID Module is not free software. However, you can try PAGEGRID on your local machine or on a test server as long as you need to make sure it is the right tool for your next project. … and when you’re convinced, [buy your license](https://page-grid.com/buy).
 
 You can use this PageGridBlocks Module for free. 
 
 ## Requirements
 - Process Wire 3.0.210 or greater
-- PAGEGRID Fieldtype Module
+- [PAGEGRID Fieldtype Module](https://github.com/jploch/FieldtypePageGrid/)
 
 ## Installation
 1. Go to “Modules > Site > Add New“ in your admin
