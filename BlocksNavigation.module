@@ -13,7 +13,7 @@ class BlocksNavigation extends WireData implements Module {
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
       'installs' => array('FieldtypeRepeater'),
-      'version' => '0.0.12.7'
+      'version' => '0.0.12.8'
     ];
   }
 
@@ -77,7 +77,7 @@ class BlocksNavigation extends WireData implements Module {
 
       foreach ($depth_structure as $page_id => $nested_children) {
         $page = $repeater_items->get("id=$page_id");
-        $linkedPage = $page->pg_navigation_link ? $this->pages->get($page->pg_navigation_link) : 0;
+        $linkedPage = $page->pg_navigation_link && !str_starts_with($page->pg_navigation_link, '#') ? $this->pages->get($page->pg_navigation_link) : 0;
         $currentDepth = $page->depth + 1;
         $activeClass = $linkedPage && $linkedPage->id && wire('page')->id == $linkedPage->id ? ' nav-li-active' : '';
         $activeClassA = $activeClass ? ' nav-active' : '';
