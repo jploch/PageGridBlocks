@@ -12,7 +12,7 @@ class PageGridBlocks extends WireData implements Module {
       'icon' => 'cubes',
       "href" => "https://github.com/jploch/PageGridBlocks",
       'autoload' => 'template=admin',
-      'version' => '1.0.60'
+      'version' => '1.0.61'
     ];
   }
 
@@ -86,16 +86,16 @@ class PageGridBlocks extends WireData implements Module {
       $f->type = $this->modules->get($type);
       $f->tags = 'Blocks';
       $f->save();
-      if ($tName) {
-        $t = wire('templates')->get($tName);
-        $inserAfterField = $t->fieldgroup->fields->get($inserAfter);
-        if ($inserAfter && $inserAfterField->id) {
-          $t->fieldgroup->insertAfter($f, $inserAfterField);
-        } else {
-          $t->fieldgroup->add($f);
-        }
-        $t->fieldgroup->save();
+    }
+    if ($tName && $f->id) {
+      $t = wire('templates')->get($tName);
+      $inserAfterField = $t->fieldgroup->fields->get($inserAfter);
+      if ($inserAfter && $inserAfterField->id) {
+        $t->fieldgroup->insertAfter($f, $inserAfterField);
+      } else {
+        $t->fieldgroup->add($f);
       }
+      $t->fieldgroup->save();
     }
 
     return $f;

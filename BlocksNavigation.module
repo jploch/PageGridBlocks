@@ -13,7 +13,7 @@ class BlocksNavigation extends WireData implements Module {
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
       'installs' => array('FieldtypeRepeater'),
-      'version' => '0.0.12.6'
+      'version' => '0.0.12.7'
     ];
   }
 
@@ -22,6 +22,140 @@ class BlocksNavigation extends WireData implements Module {
       'name' => 'pg_navigation',
       'label' => 'Navigation',
     );
+  }
+
+  public function ready() {
+    // sets tree checkbox to checked on new pages
+    $this->addHookAfter('Pages::saveReady', function (HookEvent $event) {
+      /** @var Page $page */
+      $page = $event->arguments(0);
+      if ($page->isNew() && $page->template->name == 'pg_navigation') {
+        $page->pg_navigation_collapse = 1;
+      }
+    });
+
+    //smart URL field that suggests urls
+    $this->addHookBefore('InputfieldText::render', function (HookEvent $event) {
+      $inputfield = $event->object;
+      $field = $inputfield->hasField;
+      if ($field && $field->name === 'pg_navigation_link') {
+        $options = '';
+        $home = wire('pages')->get('/');
+        // $options .= "<option label='$home->title' value='$home->path'>";
+        foreach ($home->find('include=hidden, template!=admin, hasParent!=admin') as $p) {
+          $options .= "<option label='$p->title' value='$p->path'>";
+        }
+        $inputfield->attr('list', 'my-list');
+        $inputfield->appendMarkup = <<<EOT
+    <datalist id="my-list">$options</datalist>
+    EOT;
+      }
+    });
+  }
+
+  //called from block template: get custom links repeater_structure with depth levels
+  public function getDepthStructure($p) {
+    $rpa = $p->pg_navigation_links;
+    $repeater_structure = [];
+    $path = [];
+    foreach ($rpa as $item) {
+      /* @var RepeaterPage $item */
+      $depth = $item->getDepth();
+      while ($depth < count($path)) array_pop($path);
+      $path[$depth] = $item->id;
+      $reference = &$repeater_structure;
+      foreach ($path as $key) $reference = &$reference[$key];
+    }
+    return $repeater_structure;
+  }
+
+  // Output a nested unordered list from a depth structure array
+  public function outputNestedList($depth_structure, $repeater_items, $collapse = 0, $currentDepth = 1, $wrapper = 0) {
+    $out = "";
+    if (is_array($depth_structure) && count($depth_structure)) {
+      if ($wrapper) $out = "<ul class='ul-level-$currentDepth'>";
+
+      foreach ($depth_structure as $page_id => $nested_children) {
+        $page = $repeater_items->get("id=$page_id");
+        $linkedPage = $page->pg_navigation_link ? $this->pages->get($page->pg_navigation_link) : 0;
+        $currentDepth = $page->depth + 1;
+        $activeClass = $linkedPage && $linkedPage->id && wire('page')->id == $linkedPage->id ? ' nav-li-active' : '';
+        $activeClassA = $activeClass ? ' nav-active' : '';
+        $link = $page->pg_navigation_link;
+        $title = $page->pg_navigation_link_label ? $page->pg_navigation_link_label : '';
+        $collapseClass = $collapse ? '' : ' nav-expanded';
+        $acticeUrl = wire('page')->url;
+        $activeRepeater = $acticeUrl && $repeater_items->findOne("pg_navigation_link=$acticeUrl") ? $repeater_items->findOne("pg_navigation_link=$acticeUrl")->id : 0;
+        $activeClassParent = is_array($nested_children) && count($nested_children) && $this->multiKeyExists($activeRepeater, $nested_children) ? ' nav-li-parent-active level-' . $currentDepth . '-active' : '';
+        $activeClassParentA = $activeClassParent ? ' nav-parent-active' : '';
+        $expandIcon = is_array($nested_children) && count($nested_children) ? '<span class="nav-expand' . $collapseClass . '" onclick="this.classList.toggle(\'nav-expanded\');"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26.4 44.2"><path d="M2.1 2.1l20 20-20 20"/></svg></span>' : '';
+        if ($linkedPage && $linkedPage->id && !$title) $title = $linkedPage->title;
+        if ($linkedPage && $linkedPage->id) $link = $linkedPage->url;
+
+        $out .= "<li class='nav-li level-$currentDepth nav-$page->id$activeClass$activeClassParent'><a href='$link' class='nav-a$activeClassA$activeClassParentA nav-a-$page->id'>$title</a>$expandIcon";
+        // Go recursive if there are nested children
+        if (is_array($nested_children)) $out .= $this->outputNestedList($nested_children, $repeater_items, $collapse, $currentDepth, 1);
+        $out .= "</li>";
+      }
+      if ($wrapper) $out .= "</ul>";
+    }
+    return $out;
+  }
+
+  function multiKeyExists($key, $arr) {
+
+    // is in base array?
+    if (array_key_exists($key, $arr)) {
+      return true;
+    }
+
+    // check arrays contained in this array
+    foreach ($arr as $element) {
+      if (is_array($element)) {
+        if ($this->multiKeyExists($key, $element)) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  public function renderPageTree(Page $rootPage, $maxDepth = 0, $collapse = 0, $currentDepth = 0) {
+
+    if ($maxDepth == 0) return '';
+    if (!$rootPage || !$rootPage->id || !$rootPage->viewable()) return '';
+    if ($maxDepth > 0 && $currentDepth >= $maxDepth) return '';
+
+    $out = '';
+    $children = $rootPage->children();
+    $newDepth = $currentDepth + 1;
+    $hasChildren = $children->count > 0;
+    $expandIcon = '';
+    $activeClass = wire('page')->id == $rootPage->id ? ' li-nav-active' : '';
+    $activeClassA = $activeClass ? ' nav-active' : '';
+    $activeClassParent = $hasChildren && $rootPage->id != 1 && $rootPage->findOne('id=' . wire('page')->id)->id ? ' nav-li-parent-active level-' . $currentDepth . '-active' : '';
+    $activeClassParentA = $activeClassParent ? ' nav-parent-active' : '';
+    $collapseClass = $collapse ? '' : ' nav-expanded';
+    if ($hasChildren && $newDepth != $maxDepth) $expandIcon = '<span class="nav-expand' . $collapseClass . '" onclick="this.classList.toggle(\'nav-expanded\');"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26.4 44.2"><path d="M2.1 2.1l20 20-20 20"/></svg></span>';
+
+    if ($currentDepth) {
+      $out = "<li class='nav-li level-$currentDepth nav-$rootPage->id$activeClass$activeClassParent'><a href='$rootPage->url' class='nav-a$activeClassA$activeClassParentA nav-a-$rootPage->id'>$rootPage->title</a>$expandIcon";
+    }
+
+    if ($hasChildren) {
+      if ($currentDepth && $newDepth != $maxDepth) $out .= "<ul class='ul-level-$newDepth'>"; // Start the nested UL *inside* the LI
+      foreach ($children as $child) {
+        $out .= $this->renderPageTree($child, $maxDepth, $collapse, $newDepth);
+      }
+      if ($currentDepth && $newDepth != $maxDepth) $out .= "</ul>"; // Close the nested UL
+    }
+
+    if ($currentDepth) {
+      $out .= "</li>"; // Close the LI
+    }
+
+    return $out;
   }
 
   //function to create block
@@ -34,20 +168,114 @@ class BlocksNavigation extends WireData implements Module {
 
     $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
 
-    $f = $b->createField($blockName . '_showHamburger', 'FieldtypeInteger', $blockName);
-    $f->label = 'Mobile menu breakpoint';
-    $f->description = 'Screen size in pixel, when the mobile menu icon should be shown instead of the menu links (Default: 640).';
-    $f->placeholder = '640';
+    //mobile settings
+    $f = $b->createField($blockName . '_mobile_fieldset', 'FieldtypeFieldsetOpen', $blockName);
+    $f->label = 'Mobile Navigation';
+    $f->collapsed = 1;
     $f->save();
 
+    $f = $b->createField($blockName . '_showHamburger', 'FieldtypeInteger', $blockName, $blockName . '_mobile_fieldset');
+    $f->label = 'Menu Breakpoint';
+    $f->description = 'Screen size in pixel, when the mobile menu icon should be shown.';
+    $f->placeholder = '640';
+    $f->columnWidth = 99;
+    $f->collapsed = 0;
+    $f->save();
+
+    $f = $b->createField($blockName . '_collapse', 'FieldtypeCheckbox', $blockName, $blockName . '_showHamburger');
+    $f->label = 'Collapse Submenu';
+    $f->save();
+
+    // $f = $b->createField($blockName . '_hamburger_sublinks', 'FieldtypeOptions', $blockName, $blockName . '_showHamburger');
+    // $f->label = 'Collapse Sublinks';
+    // $f->description = 'When the menu has sublinks, you can collapse them on mobile.';
+    // $f->columnWidth = 99;
+    // $f->collapsed = 0;
+    // $f->save();
+
+    // //needed to save options
+    // $options = '1|Show
+    //  2|Collapse
+    //  0|Hide
+    //  ';
+    // $this->manager = new \ProcessWire\SelectableOptionManager();
+    // $this->manager->deleteAllOptionsForField($f);
+    // $this->manager->setOptionsString($f, $options, true);
+    // $f->initValue = 1;
+    // $f->required = 1;
+    // $f->save();
+
+    $f = $b->createField($blockName . '_mobile_fieldset_close', 'FieldtypeFieldsetClose', $blockName, $blockName . '_collapse');
+    $f->save();
+
+    //page links
+    $f = $b->createField($blockName . '_pages_fieldset', 'FieldtypeFieldsetOpen', $blockName, $blockName . '_mobile_fieldset_close');
+    $f->label = 'Page Links';
+    $f->description = 'Generate links to your published, non-hidden pages automatically.';
+    $f->collapsed = 1;
+    $f->save();
+
+    // $f = $b->createField($blockName . '_pages_hide', 'FieldtypeCheckbox', $blockName, '_pages_fieldset');
+    // $f->label = 'Show Page Links';
+    // $f->save();
+
+    // $f = $b->createField($blockName . '_pages_level', 'FieldtypeOptions', $blockName, $blockName . '_pages_hide');
+    // $f->label = 'Nesting Level';
+    // $f->description = 'Level of nested pages or 0 to disable';
+    // $f->columnWidth = 99;
+    // $f->placeholder = '1';
+    // // $f->showIf = $blockName . '_pages_hide!=1';
+    // $f->save();
+
+    // //needed to save options
+    // $options = '2|Show root pages
+    //   3|Show root and child pages
+    //   99|Show all pages
+    //   0|Disable
+    //   ';
+    // $this->manager = new \ProcessWire\SelectableOptionManager();
+    // $this->manager->deleteAllOptionsForField($f);
+    // $this->manager->setOptionsString($f, $options, true);
+    // $f->initValue = 1;
+    // $f->required = 1;
+    // $f->collapsed = 0;
+    // $f->save();
+
+    $f = $b->createField($blockName . '_pages_level', 'FieldtypeInteger', $blockName);
+    $f->label = 'Page Levels';
+    $f->description = '0 = disable page links.';
+    $f->inputType = 'number';
+    $f->zeroNotEmpty = 1;
+    $f->placeholder = '1';
+    $f->columnWidth = 99;
+    $f->save();
+
+    $f = $b->createField($blockName . '_pages_root', 'FieldtypePage', $blockName);
+    $f->label = 'Root Page';
+    $f->description = 'The list will be generated from the children of the page you select here.';
+    $f->inputfield = 'InputfieldPageListSelect';
+    $f->derefAsPage = 1;
+    $f->parent_id = 1;
+    $f->labelFieldName = 'title';
+    $f->contentType = 1;
+    // $f->showIf = $blockName . '_pages_level!=0';
+    $f->collapsed = 2;
+    $f->save();
+
+    $f = $b->createField($blockName . '_pages_fieldset_close', 'FieldtypeFieldsetClose', $blockName);
+    $f->save();
+
+    //custom links links
     $f = $b->createField($blockName . '_link_label', 'FieldtypeText');
     $f->label = 'Label';
     $f->placeholder = $f->label;
     $f->hideFieldTitle = 1;
     $f->contentType = 1;
     $f->stripTags = 1;
+    $f->rows = 1;
     $f->textformatters = array(0 => 'TextformatterEntities');
     $f->save();
+    $this->modules->get('PageGridBlocks')->enableInlineEdit($f);
 
     $f = $b->createField($blockName . '_link', 'FieldtypeText');
     $f->label = 'URL';
@@ -58,11 +286,18 @@ class BlocksNavigation extends WireData implements Module {
     $f->textformatters = array(0 => 'TextformatterEntities');
     $f->save();
 
-    $f = $b->createRepeater($blockName . '_links', $blockName . '_link_label ' . $blockName . '_link', 'Links','', $blockName);
-    $f->description = 'This block generates links to your published, non-hidden pages automatically. Optionally you can add more links here.';
+    $f = $b->createRepeater($blockName . '_links', $blockName . '_link_label ' . $blockName . '_link', 'Custom Links', '', $blockName);
+    $f->label = 'Custom Links';
+    $f->repeaterDepth = 99;
+    $f->familyFriendly = 1;
+    $f->description = 'You can change item depth by dragging the item right or left.';
     $f->repeaterTitle = '{pg_navigation_link_label}';
     $f->save();
-    
+
+    //put custom links repeater as last field
+    $inserAfterField = $t->fieldgroup->fields->get($blockName . '_pages_fieldset_close');
+    $t->fieldgroup->insertAfter($f, $inserAfterField);
+    $t->fieldgroup->save();
   }
 
   public function ___upgrade($fromVersion, $toVersion) {
