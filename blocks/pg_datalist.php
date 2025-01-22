@@ -96,7 +96,7 @@ if (count($page->pg_datalist_fields) && $parent->hasChildren()) {
 
       <!-- title -->
       <?php if ($item->value === 'title') { ?>
-        <h3 class="datalist-item-title datalist-item-title-<?= $child->id ?>" data-class="datalist-item-title"><?= $child->title ?></h3>
+        <h3 class="datalist-item-title datalist-item-title-<?= $child->id ?>" data-class="datalist-item-title"><?= $child->edit('title') ?></h3>
       <?php } ?>
       <!-- date -->
       <?php if ($item->value === 'date' && $child->pg_datalist_date) { ?>

@@ -8,7 +8,7 @@ $pagegrid->renderOptions(["children" => true, 'childrenLabel' => 'Accordion Item
 
 <?php foreach ($page->children('sort=sort') as $item) : ?>
     <div class="accordion-header" data-class="accordion-header">
-        <div class="accordion-headline" data-class="accordion-headline"><?= $item->title ?></div>
+        <div class="accordion-headline" data-class="accordion-headline"><?= $item->edit('title') ?></div>
         <div class="accordion-icon" data-class="accordion-icon">
             <div class="accordion-icon-inner" data-class="accordion-icon-inner"></div>
             <div class="accordion-icon-inner" data-class="accordion-icon-inner"></div>

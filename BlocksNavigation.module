@@ -13,7 +13,7 @@ class BlocksNavigation extends WireData implements Module {
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
       'installs' => array('FieldtypeRepeater'),
-      'version' => '0.0.12.9'
+      'version' => '0.0.12.10'
     ];
   }
 
@@ -137,10 +137,11 @@ class BlocksNavigation extends WireData implements Module {
     $activeClassParent = $hasChildren && $rootPage->id != 1 && $rootPage->findOne('id=' . wire('page')->id)->id ? ' nav-li-parent-active level-' . $currentDepth . '-active' : '';
     $activeClassParentA = $activeClassParent ? ' nav-parent-active' : '';
     $collapseClass = $collapse ? '' : ' nav-expanded';
+    $title = $rootPage->edit('title');
     if ($hasChildren && $newDepth != $maxDepth) $expandIcon = '<span class="nav-expand' . $collapseClass . '" onclick="this.classList.toggle(\'nav-expanded\');"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26.4 44.2"><path d="M2.1 2.1l20 20-20 20"/></svg></span>';
 
     if ($currentDepth) {
-      $out = "<li class='nav-li level-$currentDepth nav-$rootPage->id$activeClass$activeClassParent'><a href='$rootPage->url' class='nav-a$activeClassA$activeClassParentA nav-a-$rootPage->id'>$rootPage->title</a>$expandIcon";
+      $out = "<li class='nav-li level-$currentDepth nav-$rootPage->id$activeClass$activeClassParent'><a href='$rootPage->url' class='nav-a$activeClassA$activeClassParentA nav-a-$rootPage->id'>$title</a>$expandIcon";
     }
 
     if ($hasChildren) {

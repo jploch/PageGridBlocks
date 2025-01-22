@@ -13,7 +13,7 @@ class BlocksEditor extends WireData implements Module {
       'autoload' => 'template=admin',
       'installs' => array('InputfieldTinyMCE'),
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.10.0'
+      'version' => '0.0.10.2'
     ];
   }
 
@@ -34,9 +34,20 @@ class BlocksEditor extends WireData implements Module {
       $this->modules->refresh();
     }
 
-    //set font picker plugin
+    //add global settings to InputfieldTinyMCE
     $tinymce = $this->modules->get("InputfieldTinyMCE");
-    $tinymce->addPlugin("/site/modules/PageGridBlocks/tinymce_plugins/iconpicker/iconpicker.js");
+
+    //set extra css selectors
+    if (!$tinymce->styleFormatsCSS) {
+      $data = $this->modules->getConfig('InputfieldTinyMCE');
+      $data['styleFormatsCSS'] = '#Inline span.span{} #Blocks a.button{}';
+      $this->modules->saveConfig('InputfieldTinyMCE', $data);
+    }
+
+    //set font picker plugin
+    if (!$tinymce->extPluginOpts) {
+      $tinymce->addPlugin("/site/modules/PageGridBlocks/tinymce_plugins/iconpicker/iconpicker.js");
+    }
 
     $b = $this->modules->get('PageGridBlocks');
     $blockName = $this->getBlockName()['name'];
@@ -55,8 +66,8 @@ class BlocksEditor extends WireData implements Module {
     $f->extPlugins = array(0 => '/site/modules/PageGridBlocks/tinymce_plugins/iconpicker/iconpicker.js');
     $f->save();
 
-    $this->modules->get('PageGridBlocks')->enableInlineEdit($f);
-    $this->modules->get('PageGridBlocks')->setPlaceholderText($f, 'Click twice to edit this text');
+    $b->enableInlineEdit($f);
+    $b->setPlaceholderText($f, 'Click twice to edit this text');
   }
 
   public function ___upgrade($fromVersion, $toVersion) {
