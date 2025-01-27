@@ -13,7 +13,7 @@ class BlocksNavigation extends WireData implements Module {
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
       'installs' => array('FieldtypeRepeater'),
-      'version' => '0.0.12.11'
+      'version' => '0.0.12.12'
     ];
   }
 
@@ -132,7 +132,7 @@ class BlocksNavigation extends WireData implements Module {
     $newDepth = $currentDepth + 1;
     $hasChildren = $children->count > 0;
     $expandIcon = '';
-    $activeClass = wire('page')->id == $rootPage->id ? ' li-nav-active' : '';
+    $activeClass = wire('page')->id == $rootPage->id ? ' nav-li-active' : '';
     $activeClassA = $activeClass ? ' nav-active' : '';
     $activeClassParent = $hasChildren && $rootPage->id != 1 && $rootPage->findOne('id=' . wire('page')->id)->id ? ' nav-li-parent-active level-' . $currentDepth . '-active' : '';
     $activeClassParentA = $activeClassParent ? ' nav-parent-active' : '';
