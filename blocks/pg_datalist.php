@@ -40,7 +40,7 @@ if (count($page->pg_datalist_fields) && $parent->hasChildren()) {
   //needed for ajax modal to work, make sure output formating is on after saving children
   $child->of(true);
 ?>
-  <a class="datalist-item-<?= $child->id ?> datalist-item pg-item pg-item-resizable pg-item-draggable <?= $pagegrid->getCssClasses($page, 'datalist-item-' . $child->id) ?>" data-class="datalist-item-<?= $child->id ?>" data-page="<?= $child->id ?>" href="<?= $child->url() ?>">
+  <a id="datalist-item-<?= $child->id ?>" class="datalist-item-<?= $child->id ?> datalist-item pg-item pg-item-resizable pg-item-draggable <?= $pagegrid->getCssClasses($page, 'datalist-item-' . $child->id) ?>" data-class="datalist-item-<?= $child->id ?>" data-page="<?= $child->id ?>" href="<?= $child->url() ?>">
 
     <?= $pagegrid->renderItemHeader($child, $child->title) ?>
 
