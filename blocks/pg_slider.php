@@ -1,7 +1,7 @@
 <?php
 
 namespace ProcessWire;
-
+//render options (https://page-grid.com/docs/#/developer/blocks?id=render-options)
 $pagegrid->renderOptions(["children" => ['pg_image', 'pg_video', 'pg_editor', 'pg_group'], 'childrenTab' => 'append', 'childrenLabel' => 'Slides']);
 ?>
 

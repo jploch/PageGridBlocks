@@ -2,7 +2,7 @@
 
 namespace ProcessWire;
 
-//allow children
+//allow children (https://page-grid.com/docs/#/developer/blocks?id=render-options)
 $pagegrid->renderOptions(["children" => true, 'childrenLabel' => 'Accordion Items', 'childrenTab' => 'append', "autoTitle" => false]);
 ?>
 

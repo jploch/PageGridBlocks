@@ -1,4 +1,6 @@
-<?php namespace ProcessWire;
+<?php
+
+namespace ProcessWire;
 
 class BlocksGroup extends WireData implements Module {
 
@@ -10,7 +12,7 @@ class BlocksGroup extends WireData implements Module {
       'icon' => 'folder-open',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.2.1'
+      'version' => '0.0.2.5'
     ];
   }
 
@@ -21,6 +23,44 @@ class BlocksGroup extends WireData implements Module {
     );
   }
 
+  public function ready() {
+    //smart URL field that suggests urls
+    // $this->addHookBefore('InputfieldText::render', function (HookEvent $event) {
+    $this->addHookAfter("ProcessPageEdit::buildForm", function (HookEvent $event) {
+
+      $page = $event->object->getPage();
+      if (!$page || !$page->id) return;
+      if ($page->template->name != 'pg_group') return;
+
+      $form = $event->return;
+      $linkPage = $page->pg_group_link_page ? $this->pages->get($page->pg_group_link_page) : 0;
+      $linkField = $form->find('id=Inputfield_pg_group_link')->first();
+
+      if ($linkField) {
+        $options = '';
+        $home = wire('pages')->get('/');
+        // $options .= "<option label='$home->title' value='$home->path'>";
+        foreach ($home->find('include=hidden, template!=admin, hasParent!=admin') as $p) {
+          $options .= "<option label='$p->title' value='$p->path'>";
+        }
+        $linkField->attr('list', 'my-list');
+        $linkField->appendMarkup = <<<EOT
+      <datalist id="my-list">$options</datalist>
+      EOT;
+        if ($linkPage && $linkPage->id) $linkField->value = $linkPage->url;
+      }
+    });
+
+    $this->addHookAfter('Pages::save', function (HookEvent $event) {
+      $page = $event->arguments(0);
+      if ($page->template->name != 'pg_group') return;
+      $linkPage = $page->pg_group_link && str_starts_with($page->pg_group_link, '/') ? $this->pages->get($page->pg_group_link) : 0;
+      $linkPageId = $linkPage && $linkPage->id ? $linkPage->id : '';
+      $page->pg_group_link_page = $linkPageId;
+      $page->save('pg_group_link_page', ['quiet' => true]);
+    });
+  }
+
   //function to create block
   public function createBlock() {
 
@@ -28,9 +68,26 @@ class BlocksGroup extends WireData implements Module {
     $blockName = $this->getBlockName()['name'];
     $blockLabel = $this->getBlockName()['label'];
     $blockIcon = $this->getModuleInfo()['icon'];
-    
+
     $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
 
+    $f = $b->createField($blockName . '_link', 'FieldtypeText', $blockName);
+    $f->label = 'Link';
+    $f->icon = 'link'; 
+    $f->description = "Optional link for group and it's content. Changes group wrapper HTML tag to A.";
+    $f->placeholder = $f->label;
+    $f->collapsed = 2; // hide field
+    $f->contentType = 1;
+    $f->stripTags = 1;
+    $f->textformatters = array(0 => 'TextformatterEntities');
+    $f->save();
+
+    //hidden field to save linked page id (to keep page even when url is changing)
+    $f = $b->createField($blockName . '_link_page', 'FieldtypeInteger', $blockName);
+    $f->inputType = 'number';
+    $f->contentType = 1;
+    $f->collapsed = 4; // hide field
+    $f->save();
   }
 
   public function ___upgrade($fromVersion, $toVersion) {
@@ -45,5 +102,4 @@ class BlocksGroup extends WireData implements Module {
     $blockName = $this->getBlockName()['name'];
     $this->modules->get('PageGridBlocks')->removeBlock($blockName);
   }
-  
 }

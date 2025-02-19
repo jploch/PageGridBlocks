@@ -42,7 +42,9 @@ if (count($page->pg_datalist_fields) && $parent->hasChildren()) {
 ?>
   <a id="datalist-item-<?= $child->id ?>" class="datalist-item-<?= $child->id ?> datalist-item pg-item pg-item-resizable pg-item-draggable <?= $pagegrid->getCssClasses($page, 'datalist-item-' . $child->id) ?>" data-class="datalist-item-<?= $child->id ?>" data-page="<?= $child->id ?>" href="<?= $child->url() ?>">
 
+    <?php $child->edit(false) ?>
     <?= $pagegrid->renderItemHeader($child, $child->title) ?>
+    <?php $child->edit(true) ?>
 
     <?php if (!count($page->pg_datalist_fields)) echo '<h3>' . $child->title . '</h3>' ?>
 
