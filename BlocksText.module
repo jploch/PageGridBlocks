@@ -13,7 +13,7 @@ class BlocksText extends WireData implements Module {
       'autoload' => 'template=admin',
       'installs' => array('InputfieldTinyMCE'),
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.10.0'
+      'version' => '0.0.10.2'
     ];
   }
 
@@ -53,6 +53,7 @@ class BlocksText extends WireData implements Module {
     $f->toolbar = 'pwlink';
     $f->plugins = array(0 => 'link', 1 => 'lists', 2 => 'pwlink');
     $f->settingsJSON = '{"forced_root_block": "div", "newline_behavior": "linebreak", "valid_elements": "div,a[id|class|href|target],br"}';
+    $f->toggles = [0 => 16]; // remove inline styles on save
     $f->save();
 
     $this->modules->get('PageGridBlocks')->enableInlineEdit($f);
