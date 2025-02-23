@@ -1,4 +1,6 @@
-<?php namespace ProcessWire;
+<?php
+
+namespace ProcessWire;
 
 class BlocksIframe extends WireData implements Module {
 
@@ -10,7 +12,7 @@ class BlocksIframe extends WireData implements Module {
       'icon' => 'file-code-o',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.1.0'
+      'version' => '0.0.1.1'
     ];
   }
 
@@ -53,13 +55,13 @@ class BlocksIframe extends WireData implements Module {
     $f->label = 'Ratio';
     $f->inputfieldClass = 'InputfieldSelect';
     $f->save();
-    $this->manager = new \ProcessWire\SelectableOptionManager();
     $options = '1:1|1:1 
     16:9|16:9
     4:3|4:3';
+    $this->manager = new \ProcessWire\SelectableOptionManager();
+    $this->manager->deleteAllOptionsForField($f);
     $this->manager->setOptionsString($f, $options, true);
     $f->save();
-    
   }
 
   public function ___upgrade($fromVersion, $toVersion) {
@@ -74,5 +76,4 @@ class BlocksIframe extends WireData implements Module {
     $blockName = $this->getBlockName()['name'];
     $this->modules->get('PageGridBlocks')->removeBlock($blockName);
   }
-  
 }
