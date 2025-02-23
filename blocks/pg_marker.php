@@ -1,10 +1,13 @@
-<?php namespace ProcessWire;?>
+<?php
 
-<div data-class="marker-pin-<?= $page->id ; ?>" class="marker-pin-<?= $page->id ; ?> marker-pin pg-style-panel">
-  <span data-class="marker-number" class="marker-number pg-style-panel">
-    <?= $page->pg_marker_label; ?>
-  </span>
-  <div data-class="marker-content" class="marker-content pg-style-panel">
-    <?= $page->pg_marker; ?>
+namespace ProcessWire; ?>
+<div pg-wrapper>
+  <div data-class="marker-pin-<?= $page->id; ?>" class="marker-pin-<?= $page->id; ?> marker-pin pg-style-panel">
+    <span data-class="marker-number" class="marker-number pg-style-panel">
+      <?= $page->pg_marker_label; ?>
+    </span>
+    <div data-class="marker-content" class="marker-content pg-style-panel">
+      <?= $page->pg_marker; ?>
+    </div>
   </div>
 </div>

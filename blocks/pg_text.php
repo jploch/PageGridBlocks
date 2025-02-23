@@ -1,7 +1,7 @@
-<?php namespace ProcessWire;
+<?php
 
-//allow to change tag
-$pagegrid->renderOptions(['tag' => 'h2', 'tags' => 'h1 h2 h3 h4 h5 h6 p']);
-?>
+namespace ProcessWire; ?>
 
-<?= $page->pg_text ?>
+<h2 pg-tags="h1 h2 h3 h4 h5 h6 p" pg-wrapper>
+    <?= $page->pg_text ?>
+</h2>

@@ -88,15 +88,13 @@ $customLinksMarkup = $modules->get('BlocksNavigation')->outputNestedList($repeat
     }
 </style>
 
-<nav id="pg-nav" class="pg-nav" role="navigation">
-
+<nav class="pg-nav" role="navigation" pg-wrapper>
     <!--mobile nav buttom-->
     <button id="hamburger-button" class="hamburger-button hamburger hamburger--spin" type="button" onclick="document.querySelector('body').classList.toggle('nav-active');this.classList.toggle('is-active');">
         <span class="hamburger-box">
             <span class="hamburger-inner hamburger-<?= $page->id ?>" data-class="hamburger-<?= $page->id ?>"></span>
         </span>
     </button>
-
     <!--Main nav-->
     <div id="pg-nav-menu" class="pg-nav-menu" data-class="pg-nav-menu">
         <ul id="nav-main" class="nav-main ul-level-1" data-class="nav-main">
@@ -104,5 +102,4 @@ $customLinksMarkup = $modules->get('BlocksNavigation')->outputNestedList($repeat
             <?= $customLinksMarkup ?>
         </ul>
     </div>
-
 </nav>

@@ -2,9 +2,9 @@
 
 namespace ProcessWire;
 
-if (!$page->pg_iframe_url){
-   echo '<div class="pg-iframe-empty-placeholder"></div>';
-   return;
+if (!$page->pg_iframe_url) {
+    echo '<div class="pg-iframe-empty-placeholder"></div>';
+    return;
 };
 
 $vendor = '';
@@ -52,4 +52,6 @@ if (!$pagegrid->isBackend() && !$thumbnail) $thumbnail = ' ';
 
 ?>
 
-<div class="lazyframe" data-vendor="<?= $vendor ?>" data-title="<?= $title ?>" data-thumbnail="<?= $thumbnail ?>" data-ratio="<?= $page->pg_iframe_ratio->title ?>" data-src="<?= $page->pg_iframe_url ?>"></div>
+<div pg-wrapper>
+    <div class="lazyframe" data-vendor="<?= $vendor ?>" data-title="<?= $title ?>" data-thumbnail="<?= $thumbnail ?>" data-ratio="<?= $page->pg_iframe_ratio->title ?>" data-src="<?= $page->pg_iframe_url ?>"></div>
+</div>
