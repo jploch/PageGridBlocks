@@ -7,7 +7,7 @@ $link = $page->pg_group_link_page ? $pages->get($page->pg_group_link_page)->url 
 $linkTarget = $link && substr($link, 0, 4) == "http" ? "target=blank" : "";
 ?>
 
-<!-- set wrapper -->
+<!-- Learn more about PAGEGRID's wrapper element: https://page-grid.com/docs/#/developer/blocks?id=wrapper-element -->
 <?php if ($link) { ?>
   <a href="<?= $link ?>" <?= $linkTarget ?> pg-children="true" pg-children-tab="append" pg-wrapper>
   <?php } else { ?>

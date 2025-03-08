@@ -1,7 +1,7 @@
 <?php
 
 namespace ProcessWire; ?>
-
+<!-- Learn more about PAGEGRID's wrapper element: https://page-grid.com/docs/#/developer/blocks?id=wrapper-element -->
 <div pg-children="true" pg-children-label="Accordion Items" pg-children-tab="append" pg-autotitle="false" pg-wrapper>
     <?php foreach ($page->children('sort=sort') as $item) : ?>
         <div class="accordion-header" data-class="accordion-header">
