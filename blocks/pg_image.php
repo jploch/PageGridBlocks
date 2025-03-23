@@ -61,6 +61,6 @@ if ($image) {
     <?php } ?>
 
     <?php if ($caption) { ?>
-        <div class="caption" data-class="caption"><?= $caption ?></div>
+        <div class="caption caption-<?= $page->id ?> <?= $pagegrid->getCssClasses($page, 'caption-' . $page->id) ?>" data-class="caption-<?= $page->id ?>"><?= $caption ?></div>
     <?php } ?>
 </div>
