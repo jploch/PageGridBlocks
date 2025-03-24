@@ -8,6 +8,7 @@ if (strpos($page->pg_video_options, 'controls') !== false) {
 
 $linkInternal = $page->pg_video_link ? $page->pg_video_link->url() : '';
 $link = $linkInternal ? $linkInternal : $page->pg_video_link_external;
+$caption = $page->pg_video_caption && strip_tags($page->pg_video_caption) ? $sanitizer->textarea(nl2br($page->pg_video_caption), ['allowableTags' => '<div><br><a>']) : '';
 
 ?>
 <div pg-wrapper>
@@ -24,8 +25,8 @@ $link = $linkInternal ? $linkInternal : $page->pg_video_link_external;
       <?php } ?>
     </pg-edit>
 
-    <?php if ($page->pg_video_caption && strip_tags($page->pg_video_caption)) { ?>
-      <div class="caption" data-class="caption"><?= $page->pg_video_caption ?></div>
+    <?php if ($caption) { ?>
+      <div class="caption caption-<?= $page->id ?> <?= $pagegrid->getCssClasses($page, 'caption-' . $page->id) ?>" data-class="caption-<?= $page->id ?>"><?= $caption ?></div>
     <?php } ?>
     <?php if ($link && $page->pg_video) { ?>
     </a>
