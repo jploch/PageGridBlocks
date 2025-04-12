@@ -21,7 +21,7 @@ You can use this PageGridBlocks Module for free.
 5. On the following screen, click “Install Now“
 
 ## Modify
-To modify a block, copy the corresponding file from ‘‘‘site/modules/PageGridBlocks/blocks‘‘‘ to your ‘‘‘site/templates/blocks‘‘‘ folder.
+To modify a block, copy the corresponding file from “site/modules/PageGridBlocks/blocks“ to your “site/templates/blocks“ folder.
 
 ### Contribute
 
