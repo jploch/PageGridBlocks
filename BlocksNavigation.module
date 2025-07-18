@@ -13,7 +13,7 @@ class BlocksNavigation extends WireData implements Module {
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
       'installs' => array('FieldtypeRepeater'),
-      'version' => '0.0.12.16'
+      'version' => '0.0.12.17'
     ];
   }
 
@@ -80,7 +80,7 @@ class BlocksNavigation extends WireData implements Module {
         $linkedPage = $page->pg_navigation_link && str_starts_with($page->pg_navigation_link, '/') ? $this->pages->get($page->pg_navigation_link) : 0;
         $currentDepth = $page->depth + 1;
         $activeClass = $linkedPage && $linkedPage->id && wire('page')->id == $linkedPage->id ? ' nav-li-active' : '';
-        $activeClassA = $activeClass ? ' nav-active' : '';
+        $activeClassA = $activeClass ? ' nav-a-active' : '';
         $link = $page->pg_navigation_link;
         $title = $page->pg_navigation_link_label ? $page->pg_navigation_link_label : '';
         $collapseClass = $collapse ? '' : ' nav-expanded';
@@ -133,7 +133,7 @@ class BlocksNavigation extends WireData implements Module {
     $hasChildren = $children->count > 0;
     $expandIcon = '';
     $activeClass = wire('page')->id == $rootPage->id ? ' nav-li-active' : '';
-    $activeClassA = $activeClass ? ' nav-active' : '';
+    $activeClassA = $activeClass ? ' nav-a-active' : '';
     $activeClassParent = $hasChildren && $rootPage->id != 1 && $rootPage->findOne('id=' . wire('page')->id)->id ? ' nav-li-parent-active level-' . $currentDepth . '-active' : '';
     $activeClassParentA = $activeClassParent ? ' nav-parent-active' : '';
     $collapseClass = $collapse ? '' : ' nav-expanded';
