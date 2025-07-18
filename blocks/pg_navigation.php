@@ -24,7 +24,7 @@ $customLinksMarkup = $modules->get('BlocksNavigation')->outputNestedList($repeat
 <!-- hamburger styles defined here so breakpoint var can be set -->
 <style>
     @media (max-width: <?= $showHamburger ?>) {
-        .pg-nav-menu {
+        :where(.pg-navigation-<?= $page->id ?>) .pg-nav-menu {
             background-color: #fff;
             position: fixed;
             top: 0;
@@ -40,17 +40,17 @@ $customLinksMarkup = $modules->get('BlocksNavigation')->outputNestedList($repeat
             z-index: 98;
         }
 
-        .pg-nav li {
+        :where(.pg-navigation-<?= $page->id ?>) li {
             margin: 0;
             padding: 0;
         }
 
-        .pg-nav ul {
+        :where(.pg-navigation-<?= $page->id ?>) ul {
             display: block;
         }
 
-        :where(.pg-nav) ul ul ul,
-        :where(.pg-nav) ul ul {
+        :where(.pg-navigation-<?= $page->id ?>) ul ul ul,
+        :where(.pg-navigation-<?= $page->id ?>) ul ul {
             position: relative;
             left: 0;
             top: 0;
@@ -59,29 +59,29 @@ $customLinksMarkup = $modules->get('BlocksNavigation')->outputNestedList($repeat
             visibility: visible;
         }
 
-        :where(.pg-nav) a {
+        :where(.pg-navigation-<?= $page->id ?>) a {
             padding: 10px 0 10px 15px;
             display: inline-block;
         }
 
-        :where(.pg-nav) ul ul a {
+        :where(.pg-navigation-<?= $page->id ?>) ul ul a {
             padding: 8px 0 8px 15px;
         }
 
-        .pg-nav .hamburger {
+        :where(.pg-navigation-<?= $page->id ?>) .hamburger {
             display: block;
         }
 
-        :where(.pg-nav) .nav-expand {
+        :where(.pg-navigation-<?= $page->id ?>) .nav-expand {
             display: block;
             opacity: 0.5;
         }
 
-        :where(.pg-nav) li:has(> .nav-expand) ul {
+        :where(.pg-navigation-<?= $page->id ?>) li:has(> .nav-expand) ul {
             display: none;
         }
 
-        :where(.pg-nav) li:has(> .nav-expanded)>ul {
+        :where(.pg-navigation-<?= $page->id ?>) li:has(> .nav-expanded)>ul {
             display: block;
         }
 

@@ -4,7 +4,24 @@ namespace ProcessWire;
 
 $linkInternal = $page->pg_image_link ? $page->pg_image_link->url() : '';
 $link = $linkInternal ? $linkInternal : $page->pg_image_link_external;
-$caption = $page->pg_image_caption && strip_tags($page->pg_image_caption) ? $sanitizer->textarea(nl2br($page->pg_image_caption), ['allowableTags' => '<div><br><a>']) : '';
+// $caption = $page->pg_image_caption && strip_tags($page->pg_image_caption) ? $sanitizer->textarea(nl2br($page->pg_image_caption), ['allowableTags' => '<div><br><a><h3><b><strong>']) : '';
+$caption = $page->pg_image_caption;
+
+//for the caption it can be good to have classes on sub items (eg. to overwrite general p tags)
+if ($caption) {
+    $dom = new \DOMDocument;
+    $dom->loadHTML($caption);
+    $tags = $dom->getElementsByTagName('p');
+    foreach ($tags as $tag) {
+        $space = '';
+        if ($tag->getAttribute('class')) $space = ' ';
+        $tag->setAttribute('class', $tag->getAttribute('class') . $space . 'caption-text');
+        $tag->setAttribute('data-class', 'caption-text');
+    }
+    $caption = $dom->saveHTML();
+}
+//END for the caption it can be good to have classes on sub items (eg. to overwrite general p tags)
+
 $ratioWidth = $page->pg_image_ratio_width;
 $ratioHeight = $page->pg_image_ratio_height;
 $image = $page->getFormatted('pg_image');
