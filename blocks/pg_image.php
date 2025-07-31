@@ -10,7 +10,7 @@ $caption = $page->pg_image_caption;
 //for the caption it can be good to have classes on sub items (eg. to overwrite general p tags)
 if ($caption) {
     $dom = new \DOMDocument;
-    $dom->loadHTML($caption);
+    @$dom->loadHTML('<?xml encoding="utf-8" ?><html>' . $caption . '</html>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
     $tags = $dom->getElementsByTagName('p');
     foreach ($tags as $tag) {
         $space = '';
@@ -19,6 +19,10 @@ if ($caption) {
         $tag->setAttribute('data-class', 'caption-text');
     }
     $caption = $dom->saveHTML();
+    //remove html wrapper before return
+    $caption = str_replace("</html>", "", $caption);
+    $caption = str_replace("<html>", "", $caption);
+    $caption = str_replace('<?xml encoding="utf-8" ?>', '', $caption);
 }
 //END for the caption it can be good to have classes on sub items (eg. to overwrite general p tags)
 
