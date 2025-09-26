@@ -37,7 +37,7 @@ if (count($page->pg_datalist_fields) && $parent->hasChildren()) {
 ?>
 
 <div pg-wrapper>
-  <?php foreach ($parent->children("sort=sort, limit=$limit") as $child) {
+  <?php foreach ($parent->children("limit=$limit") as $child) {
     //needed for ajax modal to work, make sure output formating is on after saving children
     $child->of(true);
   ?>

@@ -90,7 +90,13 @@ $customLinksMarkup = $modules->get('BlocksNavigation')->outputNestedList($repeat
 
 <nav class="pg-nav" role="navigation" pg-wrapper>
     <!--mobile nav buttom-->
-    <button id="hamburger-button" class="hamburger-button hamburger hamburger--spin" type="button" onclick="document.querySelector('body').classList.toggle('nav-active');this.classList.toggle('is-active');">
+    <button id="hamburger-button" aria-haspopup="true" aria-expanded="false" aria-label="Menu" aria-controls="pg-nav-menu" class="hamburger-button hamburger hamburger--spin" type="button"
+        onclick="
+            document.querySelector('body').classList.toggle('nav-active');
+            this.classList.toggle('is-active');
+            this.setAttribute('aria-expanded', this.classList.contains('is-active') ? 'true' : 'false');
+        "
+    >
         <span class="hamburger-box">
             <span class="hamburger-inner hamburger-<?= $page->id ?>" data-class="hamburger-<?= $page->id ?>"></span>
         </span>

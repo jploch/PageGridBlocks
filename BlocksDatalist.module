@@ -13,7 +13,7 @@ class BlocksDatalist extends WireData implements Module {
       'autoload' => 'template=admin',
       'installs' => array('FieldtypeOptions', 'InputfieldTinyMCE'),
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.5.10'
+      'version' => '0.0.5.11'
     ];
   }
 
@@ -43,7 +43,7 @@ class BlocksDatalist extends WireData implements Module {
     //create ref field
     $f = $b->createField($blockName, 'FieldtypePage', $blockName);
     $f->label = 'Parent Page';
-    $f->description = 'The list will be generated from the children of the parent page you select here.';
+    $f->description = 'The list will be generated from the children of the parent page you select here. To control the sort order go to the page tree, edit this parent page and click on the children option.';
     $f->inputfield = 'InputfieldPageListSelect';
     $f->derefAsPage = 1;
     $f->parent_id = 1;
