@@ -5,7 +5,11 @@ namespace ProcessWire;
 $linkInternal = $page->pg_image_link ? $page->pg_image_link->url() : '';
 $link = $linkInternal ? $linkInternal : $page->pg_image_link_external;
 // $caption = $page->pg_image_caption && strip_tags($page->pg_image_caption) ? $sanitizer->textarea(nl2br($page->pg_image_caption), ['allowableTags' => '<div><br><a><h3><b><strong>']) : '';
-$caption = $page->pg_image_caption;
+$caption = $page->pg_image_caption ? $page->pg_image_caption : '';
+
+//sometimes tinyMCE puts empty tags inside caption, so we use this to check if empty
+$pattern = '~^(?:\xC2\xA0|&nbsp;| |\r|\n|\t)*(.*?)(?:\xC2\xA0|&nbsp;| |\r|\n|\t)*$~';
+$hasCaption = strip_tags(preg_replace($pattern, '$1', $caption));
 
 //for the caption it can be good to have classes on sub items (eg. to overwrite general p tags)
 if ($caption) {
@@ -81,7 +85,7 @@ if ($image) {
         </a>
     <?php } ?>
 
-    <?php if ($caption) { ?>
+    <?php if ($hasCaption) { ?>
         <div class="caption caption-<?= $page->id ?> <?= $pagegrid->getCssClasses($page, 'caption-' . $page->id) ?>" data-class="caption-<?= $page->id ?>"><?= $caption ?></div>
     <?php } ?>
 </div>
