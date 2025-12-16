@@ -13,7 +13,7 @@ class BlocksDatalist extends WireData implements Module {
       'autoload' => 'template=admin',
       'installs' => array('FieldtypeOptions', 'InputfieldTinyMCE'),
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.5.11'
+      'version' => '0.0.5.12'
     ];
   }
 
@@ -39,6 +39,8 @@ class BlocksDatalist extends WireData implements Module {
     $blockIcon = $this->getModuleInfo()['icon'];
 
     $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
+    $t->noChildren = 1;
+    $t->save();
 
     //create ref field
     $f = $b->createField($blockName, 'FieldtypePage', $blockName);

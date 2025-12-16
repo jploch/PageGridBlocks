@@ -13,7 +13,7 @@ class BlocksText extends WireData implements Module {
       'autoload' => 'template=admin',
       'installs' => array('InputfieldTinyMCE'),
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.10.3'
+      'version' => '0.0.10.4'
     ];
   }
 
@@ -42,6 +42,8 @@ class BlocksText extends WireData implements Module {
     $b->enableEditorSettings();
 
     $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
+    $t->noChildren = 1;
+    $t->save();
 
     $f = $b->createField($blockName, 'FieldtypeTextarea', $blockName);
     $f->label = $blockLabel;

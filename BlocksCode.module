@@ -12,7 +12,7 @@ class BlocksCode extends WireData implements Module {
       'icon' => 'code',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.0.11'
+      'version' => '0.0.0.12'
     ];
   }
 
@@ -32,6 +32,8 @@ class BlocksCode extends WireData implements Module {
     $blockIcon = $this->getModuleInfo()['icon'];
 
     $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
+    $t->noChildren = 1;
+    $t->save();
 
     $f = $b->createField($blockName, 'FieldtypeTextarea', $blockName);
     $f->label = $blockLabel;
@@ -41,7 +43,6 @@ class BlocksCode extends WireData implements Module {
     $f->rows = 30;
     $f->textformatters = array();
     $f->save();
-
   }
 
   public function ___upgrade($fromVersion, $toVersion) {

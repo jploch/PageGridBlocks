@@ -12,7 +12,7 @@ class BlocksLottie extends WireData implements Module {
       'icon' => 'caret-square-o-right',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.0.2'
+      'version' => '0.0.0.3'
     ];
   }
 
@@ -32,6 +32,8 @@ class BlocksLottie extends WireData implements Module {
     $blockIcon = $this->getModuleInfo()['icon'];
 
     $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
+    $t->noChildren = 1;
+    $t->save();
 
     $f = $b->createField($blockName, 'FieldtypeFile', $blockName);
     $f->label = $blockLabel;

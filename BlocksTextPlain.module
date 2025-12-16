@@ -12,7 +12,7 @@ class BlocksTextPlain extends WireData implements Module {
       'icon' => 'i-cursor',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.7.1'
+      'version' => '0.0.7.2'
     ];
   }
 
@@ -32,6 +32,8 @@ class BlocksTextPlain extends WireData implements Module {
     $blockIcon = $this->getModuleInfo()['icon'];
 
     $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
+    $t->noChildren = 1;
+    $t->save();
 
     $f = $b->createField($blockName, 'FieldtypeTextarea', $blockName);
     $f->label = $blockLabel;
@@ -43,7 +45,6 @@ class BlocksTextPlain extends WireData implements Module {
 
     $this->modules->get('PageGridBlocks')->enableInlineEdit($f);
     $this->modules->get('PageGridBlocks')->setPlaceholderText($f, 'Click twice to edit this text');
-
   }
 
   public function ___upgrade($fromVersion, $toVersion) {

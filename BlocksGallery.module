@@ -13,7 +13,7 @@ class BlocksGallery extends WireData implements Module {
       'autoload' => 'template=admin',
       'installs' => array('FileValidatorSvgSanitizer'),
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.1.6'
+      'version' => '0.0.1.7'
     ];
   }
 
@@ -33,6 +33,8 @@ class BlocksGallery extends WireData implements Module {
     $blockIcon = $this->getModuleInfo()['icon'];
 
     $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
+    $t->noChildren = 1;
+    $t->save();
 
     $f = $b->createField($blockName, 'FieldtypeImage', $blockName);
     $f->label = $blockLabel;

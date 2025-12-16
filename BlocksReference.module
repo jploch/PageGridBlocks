@@ -1,4 +1,6 @@
-<?php namespace ProcessWire;
+<?php
+
+namespace ProcessWire;
 
 class BlocksReference extends WireData implements Module {
 
@@ -10,7 +12,7 @@ class BlocksReference extends WireData implements Module {
       'icon' => 'link',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.1.0'
+      'version' => '0.0.1.1'
     ];
   }
 
@@ -30,6 +32,8 @@ class BlocksReference extends WireData implements Module {
     $blockIcon = $this->getModuleInfo()['icon'];
 
     $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
+    $t->noChildren = 1;
+    $t->save();
 
     $f = $b->createField($blockName, 'FieldtypePage', $blockName);
     $f->label = $blockLabel;
@@ -39,7 +43,6 @@ class BlocksReference extends WireData implements Module {
     $f->labelFieldName = 'title';
     $f->contentType = 1;
     $f->save();
-  
   }
 
   public function ___upgrade($fromVersion, $toVersion) {
@@ -54,5 +57,4 @@ class BlocksReference extends WireData implements Module {
     $blockName = $this->getBlockName()['name'];
     $this->modules->get('PageGridBlocks')->removeBlock($blockName);
   }
-  
 }

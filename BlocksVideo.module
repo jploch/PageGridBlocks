@@ -1,4 +1,6 @@
-<?php namespace ProcessWire;
+<?php
+
+namespace ProcessWire;
 
 class BlocksVideo extends WireData implements Module {
 
@@ -10,7 +12,7 @@ class BlocksVideo extends WireData implements Module {
       'icon' => 'file-video-o',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.4.7'
+      'version' => '0.0.4.8'
     ];
   }
 
@@ -27,9 +29,11 @@ class BlocksVideo extends WireData implements Module {
     $b = $this->modules->get('PageGridBlocks');
     $blockName = $this->getBlockName()['name'];
     $blockLabel = $this->getBlockName()['label'];
-    $blockIcon = $this->getModuleInfo()['icon']; 
+    $blockIcon = $this->getModuleInfo()['icon'];
 
     $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
+    $t->noChildren = 1;
+    $t->save();
 
     $f = $b->createField($blockName, 'FieldtypeFile', $blockName);
     $f->label = $blockLabel;
@@ -37,7 +41,7 @@ class BlocksVideo extends WireData implements Module {
     $f->maxFiles = 1;
     $f->outputFormat = 0;
     $f->save();
-    
+
     $f = $b->createField($blockName . '_poster', 'FieldtypeImage', $blockName);
     $f->label = 'Preview Image';
     $f->extensions = 'gif jpg jpeg png';
@@ -77,7 +81,6 @@ class BlocksVideo extends WireData implements Module {
     $f->save();
 
     $this->modules->get('PageGridBlocks')->enableInlineEdit($f);
-
   }
 
   public function ___upgrade($fromVersion, $toVersion) {
@@ -92,5 +95,4 @@ class BlocksVideo extends WireData implements Module {
     $blockName = $this->getBlockName()['name'];
     $this->modules->get('PageGridBlocks')->removeBlock($blockName);
   }
-  
 }

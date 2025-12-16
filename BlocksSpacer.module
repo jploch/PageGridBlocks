@@ -1,4 +1,6 @@
-<?php namespace ProcessWire;
+<?php
+
+namespace ProcessWire;
 
 class BlocksSpacer extends WireData implements Module {
 
@@ -10,7 +12,7 @@ class BlocksSpacer extends WireData implements Module {
       'icon' => 'arrows-h',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.1.0'
+      'version' => '0.0.1.1'
     ];
   }
 
@@ -30,7 +32,8 @@ class BlocksSpacer extends WireData implements Module {
     $blockIcon = $this->getModuleInfo()['icon'];
 
     $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
-    
+    $t->noChildren = 1;
+    $t->save();
   }
 
   public function ___upgrade($fromVersion, $toVersion) {
@@ -45,5 +48,4 @@ class BlocksSpacer extends WireData implements Module {
     $blockName = $this->getBlockName()['name'];
     $this->modules->get('PageGridBlocks')->removeBlock($blockName);
   }
-  
 }

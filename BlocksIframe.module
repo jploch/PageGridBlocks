@@ -12,7 +12,7 @@ class BlocksIframe extends WireData implements Module {
       'icon' => 'file-code-o',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.1.1'
+      'version' => '0.0.1.2'
     ];
   }
 
@@ -32,6 +32,8 @@ class BlocksIframe extends WireData implements Module {
     $blockIcon = $this->getModuleInfo()['icon'];
 
     $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
+    $t->noChildren = 1;
+    $t->save();
 
     $f = $b->createField($blockName . '_url', 'FieldtypeText', $blockName);
     $f->label = 'Url';

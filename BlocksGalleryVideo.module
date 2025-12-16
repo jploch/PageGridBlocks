@@ -1,4 +1,6 @@
-<?php namespace ProcessWire;
+<?php
+
+namespace ProcessWire;
 
 class BlocksGalleryVideo extends WireData implements Module {
 
@@ -10,7 +12,7 @@ class BlocksGalleryVideo extends WireData implements Module {
       'icon' => 'video-camera',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.1.3'
+      'version' => '0.0.1.4'
     ];
   }
 
@@ -30,6 +32,8 @@ class BlocksGalleryVideo extends WireData implements Module {
     $blockIcon = $this->getModuleInfo()['icon'];
 
     $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
+    $t->noChildren = 1;
+    $t->save();
 
     $f = $b->createField($blockName, 'FieldtypeFile', $blockName);
     $f->label = $blockLabel;
@@ -37,14 +41,14 @@ class BlocksGalleryVideo extends WireData implements Module {
     $f->maxFiles = 1;
     $f->outputFormat = 0;
     $f->save();
-    
-    $f = $b->createField($blockName.'_poster', 'FieldtypeImage', $blockName);
+
+    $f = $b->createField($blockName . '_poster', 'FieldtypeImage', $blockName);
     $f->label = 'Preview Image';
     $f->extensions = 'gif jpg jpeg png';
     $f->maxFiles = 1;
     $f->save();
-    
-    $f = $b->createField($blockName.'_options', 'FieldtypeText', $blockName);
+
+    $f = $b->createField($blockName . '_options', 'FieldtypeText', $blockName);
     $f->label = 'Options';
     $f->notes = 'example: autoplay muted loop';
     $f->save();
@@ -62,5 +66,4 @@ class BlocksGalleryVideo extends WireData implements Module {
     $blockName = $this->getBlockName()['name'];
     $this->modules->get('PageGridBlocks')->removeBlock($blockName);
   }
-  
 }
