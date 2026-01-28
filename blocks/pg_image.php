@@ -40,6 +40,7 @@ $sizes = [
     [1000, 0],
     [1500, 0],
     [2000, 0],
+    [3000, 0],
 ];
 
 //inside backend only generate one size to render faster (optional)
