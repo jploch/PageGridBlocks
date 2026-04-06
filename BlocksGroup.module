@@ -8,19 +8,16 @@ class BlocksGroup extends WireData implements Module {
     return [
       'title' => 'Group Block',
       'summary' => 'Installs Template and Fields for a PageGrid Block',
+      'href' => 'https://page-grid.com/docs/blocks/',
       'author' => 'Jan Ploch',
       'icon' => 'folder-open',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.2.6'
+      'version' => '0.0.2.6',
+      'pg_name' => 'pg_group',
+      'pg_label' => 'Group',
+      'pg_description' => 'A container block that wraps child elements and optionally links to internal or external pages. Renders as a semantic HTML element with flexible styling.'
     ];
-  }
-
-  public function getBlockName() {
-    return array(
-      'name' => 'pg_group',
-      'label' => 'Group',
-    );
   }
 
   public function ready() {
@@ -65,8 +62,8 @@ class BlocksGroup extends WireData implements Module {
   public function createBlock() {
 
     $b = $this->modules->get('PageGridBlocks');
-    $blockName = $this->getBlockName()['name'];
-    $blockLabel = $this->getBlockName()['label'];
+    $blockName = $this->getModuleInfo()['pg_name'];
+    $blockLabel = $this->getModuleInfo()['pg_label'];
     $blockIcon = $this->getModuleInfo()['icon'];
 
     $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
@@ -99,7 +96,7 @@ class BlocksGroup extends WireData implements Module {
   }
 
   public function ___uninstall() {
-    $blockName = $this->getBlockName()['name'];
+    $blockName = $this->getModuleInfo()['pg_name'];
     $this->modules->get('PageGridBlocks')->removeBlock($blockName);
   }
 }

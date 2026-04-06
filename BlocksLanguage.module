@@ -8,26 +8,23 @@ class BlocksLanguage extends WireData implements Module {
     return [
       'title' => 'Language Switcher Block',
       'summary' => 'Installs Template and Fields for a PageGrid Block',
+      'href' => 'https://page-grid.com/docs/blocks/',
       'author' => 'Jan Ploch',
       'icon' => 'language',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.0.7'
+      'version' => '0.0.0.7',
+      'pg_name' => 'pg_language',
+      'pg_label' => 'Language',
+      'pg_description' => 'Renders a language switcher for multilingual sites. Displays links to alternate language versions of the current page using ProcessWire\'s language support.'
     ];
-  }
-
-  public function getBlockName() {
-    return array(
-      'name' => 'pg_language',
-      'label' => 'Language',
-    );
   }
 
   //function to create block
   public function createBlock() {
     $b = $this->modules->get('PageGridBlocks');
-    $blockName = $this->getBlockName()['name'];
-    $blockLabel = $this->getBlockName()['label'];
+    $blockName = $this->getModuleInfo()['pg_name'];
+    $blockLabel = $this->getModuleInfo()['pg_label'];
     $blockIcon = $this->getModuleInfo()['icon'];
 
     $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
@@ -44,7 +41,7 @@ class BlocksLanguage extends WireData implements Module {
   }
 
   public function ___uninstall() {
-    $blockName = $this->getBlockName()['name'];
+    $blockName = $this->getModuleInfo()['pg_name'];
     $this->modules->get('PageGridBlocks')->removeBlock($blockName);
   }
 }

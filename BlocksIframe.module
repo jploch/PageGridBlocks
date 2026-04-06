@@ -8,27 +8,24 @@ class BlocksIframe extends WireData implements Module {
     return [
       'title' => 'Iframe Block',
       'summary' => 'Installs Template and Fields for a PageGrid Block',
+      'href' => 'https://page-grid.com/docs/blocks/',
       'author' => 'Jan Ploch',
       'icon' => 'file-code-o',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.1.2'
+      'version' => '0.0.1.2',
+      'pg_name' => 'pg_iframe',
+      'pg_label' => 'Iframe',
+      'pg_description' => 'Embeds iframes with privacy-friendly lazy loading for YouTube and Vimeo URLs. Automatically fetches and caches video thumbnails and titles for GDPR compliance.'
     ];
-  }
-
-  public function getBlockName() {
-    return array(
-      'name' => 'pg_iframe',
-      'label' => 'Iframe',
-    );
   }
 
   //function to create block
   public function createBlock() {
 
     $b = $this->modules->get('PageGridBlocks');
-    $blockName = $this->getBlockName()['name'];
-    $blockLabel = $this->getBlockName()['label'];
+    $blockName = $this->getModuleInfo()['pg_name'];
+    $blockLabel = $this->getModuleInfo()['pg_label'];
     $blockIcon = $this->getModuleInfo()['icon'];
 
     $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
@@ -75,7 +72,7 @@ class BlocksIframe extends WireData implements Module {
   }
 
   public function ___uninstall() {
-    $blockName = $this->getBlockName()['name'];
+    $blockName = $this->getModuleInfo()['pg_name'];
     $this->modules->get('PageGridBlocks')->removeBlock($blockName);
   }
 }

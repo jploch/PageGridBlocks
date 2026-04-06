@@ -8,27 +8,24 @@ class BlocksSequenz extends WireData implements Module {
     return [
       'title' => 'Image Sequenz',
       'summary' => 'Installs Template and Fields for a PageGrid Block',
+      'href' => 'https://page-grid.com/docs/blocks/',
       'author' => 'Jan Ploch',
       'icon' => 'film',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.1.2'
+      'version' => '0.0.1.2',
+      'pg_name' => 'pg_sequenz',
+      'pg_label' => 'Sequenz',
+      'pg_description' => 'Renders an image sequence animation on HTML5 canvas. Creates flipbook-style animations by cycling through multiple image files.'
     ];
-  }
-
-  public function getBlockName() {
-    return array(
-      'name' => 'pg_sequenz',
-      'label' => 'Sequenz',
-    );
   }
 
   //function to create block
   public function createBlock() {
 
     $b = $this->modules->get('PageGridBlocks');
-    $blockName = $this->getBlockName()['name'];
-    $blockLabel = $this->getBlockName()['label'];
+    $blockName = $this->getModuleInfo()['pg_name'];
+    $blockLabel = $this->getModuleInfo()['pg_label'];
     $blockIcon = $this->getModuleInfo()['icon'];
 
     $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
@@ -53,7 +50,7 @@ class BlocksSequenz extends WireData implements Module {
   }
 
   public function ___uninstall() {
-    $blockName = $this->getBlockName()['name'];
+    $blockName = $this->getModuleInfo()['pg_name'];
     $this->modules->get('PageGridBlocks')->removeBlock($blockName);
   }
 }

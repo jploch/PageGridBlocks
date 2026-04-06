@@ -8,20 +8,17 @@ class BlocksEditor extends WireData implements Module {
     return [
       'title' => 'Rich Text Editor Block',
       'summary' => 'Installs Template and Fields for a PageGrid Block',
+      'href' => 'https://page-grid.com/docs/blocks/',
       'author' => 'Jan Ploch',
       'icon' => 'text-height',
       'autoload' => 'template=admin',
       'installs' => array('InputfieldTinyMCE'),
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.10.7'
+      'version' => '0.0.10.7',
+      'pg_name' => 'pg_editor',
+      'pg_label' => 'Rich Text',
+      'pg_description' => 'Renders rich text content edited with TinyMCE. Supports formatted text, inline styles, links, and complex formatting.'
     ];
-  }
-
-  public function getBlockName() {
-    return array(
-      'name' => 'pg_editor',
-      'label' => 'Rich Text',
-    );
   }
 
   //function to create block
@@ -50,8 +47,8 @@ class BlocksEditor extends WireData implements Module {
     }
 
     $b = $this->modules->get('PageGridBlocks');
-    $blockName = $this->getBlockName()['name'];
-    $blockLabel = $this->getBlockName()['label'];
+    $blockName = $this->getModuleInfo()['pg_name'];
+    $blockLabel = $this->getModuleInfo()['pg_label'];
     $blockIcon = $this->getModuleInfo()['icon'];
 
     $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
@@ -84,7 +81,7 @@ class BlocksEditor extends WireData implements Module {
   }
 
   public function ___uninstall() {
-    $blockName = $this->getBlockName()['name'];
+    $blockName = $this->getModuleInfo()['pg_name'];
     $this->modules->get('PageGridBlocks')->removeBlock($blockName);
   }
 }

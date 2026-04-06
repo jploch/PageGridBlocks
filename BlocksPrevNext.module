@@ -8,27 +8,24 @@ class BlocksPrevNext extends WireData implements Module {
     return [
       'title' => 'Previous/Next Block',
       'summary' => 'Installs Template and Fields for a PageGrid Block',
+      'href' => 'https://page-grid.com/docs/blocks/',
       'author' => 'Jan Ploch',
       'icon' => 'exchange',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.1.6'
+      'version' => '0.0.1.6',
+      'pg_name' => 'pg_prev_next',
+      'pg_label' => 'Prev / Next',
+      'pg_description' => 'Displays previous/next navigation controls with an optional index link. Automatically cycles through page siblings for sequential navigation.'
     ];
-  }
-
-  public function getBlockName() {
-    return array(
-      'name' => 'pg_prev_next',
-      'label' => 'Previous/Next',
-    );
   }
 
   //function to create block
   public function createBlock() {
 
     $b = $this->modules->get('PageGridBlocks');
-    $blockName = $this->getBlockName()['name'];
-    $blockLabel = $this->getBlockName()['label'];
+    $blockName = $this->getModuleInfo()['pg_name'];
+    $blockLabel = $this->getModuleInfo()['pg_label'];
     $blockIcon = $this->getModuleInfo()['icon'];
 
     $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
@@ -79,7 +76,7 @@ class BlocksPrevNext extends WireData implements Module {
   }
 
   public function ___uninstall() {
-    $blockName = $this->getBlockName()['name'];
+    $blockName = $this->getModuleInfo()['pg_name'];
     $this->modules->get('PageGridBlocks')->removeBlock($blockName);
   }
 }

@@ -8,28 +8,25 @@ class BlocksGallery extends WireData implements Module {
     return [
       'title' => 'Gallery Block',
       'summary' => 'Installs Template and Fields for a PageGrid Block',
+      'href' => 'https://page-grid.com/docs/blocks/',
       'author' => 'Jan Ploch',
       'icon' => 'camera-retro',
       'autoload' => 'template=admin',
       'installs' => array('FileValidatorSvgSanitizer'),
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.1.7'
+      'version' => '0.0.1.7',
+      'pg_name' => 'pg_gallery',
+      'pg_label' => 'Gallery',
+      'pg_description' => 'Displays a single image in a PhotoSwipe-compatible gallery container. Supports responsive images with multiple size variants for optimal loading.'
     ];
-  }
-
-  public function getBlockName() {
-    return array(
-      'name' => 'pg_gallery',
-      'label' => 'Gallery',
-    );
   }
 
   //function to create block
   public function createBlock() {
 
     $b = $this->modules->get('PageGridBlocks');
-    $blockName = $this->getBlockName()['name'];
-    $blockLabel = $this->getBlockName()['label'];
+    $blockName = $this->getModuleInfo()['pg_name'];
+    $blockLabel = $this->getModuleInfo()['pg_label'];
     $blockIcon = $this->getModuleInfo()['icon'];
 
     $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
@@ -57,7 +54,7 @@ class BlocksGallery extends WireData implements Module {
   }
 
   public function ___uninstall() {
-    $blockName = $this->getBlockName()['name'];
+    $blockName = $this->getModuleInfo()['pg_name'];
     $this->modules->get('PageGridBlocks')->removeBlock($blockName);
   }
 }

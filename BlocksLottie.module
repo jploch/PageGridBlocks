@@ -8,27 +8,24 @@ class BlocksLottie extends WireData implements Module {
     return [
       'title' => 'Lottie Animation',
       'summary' => 'Installs Template and Fields for a PageGrid Block',
+      'href' => 'https://page-grid.com/docs/blocks/',
       'author' => 'Jan Ploch',
       'icon' => 'caret-square-o-right',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.0.3'
+      'version' => '0.0.0.3',
+      'pg_name' => 'pg_lottie',
+      'pg_label' => 'Lottie',
+      'pg_description' => 'Renders animated Lottie JSON files with configurable triggers (autoplay, on-scroll, on-click, etc.). Supports looping and reverse animation options.'
     ];
-  }
-
-  public function getBlockName() {
-    return array(
-      'name' => 'pg_lottie',
-      'label' => 'Lottie Animation',
-    );
   }
 
   //function to create block
   public function createBlock() {
 
     $b = $this->modules->get('PageGridBlocks');
-    $blockName = $this->getBlockName()['name'];
-    $blockLabel = $this->getBlockName()['label'];
+    $blockName = $this->getModuleInfo()['pg_name'];
+    $blockLabel = $this->getModuleInfo()['pg_label'];
     $blockIcon = $this->getModuleInfo()['icon'];
 
     $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
@@ -84,7 +81,7 @@ class BlocksLottie extends WireData implements Module {
   }
 
   public function ___uninstall() {
-    $blockName = $this->getBlockName()['name'];
+    $blockName = $this->getModuleInfo()['pg_name'];
     $this->modules->get('PageGridBlocks')->removeBlock($blockName);
   }
 }

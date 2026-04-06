@@ -8,20 +8,17 @@ class BlocksText extends WireData implements Module {
     return [
       'title' => 'Text Block (line breaks + links via TinyMCE)',
       'summary' => 'Installs Template and Fields for a PageGrid Block',
+      'href' => 'https://page-grid.com/docs/blocks/',
       'author' => 'Jan Ploch',
       'icon' => 'font',
       'autoload' => 'template=admin',
       'installs' => array('InputfieldTinyMCE'),
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.10.4'
+      'version' => '0.0.10.4',
+      'pg_name' => 'pg_text',
+      'pg_label' => 'Text',
+      'pg_description' => 'Renders rich text content with support for line breaks and links via TinyMCE. Similar to Editor but with simpler formatting options.'
     ];
-  }
-
-  public function getBlockName() {
-    return array(
-      'name' => 'pg_text',
-      'label' => 'Text',
-    );
   }
 
   //function to create block
@@ -34,8 +31,8 @@ class BlocksText extends WireData implements Module {
     }
 
     $b = $this->modules->get('PageGridBlocks');
-    $blockName = $this->getBlockName()['name'];
-    $blockLabel = $this->getBlockName()['label'];
+    $blockName = $this->getModuleInfo()['pg_name'];
+    $blockLabel = $this->getModuleInfo()['pg_label'];
     $blockIcon = $this->getModuleInfo()['icon'];
 
     //enable editor json module settings
@@ -73,7 +70,7 @@ class BlocksText extends WireData implements Module {
   }
 
   public function ___uninstall() {
-    $blockName = $this->getBlockName()['name'];
+    $blockName = $this->getModuleInfo()['pg_name'];
     $this->modules->get('PageGridBlocks')->removeBlock($blockName);
   }
 }
