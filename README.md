@@ -1,8 +1,20 @@
 # PAGEGRID Blocks
-This module installs templates and fields for PAGEGRID blocks. PAGEGRID is a friendly pagebuilder for ProcessWire.
+This module installs templates and fields for PAGEGRID blocks. PAGEGRID is a friendly pagebuilder for ProcessWire. 
+
+These components are the building blocks of your website. Each is designed for a specific purpose—whether it’s a simple text block, a responsive image, or an interactive slider.
+
+Instead of one giant content field, PAGEGRID lets you stack and rearrange these elements to build unique layouts with total control over your markup.
+
+## Explore the Library
+To see a full list of available blocks and how to configure them, visit our documentation:
+
+[View the Block Documentation](https://page-grid.com/docs/blocks/)
 
 ## How to use
-After installing the ```PageGridBlocks``` module, go to ```Setup > PAGEGRID``` in your ProcessWire admin and select the blocks you want to use. The module will load the block template files from ```site/modules/PageGridBlocks/blocks```. If you want to modify any of the files, copy them to your ```site/templates/blocks``` folder.
+After installing the ```PageGridBlocks``` module, go to ```Setup > PAGEGRID``` in your ProcessWire admin and select the blocks you want to use.
+
+## Modify
+To modify a block, copy the corresponding file from ```site/modules/PageGridBlocks/blocks``` to your ```site/templates/blocks``` folder.
 
 ### Try PAGEGRID for free  
 The PAGEGRID Module is not free software. However, you can try PAGEGRID on your local machine or on a test server as long as you need to make sure it is the right tool for your next project. … and when you’re convinced, [buy your license](https://page-grid.com/buy).
@@ -19,9 +31,6 @@ You can use this PageGridBlocks Module for free.
 3. Click “Get Module Info“
 4. On the overview, click “Download And Install“
 5. On the following screen, click “Install Now“
-
-## Modify
-To modify a block, copy the corresponding file from ```site/modules/PageGridBlocks/blocks``` to your ```site/templates/blocks``` folder.
 
 ### Contribute
 
