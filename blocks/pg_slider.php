@@ -3,7 +3,7 @@
 namespace ProcessWire; ?>
 <!-- Learn more about PAGEGRID's wrapper element: https://page-grid.com/docs/#/developer/blocks?id=wrapper-element -->
 <div pg-children="pg_image pg_video pg_editor pg_group" pg-children-tab="append" pg-children-label="Slides" pg-wrapper>
-    <div class="glide" data-autoplay="<?= $page->pg_slider_autoplay ?>">
+    <div class="glide" data-autoplay="<?= $page->pg_slider_autoplay ?>" data-per-view="<?= $page->pg_slider_per_view ?>" data-gap="<?= $page->pg_slider_gap ?>" data-hide-arrows="<?= $page->pg_slider_hide_arrows ? '1' : '0' ?>" data-hide-bullets="<?= $page->pg_slider_hide_bullets ? '1' : '0' ?>" data-animation="<?= $page->pg_slider_animation ? $page->pg_slider_animation->value : 'slide' ?>" data-rewind="<?= $page->pg_slider_rewind ? '0' : '1' ?>">
         <div class="glide__track" data-glide-el="track">
             <ul class="glide__slides">
 

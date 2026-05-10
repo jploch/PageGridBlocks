@@ -13,7 +13,7 @@ class BlocksSlider extends WireData implements Module {
       'icon' => 'ellipsis-h',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.1.14',
+      'version' => '0.0.1.17',
       'pg_name' => 'pg_slider',
       'pg_label' => 'Slider',
       'pg_description' => 'Displays a carousel/slider with navigation arrows, dots, and autoplay support. Uses the Glide.js library for smooth slide transitions.'
@@ -30,14 +30,70 @@ class BlocksSlider extends WireData implements Module {
 
     $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
 
-    $f = $b->createField('pg_slider_autoplay', 'FieldtypeTextarea', $blockName);
+    $f = $b->createField('pg_slider_options', 'FieldtypeFieldsetOpen', $blockName);
+    $f->label = 'Slider Options';
+    $f->collapsed = 1;
+    $f->save();
+
+    $f = $b->createField('pg_slider_autoplay', 'FieldtypeTextarea', $blockName, 'pg_slider_options');
     $f->label = 'Autoplay';
     $f->description = 'Delay in milliseconds. Leave empty to disable autoplay.';
     $f->inputfieldClass = 'InputfieldText';
     $f->inputType = 'number';
     $f->contentType = 1;
-    $f->collapsed = 1;
+    $f->collapsed = 0;
     $f->columnWidth = 99;
+    $f->save();
+
+    $f = $b->createField('pg_slider_per_view', 'FieldtypeInteger', $blockName, 'pg_slider_autoplay');
+    $f->label = 'Slides Per View';
+    $f->description = 'Number of slides visible at once. Default is 1.';
+    $f->inputType = 'number';
+    $f->zeroNotEmpty = 1;
+    $f->placeholder = '1';
+    $f->columnWidth = 99;
+    $f->collapsed = 0;
+    $f->save();
+
+    $f = $b->createField('pg_slider_gap', 'FieldtypeInteger', $blockName, 'pg_slider_per_view');
+    $f->label = 'Gap Between Slides';
+    $f->description = 'Size of the gap in pixels between slides.';
+    $f->inputType = 'number';
+    $f->zeroNotEmpty = 1;
+    $f->placeholder = '0';
+    $f->columnWidth = 99;
+    $f->collapsed = 0;
+    $f->save();
+
+    $f = $b->createField('pg_slider_rewind', 'FieldtypeCheckbox', $blockName, 'pg_slider_animation');
+    $f->label = 'Disable Rewind';
+    $f->description = 'When checked, the slider will not loop back to the beginning after the last slide.';
+    $f->collapsed = 0;
+    $f->save();
+
+    $f = $b->createField('pg_slider_hide_arrows', 'FieldtypeCheckbox', $blockName, 'pg_slider_gap');
+    $f->label = 'Hide Arrows';
+    $f->collapsed = 0;
+    $f->save();
+
+    $f = $b->createField('pg_slider_hide_bullets', 'FieldtypeCheckbox', $blockName, 'pg_slider_hide_arrows');
+    $f->label = 'Hide Bullets';
+    $f->collapsed = 0;
+    $f->save();
+
+    $f = $b->createField('pg_slider_animation', 'FieldtypeOptions', $blockName, 'pg_slider_hide_bullets');
+    $f->label = 'Animation';
+    $f->inputfieldClass = 'InputfieldSelect';
+    $f->collapsed = 0;
+    $f->save();
+    $options = 'slide|Slide
+fade|Fade';
+    $this->manager = new \ProcessWire\SelectableOptionManager();
+    $this->manager->deleteAllOptionsForField($f);
+    $this->manager->setOptionsString($f, $options, false);
+    $f->save();
+
+    $f = $b->createField('pg_slider_options_close', 'FieldtypeFieldsetClose', $blockName, 'pg_slider_rewind');
     $f->save();
   }
 

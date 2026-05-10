@@ -17,7 +17,7 @@ class BlocksEditor extends WireData implements Module {
       'version' => '0.0.10.7',
       'pg_name' => 'pg_editor',
       'pg_label' => 'Rich Text',
-      'pg_description' => 'Renders rich text content edited with TinyMCE. Supports formatted text, inline styles, links, and complex formatting.'
+      'pg_description' => 'For complex content. Supports multiple paragraphs, headlines, lists, and full formatting. Ideal for long-form text where you manage the hierarchy within the editor.'
     ];
   }
 

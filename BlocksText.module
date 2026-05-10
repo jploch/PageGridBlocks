@@ -17,7 +17,7 @@ class BlocksText extends WireData implements Module {
       'version' => '0.0.10.4',
       'pg_name' => 'pg_text',
       'pg_label' => 'Text',
-      'pg_description' => 'Renders rich text content with support for line breaks and links via TinyMCE. Similar to Editor but with simpler formatting options.'
+      'pg_description' => 'For headlines or simple text. Content is wrapped in a fixed tag (like h2) defined by the style panel. The editor is limited to inline formatting like bold or links.'
     ];
   }
 
