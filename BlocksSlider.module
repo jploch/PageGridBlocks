@@ -13,7 +13,7 @@ class BlocksSlider extends WireData implements Module {
       'icon' => 'ellipsis-h',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.1.17',
+      'version' => '0.0.1.19',
       'pg_name' => 'pg_slider',
       'pg_label' => 'Slider',
       'pg_description' => 'Displays a carousel/slider with navigation arrows, dots, and autoplay support. Uses the Glide.js library for smooth slide transitions.'
@@ -55,7 +55,17 @@ class BlocksSlider extends WireData implements Module {
     $f->collapsed = 0;
     $f->save();
 
-    $f = $b->createField('pg_slider_gap', 'FieldtypeInteger', $blockName, 'pg_slider_per_view');
+    $f = $b->createField('pg_slider_per_view_mobile', 'FieldtypeInteger', $blockName, 'pg_slider_per_view');
+    $f->label = 'Slides Per View (Mobile)';
+    $f->description = 'Slides visible at once on screens narrower than 640px. Leave empty to use the desktop value.';
+    $f->inputType = 'number';
+    $f->zeroNotEmpty = 1;
+    $f->placeholder = '';
+    $f->columnWidth = 99;
+    $f->collapsed = 0;
+    $f->save();
+
+    $f = $b->createField('pg_slider_gap', 'FieldtypeInteger', $blockName, 'pg_slider_per_view_mobile');
     $f->label = 'Gap Between Slides';
     $f->description = 'Size of the gap in pixels between slides.';
     $f->inputType = 'number';
@@ -65,13 +75,13 @@ class BlocksSlider extends WireData implements Module {
     $f->collapsed = 0;
     $f->save();
 
-    $f = $b->createField('pg_slider_rewind', 'FieldtypeCheckbox', $blockName, 'pg_slider_animation');
+    $f = $b->createField('pg_slider_rewind', 'FieldtypeCheckbox', $blockName, 'pg_slider_gap');
     $f->label = 'Disable Rewind';
     $f->description = 'When checked, the slider will not loop back to the beginning after the last slide.';
     $f->collapsed = 0;
     $f->save();
 
-    $f = $b->createField('pg_slider_hide_arrows', 'FieldtypeCheckbox', $blockName, 'pg_slider_gap');
+    $f = $b->createField('pg_slider_hide_arrows', 'FieldtypeCheckbox', $blockName, 'pg_slider_rewind');
     $f->label = 'Hide Arrows';
     $f->collapsed = 0;
     $f->save();
@@ -93,7 +103,17 @@ fade|Fade';
     $this->manager->setOptionsString($f, $options, false);
     $f->save();
 
-    $f = $b->createField('pg_slider_options_close', 'FieldtypeFieldsetClose', $blockName, 'pg_slider_rewind');
+    $f = $b->createField('pg_slider_animation_duration', 'FieldtypeInteger', $blockName, 'pg_slider_animation');
+    $f->label = 'Animation Duration';
+    $f->description = 'Slide animation duration in milliseconds. Default is 400. Not used when animation is set to Fade.';
+    $f->inputType = 'number';
+    $f->zeroNotEmpty = 1;
+    $f->placeholder = '400';
+    $f->columnWidth = 99;
+    $f->collapsed = 0;
+    $f->save();
+
+    $f = $b->createField('pg_slider_options_close', 'FieldtypeFieldsetClose', $blockName, 'pg_slider_animation_duration');
     $f->save();
   }
 
