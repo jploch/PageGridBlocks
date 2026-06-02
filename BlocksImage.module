@@ -14,7 +14,7 @@ class BlocksImage extends WireData implements Module {
       'autoload' => 'template=admin',
       'installs' => array('FileValidatorSvgSanitizer'),
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.5.16',
+      'version' => '0.0.5.17',
       'pg_name' => 'pg_image',
       'pg_label' => 'Image',
       'pg_description' => 'Displays a responsive image with optional link and caption. Generates responsive srcsets for multiple screen sizes and supports aspect ratio constraints.'

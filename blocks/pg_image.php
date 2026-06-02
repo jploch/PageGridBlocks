@@ -43,8 +43,16 @@ $sizes = [
     [3000, 0],
 ];
 
-//inside backend only generate one size to render faster (optional)
-if ($pagegrid->isBackend()) $sizes = [[1000, 0]];
+//logged in user only creates some veraitions for faster loading
+if ($user->isLoggedin()) {
+    $sizes = [
+        [2000, 0],
+        [3000, 0],
+    ];
+
+    //inside backend only generate one size to render faster (optional)
+    if ($pagegrid->isBackend()) $sizes = [[1000, 0]];
+}
 
 //take aspect ratio field into account
 if ($image && $ratioWidth && $ratioHeight) {
