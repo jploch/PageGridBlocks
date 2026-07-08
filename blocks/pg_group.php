@@ -13,8 +13,9 @@ $linkTarget = $link && substr($link, 0, 4) == "http" ? "target=blank" : "";
   <?php } else { ?>
     <div pg-tags="div section article header footer nav" pg-children="true" pg-children-tab="append" pg-wrapper>
     <?php } ?>
-    <!-- render children -->
-    <?php foreach ($page->children() as $item) { ?>
+    <!-- render children; include unpublished in backend so editors can preview drafts -->
+    <?php $childSelector = $pagegrid->isBackend() ? 'include=all' : ''; ?>
+    <?php foreach ($page->children($childSelector) as $item) { ?>
       <?= $pagegrid->renderItem($item); ?>
     <?php } ?>
     <?php if ($link) { ?>

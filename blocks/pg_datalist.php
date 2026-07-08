@@ -36,7 +36,7 @@ if (count($page->pg_datalist_fields) && $parent->hasChildren()) {
 //END add fields to template
 ?>
 
-<div pg-wrapper>
+<div class="pg" pg-wrapper>
   <?php foreach ($parent->children("limit=$limit") as $child) {
     //needed for ajax modal to work, make sure output formating is on after saving children
     $child->of(true);

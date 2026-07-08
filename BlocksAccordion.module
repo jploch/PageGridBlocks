@@ -13,7 +13,7 @@ class BlocksAccordion extends WireData implements Module {
       'icon' => 'plus',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.0.11',
+      'version' => '0.0.0.12',
       'pg_name' => 'pg_accordion',
       'pg_label' => 'Accordion',
       'pg_description' => 'Renders a collapsible accordion component with expandable/collapsible items. Each item displays a title with expand/collapse icons and content that reveals when clicked.'
