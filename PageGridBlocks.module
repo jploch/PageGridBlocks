@@ -12,7 +12,7 @@ class PageGridBlocks extends WireData implements Module {
       'icon' => 'cubes',
       "href" => "https://github.com/jploch/PageGridBlocks",
       'autoload' => 'template=admin',
-      'version' => '1.0.92'
+      'version' => '1.0.93'
     ];
   }
 
@@ -51,6 +51,24 @@ class PageGridBlocks extends WireData implements Module {
 
       $t = new Template();
       $t->fieldgroup = $fg;
+      $t->save();
+
+      // add template to all pagegrid fields automatically
+      if ($isBlock) {
+        foreach ($fs->find('type=FieldtypePageGrid') as $pgField) {
+          $pgFieldArray = $pgField->template_id ? $pgField->template_id : [];
+          if (!in_array($t->id, $pgFieldArray)) array_push($pgFieldArray, $t->id);
+          $pgField->template_id = $pgFieldArray;
+          $pgField->save();
+
+          //new update module config to keep in sync
+          $data = $this->modules->getConfig('FieldtypePageGrid');
+          if ($data && isset($data['template_id_' . $pgField->id])) {
+            $data['template_id_' . $pgField->id][$t->id] = $t->id;
+            $this->modules->saveConfig('FieldtypePageGrid', $data);
+          }
+        }
+      }
     }
 
     //save name and label even if already created to force update
@@ -61,15 +79,6 @@ class PageGridBlocks extends WireData implements Module {
     // $t->useRoles = 1;
     $t->save();
 
-    // add template to all pagegrid fields automatically
-    if ($isBlock) {
-      foreach ($fs->find('type=FieldtypePageGrid') as $pgField) {
-        $pgFieldArray = $pgField->template_id ? $pgField->template_id : [];
-        if (!in_array($t->id, $pgFieldArray)) array_push($pgFieldArray, $t->id);
-        $pgField->template_id = $pgFieldArray;
-        $pgField->save();
-      }
-    }
     return $t;
   }
 
