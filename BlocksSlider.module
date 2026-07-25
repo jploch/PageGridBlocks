@@ -13,7 +13,7 @@ class BlocksSlider extends WireData implements Module {
       'icon' => 'ellipsis-h',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.1.28',
+      'version' => '0.0.1.32',
       'pg_name' => 'pg_slider',
       'pg_label' => 'Slider',
       'pg_description' => 'Displays a carousel/slider with navigation arrows, dots, and autoplay support. Uses the Glide.js library for smooth slide transitions.'
@@ -138,7 +138,13 @@ fade|Fade';
     $f->collapsed = 0;
     $f->save();
 
-    $f = $b->createField('pg_slider_options_close', 'FieldtypeFieldsetClose', $blockName, 'pg_slider_animation_duration');
+    $f = $b->createField('pg_slider_crop_media', 'FieldtypeCheckbox', $blockName, 'pg_slider_animation_duration');
+    $f->label = 'Crop Media';
+    $f->description = 'Forces images and videos to cover the full slider area.';
+    $f->collapsed = 0;
+    $f->save();
+
+    $f = $b->createField('pg_slider_options_close', 'FieldtypeFieldsetClose', $blockName, 'pg_slider_crop_media');
     $f->save();
   }
 
@@ -146,10 +152,10 @@ fade|Fade';
     $this->createBlock();
 
     $template = $this->templates->get('pg_slider');
-    if($template) {
-      foreach(['pg_slider_hide_arrows', 'pg_slider_arrow_position', 'pg_slider_hide_bullets'] as $name) {
+    if ($template) {
+      foreach (['pg_slider_hide_arrows', 'pg_slider_arrow_position', 'pg_slider_hide_bullets', 'pg_slider_auto_height'] as $name) {
         $f = $this->fields->get($name);
-        if($f && $template->fieldgroup->hasField($f)) {
+        if ($f && $template->fieldgroup->hasField($f)) {
           $template->fieldgroup->remove($f);
           $template->fieldgroup->save();
         }
