@@ -1,0 +1,1 @@
+.pg-hide-required.InputfieldStateRequired > .InputfieldHeader:first-child:after { content: none; }

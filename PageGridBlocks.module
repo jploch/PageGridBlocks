@@ -12,12 +12,19 @@ class PageGridBlocks extends WireData implements Module {
       'icon' => 'cubes',
       "href" => "https://github.com/jploch/PageGridBlocks",
       'autoload' => 'template=admin',
-      'version' => '1.0.93'
+      'version' => '1.0.102'
     ];
   }
 
   public function ready() {
     $this->listBlockModules();
+    $this->config->styles->add($this->config->urls->PageGridBlocks . 'PageGridBlocks.css');
+    $this->addHookBefore('Inputfield::render', function($event) {
+      $inputfield = $event->object;
+      if($inputfield->hasField && $inputfield->hasField->get('initValue')) {
+        $inputfield->addClass('pg-hide-required', 'wrapClass');
+      }
+    });
   }
 
   public function enableEditorSettings() {

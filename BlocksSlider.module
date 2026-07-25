@@ -13,7 +13,7 @@ class BlocksSlider extends WireData implements Module {
       'icon' => 'ellipsis-h',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.1.20',
+      'version' => '0.0.1.27',
       'pg_name' => 'pg_slider',
       'pg_label' => 'Slider',
       'pg_description' => 'Displays a carousel/slider with navigation arrows, dots, and autoplay support. Uses the Glide.js library for smooth slide transitions.'
@@ -81,20 +81,45 @@ class BlocksSlider extends WireData implements Module {
     $f->collapsed = 0;
     $f->save();
 
-    $f = $b->createField('pg_slider_hide_arrows', 'FieldtypeCheckbox', $blockName, 'pg_slider_rewind');
-    $f->label = 'Hide Arrows';
+    $f = $b->createField('pg_slider_arrows', 'FieldtypeOptions', $blockName, 'pg_slider_rewind');
+    $f->label = 'Arrows';
+    $f->inputfieldClass = 'InputfieldSelect';
     $f->collapsed = 0;
+    $f->required = 1;
+    $f->columnWidth = 99;
+    $f->set('initValue', 'inside');
+    $f->save();
+    $options = 'inside|Inside
+outside|Outside
+hide|Hide';
+    $this->manager = new \ProcessWire\SelectableOptionManager();
+    $this->manager->deleteAllOptionsForField($f);
+    $this->manager->setOptionsString($f, $options, false);
     $f->save();
 
-    $f = $b->createField('pg_slider_hide_bullets', 'FieldtypeCheckbox', $blockName, 'pg_slider_hide_arrows');
-    $f->label = 'Hide Bullets';
+    $f = $b->createField('pg_slider_bullets', 'FieldtypeOptions', $blockName, 'pg_slider_arrows');
+    $f->label = 'Bullets';
+    $f->inputfieldClass = 'InputfieldSelect';
     $f->collapsed = 0;
+    $f->required = 1;
+    $f->columnWidth = 99;
+    $f->set('initValue', 'inside');
+    $f->save();
+    $options = 'inside|Inside
+outside|Outside
+hide|Hide';
+    $this->manager = new \ProcessWire\SelectableOptionManager();
+    $this->manager->deleteAllOptionsForField($f);
+    $this->manager->setOptionsString($f, $options, false);
     $f->save();
 
-    $f = $b->createField('pg_slider_animation', 'FieldtypeOptions', $blockName, 'pg_slider_hide_bullets');
+    $f = $b->createField('pg_slider_animation', 'FieldtypeOptions', $blockName, 'pg_slider_bullets');
     $f->label = 'Animation';
     $f->inputfieldClass = 'InputfieldSelect';
     $f->collapsed = 0;
+    $f->required = 1;
+    $f->columnWidth = 99;
+    $f->set('initValue', 'slide');
     $f->save();
     $options = 'slide|Slide
 fade|Fade';
@@ -119,6 +144,17 @@ fade|Fade';
 
   public function ___upgrade($fromVersion, $toVersion) {
     $this->createBlock();
+
+    $template = $this->templates->get('pg_slider');
+    if($template) {
+      foreach(['pg_slider_hide_arrows', 'pg_slider_arrow_position', 'pg_slider_hide_bullets'] as $name) {
+        $f = $this->fields->get($name);
+        if($f && $template->fieldgroup->hasField($f)) {
+          $template->fieldgroup->remove($f);
+          $template->fieldgroup->save();
+        }
+      }
+    }
   }
 
   public function ___install() {

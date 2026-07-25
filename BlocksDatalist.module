@@ -14,7 +14,7 @@ class BlocksDatalist extends WireData implements Module {
       'autoload' => 'template=admin',
       'installs' => array('FieldtypeOptions', 'InputfieldTinyMCE'),
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.5.13',
+      'version' => '0.0.5.15',
       'pg_name' => 'pg_datalist',
       'pg_label' => 'Datalist',
       'pg_description' => 'Displays a list of child pages from a parent page with images, videos, and customizable fields. Creates a filterable/searchable list view with thumbnails and item details.'
@@ -83,10 +83,6 @@ class BlocksDatalist extends WireData implements Module {
     $f->label = $blockLabel;
     $f->save();
 
-    $f = $b->createField($blockName . '_tab_END', 'FieldtypeFieldsetClose');
-    $f->label = $blockLabel;
-    $f->save();
-
     $f = $b->createField($blockName .  '_date', 'FieldtypeDatetime');
     $f->label = 'Date';
     $f->dateOutputFormat = 'j.n.Y';
@@ -150,6 +146,11 @@ class BlocksDatalist extends WireData implements Module {
     //enable title field for inline editing
     $f = $this->fields->get('title');
     $this->modules->get('PageGridBlocks')->enableInlineEdit($f);
+
+    //close tab
+    $f = $b->createField($blockName . '_tab_END', 'FieldtypeFieldsetClose');
+    $f->label = $blockLabel;
+    $f->save();
   }
 
   public function ___upgrade($fromVersion, $toVersion) {
