@@ -5,7 +5,7 @@ namespace ProcessWire; ?>
 <div pg-children="true" pg-children-label="Accordion Items" pg-children-tab="append" pg-autotitle="false" pg-wrapper>
     <?php foreach ($page->children() as $item) : ?>
         <div class="accordion-header" data-class="accordion-header">
-            <div class="accordion-headline" data-class="accordion-headline"><?= $item->edit('title') ?></div>
+            <div class="accordion-headline" data-class="accordion-headline"><?= $pagegrid->isBackend() ? $item->edit('title') : $item->title ?></div>
             <div class="accordion-icon" data-class="accordion-icon">
                 <div class="accordion-icon-inner" data-class="accordion-icon-inner"></div>
                 <div class="accordion-icon-inner" data-class="accordion-icon-inner"></div>
