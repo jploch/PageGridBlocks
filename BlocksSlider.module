@@ -13,7 +13,7 @@ class BlocksSlider extends WireData implements Module {
       'icon' => 'ellipsis-h',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.1.38',
+      'version' => '0.0.1.40',
       'pg_name' => 'pg_slider',
       'pg_label' => 'Slider',
       'pg_description' => 'Displays a carousel/slider with navigation arrows, dots, and autoplay support. Uses the Glide.js library for smooth slide transitions.'
