@@ -13,7 +13,7 @@ class BlocksSlider extends WireData implements Module {
       'icon' => 'ellipsis-h',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.1.33',
+      'version' => '0.0.1.35',
       'pg_name' => 'pg_slider',
       'pg_label' => 'Slider',
       'pg_description' => 'Displays a carousel/slider with navigation arrows, dots, and autoplay support. Uses the Glide.js library for smooth slide transitions.'
@@ -81,39 +81,7 @@ class BlocksSlider extends WireData implements Module {
     $f->collapsed = 0;
     $f->save();
 
-    $f = $b->createField('pg_slider_arrows', 'FieldtypeOptions', $blockName, 'pg_slider_rewind');
-    $f->label = 'Arrows';
-    $f->inputfieldClass = 'InputfieldSelect';
-    $f->collapsed = 0;
-    $f->required = 1;
-    $f->columnWidth = 99;
-    $f->set('initValue', 'inside');
-    $f->save();
-    $options = 'inside|Inside
-outside|Outside
-hide|Hide';
-    $this->manager = new \ProcessWire\SelectableOptionManager();
-    $this->manager->deleteAllOptionsForField($f);
-    $this->manager->setOptionsString($f, $options, false);
-    $f->save();
-
-    $f = $b->createField('pg_slider_bullets', 'FieldtypeOptions', $blockName, 'pg_slider_arrows');
-    $f->label = 'Bullets';
-    $f->inputfieldClass = 'InputfieldSelect';
-    $f->collapsed = 0;
-    $f->required = 1;
-    $f->columnWidth = 99;
-    $f->set('initValue', 'inside');
-    $f->save();
-    $options = 'inside|Inside
-outside|Outside
-hide|Hide';
-    $this->manager = new \ProcessWire\SelectableOptionManager();
-    $this->manager->deleteAllOptionsForField($f);
-    $this->manager->setOptionsString($f, $options, false);
-    $f->save();
-
-    $f = $b->createField('pg_slider_animation', 'FieldtypeOptions', $blockName, 'pg_slider_bullets');
+    $f = $b->createField('pg_slider_animation', 'FieldtypeOptions', $blockName, 'pg_slider_rewind');
     $f->label = 'Animation';
     $f->inputfieldClass = 'InputfieldSelect';
     $f->collapsed = 0;
@@ -130,7 +98,7 @@ fade|Fade';
 
     $f = $b->createField('pg_slider_animation_duration', 'FieldtypeInteger', $blockName, 'pg_slider_animation');
     $f->label = 'Animation Duration';
-    $f->description = 'Slide animation duration in milliseconds. Default is 400. Not used when animation is set to Fade.';
+    $f->description = 'Slide animation duration in milliseconds.';
     $f->inputType = 'number';
     $f->zeroNotEmpty = 1;
     $f->placeholder = '400';
@@ -138,8 +106,55 @@ fade|Fade';
     $f->collapsed = 0;
     $f->save();
 
-    $f = $b->createField('pg_slider_crop_media', 'FieldtypeCheckbox', $blockName, 'pg_slider_animation_duration');
-    $f->label = 'Crop Media';
+    $f = $b->createField('pg_slider_arrows', 'FieldtypeOptions', $blockName, 'pg_slider_animation_duration');
+    $f->label = 'Arrows';
+    $f->inputfieldClass = 'InputfieldSelect';
+    $f->collapsed = 0;
+    $f->required = 1;
+    $f->columnWidth = 99;
+    $f->set('initValue', 'outside');
+    $f->save();
+    $options = 'outside|Outside
+inside|Inside
+hide|Hide';
+    $this->manager = new \ProcessWire\SelectableOptionManager();
+    $this->manager->deleteAllOptionsForField($f);
+    $this->manager->setOptionsString($f, $options, false);
+    $f->save();
+
+    $f = $b->createField('pg_slider_bullets', 'FieldtypeOptions', $blockName, 'pg_slider_arrows');
+    $f->label = 'Bullets';
+    $f->inputfieldClass = 'InputfieldSelect';
+    $f->collapsed = 0;
+    $f->required = 1;
+    $f->columnWidth = 99;
+    $f->set('initValue', 'outside');
+    $f->save();
+    $options = 'outside|Outside
+inside|Inside
+hide|Hide';
+    $this->manager = new \ProcessWire\SelectableOptionManager();
+    $this->manager->deleteAllOptionsForField($f);
+    $this->manager->setOptionsString($f, $options, false);
+    $f->save();
+
+    $f = $b->createField('pg_slider_theme', 'FieldtypeOptions', $blockName, 'pg_slider_bullets');
+    $f->label = 'Theme';
+    $f->inputfieldClass = 'InputfieldSelect';
+    $f->collapsed = 0;
+    $f->required = 1;
+    $f->columnWidth = 99;
+    $f->set('initValue', 'dark');
+    $f->save();
+    $options = 'dark|Dark
+light|Light';
+    $this->manager = new \ProcessWire\SelectableOptionManager();
+    $this->manager->deleteAllOptionsForField($f);
+    $this->manager->setOptionsString($f, $options, false);
+    $f->save();
+
+    $f = $b->createField('pg_slider_crop_media', 'FieldtypeCheckbox', $blockName, 'pg_slider_theme');
+    $f->label = 'Cover Media';
     $f->description = 'Forces images and videos to cover the full slider area.';
     $f->collapsed = 0;
     $f->save();

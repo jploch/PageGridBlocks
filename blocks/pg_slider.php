@@ -1,12 +1,12 @@
 <?php
 
 namespace ProcessWire;
-$arrows = $page->pg_slider_arrows ? $page->pg_slider_arrows->value : 'inside';
-$bullets = $page->pg_slider_bullets ? $page->pg_slider_bullets->value : 'inside';
+$arrows = $page->pg_slider_arrows->value ? $page->pg_slider_arrows->value : 'outside';
+$bullets = $page->pg_slider_bullets->value ? $page->pg_slider_bullets->value : 'outside';
 ?>
 <!-- Learn more about PAGEGRID's wrapper element: https://page-grid.com/docs/#/developer/blocks?id=wrapper-element -->
 <div pg-children="pg_image pg_video pg_editor pg_group" pg-children-tab="append" pg-children-label="Slides" data-crop-media="<?= $page->pg_slider_crop_media ? '1' : '0' ?>" pg-wrapper>
-    <div class="glide" data-autoplay="<?= $page->pg_slider_autoplay ?>" data-per-view="<?= $page->pg_slider_per_view ?>" data-per-view-mobile="<?= $page->pg_slider_per_view_mobile ?>" data-gap="<?= $page->pg_slider_gap ?>" data-hide-arrows="<?= $arrows === 'hide' ? '1' : '0' ?>" data-arrow-position="<?= $arrows ?>" data-hide-bullets="<?= $bullets === 'hide' ? '1' : '0' ?>" data-bullet-position="<?= $bullets ?>" data-animation="<?= $page->pg_slider_animation ? $page->pg_slider_animation->value : 'slide' ?>" data-animation-duration="<?= $page->pg_slider_animation_duration ?>" data-rewind="<?= $page->pg_slider_rewind ? '0' : '1' ?>">
+    <div class="glide" data-autoplay="<?= $page->pg_slider_autoplay ?>" data-per-view="<?= $page->pg_slider_per_view ?>" data-per-view-mobile="<?= $page->pg_slider_per_view_mobile ?>" data-gap="<?= $page->pg_slider_gap ?>" data-hide-arrows="<?= $arrows === 'hide' ? '1' : '0' ?>" data-arrow-position="<?= $arrows ?>" data-hide-bullets="<?= $bullets === 'hide' ? '1' : '0' ?>" data-bullet-position="<?= $bullets ?>" data-animation="<?= $page->pg_slider_animation ? $page->pg_slider_animation->value : 'slide' ?>" data-animation-duration="<?= $page->pg_slider_animation_duration ?>" data-theme="<?= $page->pg_slider_theme ? $page->pg_slider_theme->value : 'dark' ?>" data-rewind="<?= $page->pg_slider_rewind ? '0' : '1' ?>">
         <div class="glide__track" data-glide-el="track">
             <ul class="glide__slides">
 

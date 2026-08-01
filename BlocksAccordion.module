@@ -13,7 +13,7 @@ class BlocksAccordion extends WireData implements Module {
       'icon' => 'plus',
       'autoload' => 'template=admin',
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.0.14',
+      'version' => '0.0.0.17',
       'pg_name' => 'pg_accordion',
       'pg_label' => 'Accordion',
       'pg_description' => 'Renders a collapsible accordion component with expandable/collapsible items. Each item displays a title with expand/collapse icons and content that reveals when clicked.'
@@ -29,6 +29,29 @@ class BlocksAccordion extends WireData implements Module {
     $blockIcon = $this->getModuleInfo()['icon'];
 
     $t = $b->createTemplate($blockName, $blockLabel, $blockIcon);
+
+    $f = $b->createField('pg_accordion_numbering', 'FieldtypeOptions', $blockName);
+    $f->label = 'Numbering';
+    $f->inputfieldClass = 'InputfieldSelect';
+    $f->collapsed = 0;
+    $f->required = 1;
+    $f->columnWidth = 99;
+    $f->set('initValue', 'none');
+    $f->save();
+    $options = 'none|None
+1|1,2,3
+01|01,02,03
+001|001,002,003
+(1)|(1),(2),(3)
+(01)|(01),(02),(03)
+(001)|(001),(002),(003)
+[1]|[1],[2],[3]
+[01]|[01],[02],[03]
+[001]|[001],[002],[003]';
+    $this->manager = new \ProcessWire\SelectableOptionManager();
+    $this->manager->deleteAllOptionsForField($f);
+    $this->manager->setOptionsString($f, $options, false);
+    $f->save();
     //set allowed templates for children if not defined already
     // if (!count($t->childTemplates) && $this->templates->get('pg_editor')->id && $this->templates->get('pg_group')->id) {
     //   $t->childTemplates = [$this->templates->get('pg_editor')->id, $this->templates->get('pg_group')->id];
