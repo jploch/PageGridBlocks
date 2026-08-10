@@ -14,7 +14,7 @@ class BlocksDatalist extends WireData implements Module {
       'autoload' => 'template=admin',
       'installs' => array('FieldtypeOptions', 'InputfieldTinyMCE'),
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.5.15',
+      'version' => '0.0.5.16',
       'pg_name' => 'pg_datalist',
       'pg_label' => 'Datalist',
       'pg_description' => 'Displays a list of child pages from a parent page with images, videos, and customizable fields. Creates a filterable/searchable list view with thumbnails and item details.'

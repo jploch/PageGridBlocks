@@ -12,7 +12,8 @@ class PageGridBlocks extends WireData implements Module {
       'icon' => 'cubes',
       "href" => "https://github.com/jploch/PageGridBlocks",
       'autoload' => 'template=admin',
-      'version' => '1.0.116'
+      'requires' => ['FieldtypePageGrid>=2.3.44'],
+      'version' => '1.0.118',
     ];
   }
 

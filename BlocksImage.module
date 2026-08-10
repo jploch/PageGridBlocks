@@ -14,7 +14,7 @@ class BlocksImage extends WireData implements Module {
       'autoload' => 'template=admin',
       'installs' => array('FileValidatorSvgSanitizer'),
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.5.17',
+      'version' => '0.0.5.20',
       'pg_name' => 'pg_image',
       'pg_label' => 'Image',
       'pg_description' => 'Displays a responsive image with optional link and caption. Generates responsive srcsets for multiple screen sizes and supports aspect ratio constraints.'
@@ -80,9 +80,9 @@ class BlocksImage extends WireData implements Module {
     $f->contentType = 1;
     $f->htmlOptions = array(0 => 2);
     $f->inlineMode = 1;
-    $f->features = array(0 => 'toolbar', 1 => 'stickybars', 2 => 'spellcheck', 3 => 'purifier', 4 => 'pasteFilter');
+    $f->features = array(0 => 'toolbar', 1 => 'stickybars', 2 => 'spellcheck', 3 => 'pasteFilter');
     $f->toolbar = 'styles bold italic pwlink hr bullist numlist table code';
-    $f->plugins = array(0 => 'link', 1 => 'lists', 2 => 'pwlink');
+    $f->plugins = array(0 => 'link', 1 => 'lists', 2 => 'pwlink', 3 => 'code');
     $f->settingsJSON = '';
     $f->toggles = [0 => 16]; // remove inline styles on save
     $f->save();

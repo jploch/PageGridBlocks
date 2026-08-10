@@ -98,7 +98,7 @@ $customLinksMarkup = $modules->get('BlocksNavigation')->outputNestedList($repeat
         "
     >
         <span class="hamburger-box">
-            <span class="hamburger-inner hamburger-<?= $page->id ?>" data-class="hamburger-<?= $page->id ?>"></span>
+            <span class="hamburger-inner" data-class="hamburger-inner"></span>
         </span>
     </button>
     <!--Main nav-->

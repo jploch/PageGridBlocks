@@ -14,10 +14,10 @@ class BlocksGallery extends WireData implements Module {
       'autoload' => 'template=admin',
       'installs' => array('FileValidatorSvgSanitizer'),
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.1.7',
+      'version' => '0.0.1.19',
       'pg_name' => 'pg_gallery',
       'pg_label' => 'Gallery',
-      'pg_description' => 'Displays a single image in a PhotoSwipe-compatible gallery container. Supports responsive images with multiple size variants for optimal loading.'
+      'pg_description' => 'A PhotoSwipe gallery item. Supports images (responsive srcset) and video (mp4 with poster). Use multiple blocks together to build a lightbox gallery.'
     ];
   }
 
@@ -34,13 +34,80 @@ class BlocksGallery extends WireData implements Module {
     $t->save();
 
     $f = $b->createField($blockName, 'FieldtypeImage', $blockName);
-    $f->label = $blockLabel;
+    $f->label = 'Image';
     $f->extensions = 'gif jpg jpeg png svg';
     $f->maxFiles = 1;
     $f->outputFormat = 2;
     if (!$f->maxWidth) $f->maxWidth = 3000;
     if (!$f->maxHeight) $f->maxHeight = 3000;
     $f->save();
+
+    $f = $b->createField($blockName . '_video_fieldset', 'FieldtypeFieldsetOpen', $blockName);
+    $f->label = 'Video';
+    $f->description = 'If a video is uploaded, the lightbox will open the video instead of the image.';
+    $f->collapsed = Inputfield::collapsedBlank;
+    $f->save();
+
+    $f = $b->createField($blockName . '_video', 'FieldtypeFile', $blockName);
+    $f->label = 'Video';
+    $f->extensions = 'mp4';
+    $f->maxFiles = 1;
+    $f->outputFormat = 0;
+    $f->save();
+
+    $f = $b->createField($blockName . '_video_poster', 'FieldtypeImage', $blockName);
+    $f->label = 'Video Poster';
+    $f->extensions = 'gif jpg jpeg png';
+    $f->maxFiles = 1;
+    $f->save();
+
+    $f = $b->createField($blockName . '_video_options', 'FieldtypeText', $blockName);
+    $f->label = 'Video Options';
+    $f->notes = 'example: autoplay muted loop';
+    $f->save();
+
+    $f = $b->createField($blockName . '_video_fieldset_close', 'FieldtypeFieldsetClose', $blockName);
+    $f->save();
+
+    $f = $b->createField($blockName . '_caption', 'FieldtypeTextarea', $blockName);
+    $f->label = 'Caption';
+    $f->inputfieldClass = 'InputfieldTinyMCE';
+    $f->contentType = 1;
+    $f->htmlOptions = array(0 => 2);
+    $f->inlineMode = 1;
+    $f->features = array(0 => 'toolbar', 1 => 'stickybars', 2 => 'spellcheck', 3 => 'pasteFilter');
+    $f->toolbar = 'styles bold italic pwlink hr bullist numlist table code';
+    $f->plugins = array(0 => 'link', 1 => 'lists', 2 => 'pwlink', 3 => 'code');
+    $f->settingsJSON = '';
+    $f->toggles = [0 => 16];
+    $f->save();
+
+    $b->enableInlineEdit($f);
+
+    $f = $b->createField($blockName . '_theme', 'FieldtypeOptions', $blockName);
+    $f->label = 'Theme';
+    $f->inputfieldClass = 'InputfieldSelect';
+    $f->required = 1;
+    $f->columnWidth = 99;
+    $f->set('initValue', 'dark');
+    $f->save();
+    $options = 'dark|Dark
+light|Light';
+    $this->manager = new \ProcessWire\SelectableOptionManager();
+    $this->manager->deleteAllOptionsForField($f);
+    $this->manager->setOptionsString($f, $options, false);
+    $f->save();
+
+    //cleanup old template if exists
+    $oldTemplate = $this->templates->get('pg_gallery_video');
+    if ($oldTemplate && $oldTemplate->id) {
+      foreach ($this->pages->find('template=pg_gallery_video, include=all') as $p) {
+        $p->of(false);
+        $p->template = 'pg_gallery';
+        $p->save();
+      }
+      $this->templates->delete($oldTemplate);
+    }
   }
 
   public function ___upgrade($fromVersion, $toVersion) {

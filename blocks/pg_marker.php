@@ -2,7 +2,7 @@
 
 namespace ProcessWire; ?>
 <div pg-wrapper>
-  <div data-class="marker-pin-<?= $page->id; ?>" class="marker-pin-<?= $page->id; ?> marker-pin pg-style-panel">
+  <div data-class="marker-pin" class="marker-pin pg-style-panel">
     <span data-class="marker-number" class="marker-number pg-style-panel">
       <?= $page->pg_marker_label; ?>
     </span>
