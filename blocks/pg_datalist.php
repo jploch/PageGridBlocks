@@ -15,29 +15,39 @@ $thumbnailSizes = [
 //inside backend only create one image size
 if ($pagegrid->isBackend()) $thumbnailSizes = [[1000, 0]];
 
-if (!$parent || !$parent->id) {
+//items: children of parent page, or manually selected pages as fallback
+if ($parent && $parent->id) {
+  $items = $parent->children("limit=$limit");
+} else {
+  $items = $page->pg_datalist_pages;
+  if ($limit) $items = $items->slice(0, (int) $limit);
+}
+
+if (!$items || !count($items)) {
   return;
 }
 
 //add fields to template
-if (count($page->pg_datalist_fields) && $parent->hasChildren()) {
-  $t = $parent->children()->first()->template;
+if (count($page->pg_datalist_fields)) {
+  $templates = [];
+  foreach ($items as $i) $templates[$i->template->id] = $i->template;
   $fs = ["pg_datalist_tab", "pg_datalist_date", "pg_datalist_image", "pg_datalist_video", "pg_datalist_text", "pg_datalist_tab_END"];
-  $preF = $t->fieldgroup->fields->get("title");
-
-  foreach ($fs as $f) {
-    if ($preF && $preF->id && !$t->hasField($f)) {
-      $t->fieldgroup->insertAfter($fields->get($f), $preF);
-      $t->fieldgroup->save();
+  foreach ($templates as $t) {
+    $preF = $t->fieldgroup->fields->get("title");
+    foreach ($fs as $f) {
+      if ($preF && $preF->id && !$t->hasField($f)) {
+        $t->fieldgroup->insertAfter($fields->get($f), $preF);
+        $t->fieldgroup->save();
+      }
+      $preF = $t->fieldgroup->fields->get($f);
     }
-    $preF = $t->fieldgroup->fields->get($f);
   }
 }
 //END add fields to template
 ?>
 
 <div class="pg" pg-wrapper>
-  <?php foreach ($parent->children("limit=$limit") as $child) {
+  <?php foreach ($items as $child) {
     //needed for ajax modal to work, make sure output formating is on after saving children
     $child->of(true);
   ?>

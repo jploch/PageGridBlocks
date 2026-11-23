@@ -14,10 +14,10 @@ class BlocksDatalist extends WireData implements Module {
       'autoload' => 'template=admin',
       'installs' => array('FieldtypeOptions', 'InputfieldTinyMCE'),
       'requires' => array('PageGridBlocks'),
-      'version' => '0.0.5.17',
+      'version' => '0.0.5.22',
       'pg_name' => 'pg_datalist',
       'pg_label' => 'Datalist',
-      'pg_description' => 'Displays a list of child pages from a parent page with images, videos, and customizable fields. Creates a filterable/searchable list view with thumbnails and item details.'
+      'pg_description' => 'Displays a list of child pages from a parent page (or manually selected pages) with images, videos, and customizable fields. Creates a filterable/searchable list view with thumbnails and item details.'
     ];
   }
 
@@ -50,12 +50,28 @@ class BlocksDatalist extends WireData implements Module {
     $f->contentType = 1;
     $f->save();
 
+    //create alternative page reference field (manual selection + order)
+    $f = $b->createField($blockName . '_pages', 'FieldtypePage', $blockName, $blockName);
+    $f->label = 'Pages';
+    $f->description = 'Alternatively select individual pages and drag them into the order you want. Only available if no parent page is selected.';
+    $f->inputfield = 'InputfieldPageListSelectMultiple';
+    $f->derefAsPage = 0;
+    //selectable pages: direct children of home, any template
+    $f->parent_id = 1;
+    $f->template_id = 0;
+    $f->template_ids = array();
+    $f->labelFieldName = 'title';
+    //exclude admin (id 2) and trash (id 7) pages and their descendants
+    $f->findPagesSelector = 'id!=2|7, has_parent!=2|7';
+    $f->showIf = $blockName . '=0';
+    $f->save();
+
     //create select field
     $f = $b->createField($blockName . '_fields', 'FieldtypeOptions', $blockName);
     $f->label = 'Fields';
     $f->description = 'Select the fields that each list item will display. Those fields will be added to the child template automatically.';
     $f->inputfieldClass = 'InputfieldAsmSelect';
-    $f->showIf = 'pg_datalist!=0';
+    $f->showIf = '';
     $f->save();
 
     //needed to save options
@@ -73,7 +89,7 @@ class BlocksDatalist extends WireData implements Module {
     $f->label = 'Number of list items';
     $f->description = '0 = show all';
     $f->inputType = 'text';
-    $f->showIf = 'pg_datalist!=0';
+    $f->showIf = '';
     $f->save();
 
     //create fields to add to regular page for the list data
